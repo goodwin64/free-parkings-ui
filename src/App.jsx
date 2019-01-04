@@ -1,14 +1,25 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { Route, Router, Switch } from 'react-router';
 
 import Map from './components/Map';
+import BaseConfigPage from './containers/BaseConfigPage/BaseConfigPage';
 
 
-export default class App extends Component {
-
-  render() {
-    return (
-      <Map/>
-    );
-  }
-
+function App(props) {
+  return (
+    <Router history={props.history}>
+      <Switch>
+        <Route
+          path="/config"
+          component={BaseConfigPage}
+        />
+        <Route
+          path="/"
+          component={Map}
+        />
+      </Switch>
+    </Router>
+  );
 }
+
+export default App;
