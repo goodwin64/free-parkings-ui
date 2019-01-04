@@ -1,11 +1,12 @@
 // @ts-check
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router } from 'react-router';
 import { Provider } from 'react-redux';
 import { createBrowserHistory } from 'history';
 
 import './index.css';
-import App from './App';
+import App from './containers/App/App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore';
 
@@ -15,7 +16,9 @@ const store = configureStore();
 
 const AppConnected = () => (
   <Provider store={store}>
-    <App history={history} />
+    <Router history={history}>
+      <App />
+    </Router>
   </Provider>
 );
 

@@ -1,0 +1,10 @@
+.App-container {
+    min-height: 100vh;
+    display: grid;
+    grid: 1fr / 1fr;
+}
+
+.App-container > header {
+    background-color: var(--colorAntiMain);
+    color: var(--colorMainText);
+}

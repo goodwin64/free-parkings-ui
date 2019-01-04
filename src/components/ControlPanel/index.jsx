@@ -23,7 +23,6 @@ const CITIES = [
 const defaultContainer =  ({children}) => <div className="control-panel">{children}</div>;
 
 export default class ControlPanelCities extends React.PureComponent {
-
   renderCity = (city, index) => {
     return (
       <div key={`btn-${index}`} className="input">
@@ -32,7 +31,7 @@ export default class ControlPanelCities extends React.PureComponent {
           name="city"
           id={`city-${index}`}
           defaultChecked={city.city === 'Paris'}
-          onClick={() => this.props.onViewportChange(city)}
+          onClick={() => this.props.onCityChange(city)}
         />
         <label htmlFor={`city-${index}`}>
           {city.city}
