@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import MapGL, { FlyToInterpolator, Marker, Popup } from 'react-map-gl';
 
 import * as style from './Map.module.css';
@@ -36,7 +37,7 @@ class Map extends React.PureComponent {
       latitude,
       zoom: 11,
       transitionInterpolator: new FlyToInterpolator(),
-      transitionDuration: 3000
+      transitionDuration: 3000,
     });
   };
   static PARKING_MARKERS = [
@@ -60,6 +61,12 @@ class Map extends React.PureComponent {
           {Map.PARKING_MARKERS.map(this.renderParkingMarker)}
 
           {this.renderParkingInfoPopup()}
+          {this.props.children}
+          <Link
+            to="/config"
+          >
+            <button>config</button>
+          </Link>
         </MapGL>
         <ControlPanelCities
           onViewportChange={this.goToViewport}
@@ -77,11 +84,11 @@ class Map extends React.PureComponent {
       >
         <Pin
           size={20}
-          onClick={(e) => console.log(this.state.popupInfo) || this.setState({popupInfo: parking})}
+          onClick={(e) => console.log(this.state.popupInfo) || this.setState({ popupInfo: parking })}
         />
       </Marker>
     );
-  }
+  };
 
   closeParkingInfoPopup = () => {
     this.setState({ parking: null });
