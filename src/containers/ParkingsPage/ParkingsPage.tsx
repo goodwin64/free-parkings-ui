@@ -13,6 +13,8 @@ import { geoCoordinatesSelector } from '../../store/ParkingsPage/selectors';
 interface ParkingsPageProps {
   centerLatFromUrl: number,
   centerLonFromUrl: number,
+  centerLatFromMapView: number,
+  centerLonFromMapView: number,
   radius: number,
 }
 
@@ -53,11 +55,29 @@ class ParkingsPage extends React.Component<ParkingsPageProps> {
       .catch(console.error)
   }
 
-  componentDidUpdate(prevProps: Readonly<ParkingsPageProps>, prevState: Readonly<{}>, snapshot?: any): void {
-    setTimeout(() => this.requestParkings(), 5000);
+  updateCenterIfMapMoved() {
+    const {
+      centerLatFromUrl,
+      centerLonFromUrl,
+      centerLatFromMapView,
+      centerLonFromMapView,
+    } = this.props;
+    console.log('props', this.props);
+    const isMapMoved = centerLatFromMapView !== centerLatFromUrl || centerLonFromMapView !== centerLonFromUrl;
+    const isMapCenterExist = Boolean(centerLatFromMapView && centerLonFromMapView);
+
+    if (isMapCenterExist && isMapMoved) {
+      this.props['history'].push(`/?lat=${centerLatFromMapView}&lon=${centerLonFromMapView}`);
+    }
   }
 
   componentDidMount(): void {
+    this.updateCenterIfMapMoved();
+    this.requestParkings();
+  }
+
+  componentWillReceiveProps(nextProps: Readonly<ParkingsPageProps>, nextContext: any): void {
+    this.updateCenterIfMapMoved();
     this.requestParkings();
   }
 

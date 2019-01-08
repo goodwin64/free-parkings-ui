@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as MapboxGl from 'mapbox-gl';
 import ReactMapboxGl from 'react-mapbox-gl';
 
 import * as style from './Map.module.css';
-import ControlPanelCities from '../ControlPanel';
-import { City } from '../../interfaces/City';
 
 
 interface Park4uMapState {
@@ -14,7 +13,7 @@ interface Park4uMapState {
 
 interface Park4uMapProps {
   children?: any,
-  changeLocation: (city: City) => void,
+  reCenter: (lat: number, lon: number) => void,
   centerLat: number,
   centerLon: number,
 }
@@ -24,7 +23,7 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
   static stylesUrl = 'mapbox://styles/mapbox/dark-v9';
 
   static propTypes = {
-    changeLocation: PropTypes.func.isRequired,
+    reCenter: PropTypes.func.isRequired,
   };
 
   static defaultProps = {};
@@ -51,8 +50,9 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
     }
   }
 
-  changeLocation = (city: City) => {
-    this.props.changeLocation(city);
+  reCenter = (map: MapboxGl.Map) => {
+    const { lat, lng: lon } = map.getCenter();
+    this.props.reCenter(lat, lon);
   };
 
   render() {
@@ -63,12 +63,10 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
           containerStyle={Park4uMap.mapStyle}
           center={this.state.center}
           zoom={this.state.zoom}
+          onMoveEnd={this.reCenter}
         >
           {this.props.children}
         </MapboxMap>
-        <ControlPanelCities
-          onCityChange={this.changeLocation}
-        />
       </div>
     );
   }

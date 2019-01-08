@@ -1,4 +1,3 @@
-// @ts-check
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router';
@@ -14,13 +13,8 @@ import configureStore from './store/configureStore';
 const history = createBrowserHistory();
 const store = configureStore(history);
 
-const AppConnected = () => (
-  <Provider store={store}>
-    <Router history={history}>
-      <App />
-    </Router>
-  </Provider>
-);
+// @ts-ignore
+const AppConnected = () => (<Provider store={store}><Router history={history}><App /></Router></Provider>);
 
 ReactDOM.render(<AppConnected/>, document.getElementById('root'));
 

@@ -1,8 +1,9 @@
 import React from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, withRouter } from 'react-router';
 
-import { City } from '../../interfaces/City';
+// import { City } from '../../interfaces/City';
 import Park4uMap from '../../components/Map/Map';
 import Header from '../../components/Header/Header';
 import ParkingsPage from '../ParkingsPage/ParkingsPage';
@@ -11,7 +12,7 @@ import { configDomainSelector } from '../../store/BaseConfig/selectors';
 import { BaseConfigState } from '../../store/BaseConfig/BaseConfigReducer';
 
 import './App.global.css';
-import * as styles from './App.module.css'
+import * as styles from './App.module.css';
 
 
 interface AppProps {
@@ -23,7 +24,7 @@ interface AppState {
   centerLon: number,
 }
 
-class App extends React.PureComponent<AppProps, AppState> {
+export class App extends React.PureComponent<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
@@ -32,11 +33,12 @@ class App extends React.PureComponent<AppProps, AppState> {
     };
   }
 
-  changeLocation = (city: City) => {
+  changeLocationCenter = (lat: number, lon: number) => {
+    this.props['history'].push(`/?lat=${lat}&lon=${lon}`);
     this.setState({
-      centerLat: city.latitude,
-      centerLon: city.longitude,
-    })
+      centerLat: lat,
+      centerLon: lon,
+    });
   };
 
   render() {
@@ -44,7 +46,7 @@ class App extends React.PureComponent<AppProps, AppState> {
       <main className={styles['App-container']}>
         { false && <Header/> }
         <Park4uMap
-          changeLocation={this.changeLocation}
+          reCenter={this.changeLocationCenter}
           centerLat={this.state.centerLat}
           centerLon={this.state.centerLon}
         >
@@ -69,7 +71,10 @@ class App extends React.PureComponent<AppProps, AppState> {
 function mapStateToProps(state: RootReducer) {
   return {
     config: configDomainSelector(state),
-  }
+  };
 }
 
-export default connect(mapStateToProps)(App);
+export default compose(
+  connect(mapStateToProps),
+  withRouter,
+)(App);
