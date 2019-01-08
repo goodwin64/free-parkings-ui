@@ -1,70 +1,88 @@
 import React from 'react';
-import { Feature, Layer } from 'react-mapbox-gl';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+
+import { RootReducer } from '../../store/rootReducer';
+import { ResponseParkings } from '../../interfaces/ResponseParkings';
+import { initialState } from '../../store/BaseConfig/BaseConfigReducer';
+import { ParkingsLayer } from '../../components/LayerParkings/LayerParkings';
+import { geoCoordinatesSelector } from '../../store/ParkingsPage/selectors';
 
 
-class AllParkingsLayer extends React.PureComponent {
-  static layerId = 'all-parkings-layer';
-
-  static mockPolyline1 = [
-    {
-      'lat': -0.018423,
-      'lng': 51.473246,
-    },
-    {
-      'lat': -0.218819,
-      'lng': 51.47334,
-    },
-    {
-      'lat': -0.819222,
-      'lng': 51.47347,
-    },
-    {
-      'lat': 0.21195,
-      'lng': 51.474258,
-    },
-  ].map(point => [point.lat, point.lng]);
-  static mockPolyline2 = [
-    [2.35, 48.85],
-    [2.25, 48.75],
-    [2.45, 48.65],
-    [2.85, 48.55],
-  ];
-
-  static lineLayout = {
-    'line-cap': 'round',
-    'line-join': 'round',
-  };
-
-  static linePaint = {
-    'line-color': '#4790E5',
-    'line-width': 12,
-  };
-
-  render() {
-    return (
-      <Layer
-        type="line"
-        layout={AllParkingsLayer.lineLayout}
-        paint={AllParkingsLayer.linePaint}
-        id={AllParkingsLayer.layerId}
-      >
-        <Feature coordinates={AllParkingsLayer.mockPolyline1}/>
-        <Feature coordinates={AllParkingsLayer.mockPolyline2}/>
-      </Layer>
-    );
-  }
+interface ParkingsPageProps {
+  centerLatFromUrl: number,
+  centerLonFromUrl: number,
+  radius: number,
 }
 
-class ParkingsPage extends React.Component {
-  static defaultProps = {};
+
+class ParkingsPage extends React.Component<ParkingsPageProps> {
+  static defaultProps = {
+    centerLatFromUrl: initialState.startPointLat,
+    centerLonFromUrl: initialState.startPointLon,
+  };
+
+  state = {
+    parkings: [],
+  };
+
+  requestParkings() {
+    fetch('http://34.247.51.123/area/update', {
+      method: 'POST',
+      body: JSON.stringify({
+        lat: this.props.centerLatFromUrl,
+        lon: this.props.centerLonFromUrl,
+        radius: this.props.radius,
+      }),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    })
+      .then((response) => response.json())
+      .then((data: ResponseParkings) => {
+        const parkings = data.allParkings.map(parking => ({
+          ...parking,
+          parkingGeometry: parking.parkingGeometry.map(point => point.reverse()),
+        }));
+        this.setState({
+          parkings,
+        })
+      })
+      .catch(console.error)
+  }
+
+  componentDidUpdate(prevProps: Readonly<ParkingsPageProps>, prevState: Readonly<{}>, snapshot?: any): void {
+    setTimeout(() => this.requestParkings(), 5000);
+  }
+
+  componentDidMount(): void {
+    this.requestParkings();
+  }
 
   render() {
     return (
       <React.Fragment>
-        <AllParkingsLayer/>
+        <ParkingsLayer
+          parkings={this.state.parkings}
+        />
       </React.Fragment>
     );
   }
 }
 
-export default ParkingsPage;
+function mapStateToProps(state: RootReducer) {
+  return {
+    radius: state.config.parkingSearchRadius,
+    centerLatFromUrl: geoCoordinatesSelector(state).lat,
+    centerLonFromUrl: geoCoordinatesSelector(state).lon,
+  };
+}
+
+const withConnect = connect(mapStateToProps);
+
+export default compose(
+  withRouter,
+  withConnect,
+)(ParkingsPage);

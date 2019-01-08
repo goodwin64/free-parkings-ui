@@ -4,10 +4,14 @@ import { BaseConfigAction } from './BaseConfigActions';
 
 export interface BaseConfigState {
   readonly parkingSearchRadius: number,
+  readonly startPointLat: number,
+  readonly startPointLon: number,
 }
 
-const initialState: BaseConfigState = {
+export const initialState: BaseConfigState = {
   parkingSearchRadius: 5000,
+  startPointLat: 48.855796,
+  startPointLon: 2.356566,
 };
 
 

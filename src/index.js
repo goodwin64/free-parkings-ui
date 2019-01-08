@@ -12,7 +12,7 @@ import configureStore from './store/configureStore';
 
 
 const history = createBrowserHistory();
-const store = configureStore();
+const store = configureStore(history);
 
 const AppConnected = () => (
   <Provider store={store}>
