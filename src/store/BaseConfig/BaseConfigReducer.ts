@@ -7,7 +7,7 @@ export interface BaseConfigState {
 }
 
 const initialState: BaseConfigState = {
-  parkingSearchRadius: 100,
+  parkingSearchRadius: 5000,
 };
 
 
