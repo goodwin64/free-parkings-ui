@@ -4,88 +4,64 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import { RootReducer } from '../../store/rootReducer';
-import { ResponseParkings } from '../../interfaces/ResponseParkings';
-import { initialState } from '../../store/BaseConfig/BaseConfigReducer';
+import { Parking } from '../../interfaces/Parking';
 import { ParkingsLayer } from '../../components/LayerParkings/LayerParkings';
-import { geoCoordinatesSelector } from '../../store/ParkingsPage/selectors';
+import {
+  allParkingsSelector,
+  centerCoordinatesSelector,
+  isParkingFetchInProgressSelector,
+} from '../../store/ParkingsPage/selectors';
+import {
+  fetchParkings,
+  fetchParkingsActionCreator,
+} from '../../store/ParkingsPage/ParkingsPageActions';
+import Loader from '../../components/Loader/Loader';
+import { searchRadiusSelector } from '../../store/BaseConfig/selectors';
+import './styles.css';
 
 
 interface ParkingsPageProps {
-  centerLatFromUrl: number,
-  centerLonFromUrl: number,
-  centerLatFromMapView: number,
-  centerLonFromMapView: number,
+  centerLat: number,
+  centerLon: number,
   radius: number,
+  allParkingsList: Parking[],
+  fetchParkings: fetchParkingsActionCreator,
+  isParkingFetchInProgress: boolean,
 }
 
-
 class ParkingsPage extends React.Component<ParkingsPageProps> {
-  static defaultProps = {
-    centerLatFromUrl: initialState.startPointLat,
-    centerLonFromUrl: initialState.startPointLon,
-  };
-
-  state = {
-    parkings: [],
-  };
-
-  requestParkings() {
-    fetch('http://34.247.51.123/area/update', {
-      method: 'POST',
-      body: JSON.stringify({
-        lat: this.props.centerLatFromUrl,
-        lon: this.props.centerLonFromUrl,
-        radius: this.props.radius,
-      }),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    })
-      .then((response) => response.json())
-      .then((data: ResponseParkings) => {
-        const parkings = data.allParkings.map(parking => ({
-          ...parking,
-          parkingGeometry: parking.parkingGeometry.map(point => point.reverse()),
-        }));
-        this.setState({
-          parkings,
-        })
-      })
-      .catch(console.error)
-  }
+  static defaultProps = {};
 
   updateCenterIfMapMoved() {
     const {
-      centerLatFromUrl,
-      centerLonFromUrl,
-      centerLatFromMapView,
-      centerLonFromMapView,
+      centerLat,
+      centerLon,
     } = this.props;
-    console.log('props', this.props);
-    const isMapMoved = centerLatFromMapView !== centerLatFromUrl || centerLonFromMapView !== centerLonFromUrl;
-    const isMapCenterExist = Boolean(centerLatFromMapView && centerLonFromMapView);
 
-    if (isMapCenterExist && isMapMoved) {
-      this.props['history'].push(`/?lat=${centerLatFromMapView}&lon=${centerLonFromMapView}`);
-    }
+    this.props['history'].push(`/parkings?lat=${centerLat}&lon=${centerLon}`);
   }
 
   componentDidMount(): void {
     this.updateCenterIfMapMoved();
-    this.requestParkings();
+    this.props.fetchParkings();
   }
 
   componentWillReceiveProps(nextProps: Readonly<ParkingsPageProps>, nextContext: any): void {
     this.updateCenterIfMapMoved();
-    this.requestParkings();
   }
 
   render() {
     return (
       <React.Fragment>
+        <div className="CenterMarker">
+          {
+            this.props.isParkingFetchInProgress
+              ? <Loader/>
+              : <div>[{this.props.centerLat.toFixed(2)}:{this.props.centerLon.toFixed(2)}, {this.props.radius}m]</div>
+          }
+        </div>
         <ParkingsLayer
-          parkings={this.state.parkings}
+          parkings={this.props.allParkingsList}
         />
       </React.Fragment>
     );
@@ -94,13 +70,17 @@ class ParkingsPage extends React.Component<ParkingsPageProps> {
 
 function mapStateToProps(state: RootReducer) {
   return {
-    radius: state.config.parkingSearchRadius,
-    centerLatFromUrl: geoCoordinatesSelector(state).lat,
-    centerLonFromUrl: geoCoordinatesSelector(state).lon,
+    allParkingsList: allParkingsSelector(state),
+    isParkingFetchInProgress: isParkingFetchInProgressSelector(state),
+    centerLat: centerCoordinatesSelector(state).lat,
+    centerLon: centerCoordinatesSelector(state).lon,
+    radius: searchRadiusSelector(state),
   };
 }
 
-const withConnect = connect(mapStateToProps);
+const withConnect = connect(mapStateToProps, {
+  fetchParkings,
+});
 
 export default compose(
   withRouter,

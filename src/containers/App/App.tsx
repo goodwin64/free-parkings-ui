@@ -3,28 +3,30 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router';
 
-// import { City } from '../../interfaces/City';
 import Park4uMap from '../../components/Map/Map';
 import Header from '../../components/Header/Header';
 import ParkingsPage from '../ParkingsPage/ParkingsPage';
 import { RootReducer } from '../../store/rootReducer';
 import { configDomainSelector } from '../../store/BaseConfig/selectors';
 import { BaseConfigState } from '../../store/BaseConfig/BaseConfigReducer';
+import { geoCoordinatesSelector } from '../../store/ParkingsPage/selectors';
+import {
+  setParkingsPageCenter,
+  setParkingsPageCenterActionCreator,
+} from '../../store/ParkingsPage/ParkingsPageActions';
 
 import './App.global.css';
 import * as styles from './App.module.css';
 
 
 interface AppProps {
-  config: BaseConfigState
+  config: BaseConfigState,
+  centerLatFromUrl: number,
+  centerLonFromUrl: number,
+  reCenter: setParkingsPageCenterActionCreator,
 }
 
-interface AppState {
-  centerLat: number,
-  centerLon: number,
-}
-
-export class App extends React.PureComponent<AppProps, AppState> {
+export class App extends React.PureComponent<AppProps> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
@@ -33,27 +35,24 @@ export class App extends React.PureComponent<AppProps, AppState> {
     };
   }
 
-  changeLocationCenter = (lat: number, lon: number) => {
-    this.props['history'].push(`/?lat=${lat}&lon=${lon}`);
-    this.setState({
-      centerLat: lat,
-      centerLon: lon,
-    });
-  };
-
   render() {
     return (
       <main className={styles['App-container']}>
-        { false && <Header/> }
+        {false && <Header/>}
         <Park4uMap
-          reCenter={this.changeLocationCenter}
-          centerLat={this.state.centerLat}
-          centerLon={this.state.centerLon}
+          reCenter={this.props.reCenter}
+          centerLat={this.props.centerLatFromUrl}
+          centerLon={this.props.centerLonFromUrl}
         >
           <Switch>
             <Route
               path="/config"
               component={undefined}
+            />
+            <Route
+              path="/parkings"
+              // @ts-ignore
+              component={ParkingsPage}
             />
             <Route
               path="/"
@@ -71,10 +70,14 @@ export class App extends React.PureComponent<AppProps, AppState> {
 function mapStateToProps(state: RootReducer) {
   return {
     config: configDomainSelector(state),
+    centerLatFromUrl: geoCoordinatesSelector(state).lat,
+    centerLonFromUrl: geoCoordinatesSelector(state).lon,
   };
 }
 
 export default compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, {
+    reCenter: setParkingsPageCenter,
+  }),
   withRouter,
 )(App);

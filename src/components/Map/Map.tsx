@@ -4,6 +4,7 @@ import * as MapboxGl from 'mapbox-gl';
 import ReactMapboxGl from 'react-mapbox-gl';
 
 import * as style from './Map.module.css';
+import { setParkingsPageCenterActionCreator } from '../../store/ParkingsPage/ParkingsPageActions';
 
 
 interface Park4uMapState {
@@ -13,7 +14,7 @@ interface Park4uMapState {
 
 interface Park4uMapProps {
   children?: any,
-  reCenter: (lat: number, lon: number) => void,
+  reCenter: setParkingsPageCenterActionCreator,
   centerLat: number,
   centerLon: number,
 }
