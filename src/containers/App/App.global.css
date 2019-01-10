@@ -26,3 +26,10 @@ a.mapbox-improve-map {
 body {
     font-family: DINNextCYR, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
+button {
+    border: 0;
+    padding: 0;
+    background-color: initial;
+    cursor: pointer;
+}

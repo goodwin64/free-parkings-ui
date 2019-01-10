@@ -1,16 +1,17 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Route, Switch, withRouter } from 'react-router';
+import { Redirect, Route, Switch, withRouter } from 'react-router';
 
 import Park4uMap from '../../components/Map/Map';
 import Header from '../../components/Header/Header';
 import ParkingsPage from '../ParkingsPage/ParkingsPage';
 import { RootReducer } from '../../store/rootReducer';
 import { configDomainSelector } from '../BaseConfigPage/selectors';
-import { geoCoordinatesSelector } from '../ParkingsPage/selectors';
+import { geoCoordinatesSelector } from '../ParkingsPage/ParkingsPageSelectors';
 import { BaseConfigState } from '../BaseConfigPage/BaseConfigReducer';
 import { setParkingsPageCenter, setParkingsPageCenterActionCreator } from '../ParkingsPage/ParkingsPageActions';
+import BaseConfigPage from '../BaseConfigPage/BaseConfigPage';
 
 import './App.global.css';
 import * as styles from './App.module.css';
@@ -23,7 +24,7 @@ interface AppProps {
   reCenter: setParkingsPageCenterActionCreator,
 }
 
-export class App extends React.PureComponent<AppProps> {
+export class App extends React.Component<AppProps> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
@@ -43,18 +44,20 @@ export class App extends React.PureComponent<AppProps> {
         >
           <Switch>
             <Route
+              exact
               path="/config"
-              component={undefined}
+              // @ts-ignore
+              component={BaseConfigPage}
             />
             <Route
               path="/parkings"
               // @ts-ignore
               component={ParkingsPage}
             />
-            <Route
+            <Redirect
+              exact
               path="/"
-              // @ts-ignore
-              component={ParkingsPage}
+              to="/parkings"
             />
           </Switch>
         </Park4uMap>
@@ -72,9 +75,11 @@ function mapStateToProps(state: RootReducer) {
   };
 }
 
+const withConnect = connect(mapStateToProps, {
+  reCenter: setParkingsPageCenter,
+});
+
 export default compose(
-  connect(mapStateToProps, {
-    reCenter: setParkingsPageCenter,
-  }),
   withRouter,
+  withConnect,
 )(App);

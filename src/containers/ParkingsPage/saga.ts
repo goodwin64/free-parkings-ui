@@ -1,11 +1,12 @@
 import { push } from 'connected-react-router';
 import { call, put, select } from 'redux-saga/effects';
 
-import { centerCoordinatesSelector, parkopediaResponseSelector } from './selectors';
+import { centerCoordinatesSelector, geoCoordinatesSelector, parkopediaResponseSelector } from './ParkingsPageSelectors';
 import { prepareResponseParkings } from './adapters';
 import { searchRadiusSelector } from '../BaseConfigPage/selectors';
 import { ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './ParkingsPageActions';
+import { setParkingsPageCenter } from './ParkingsPageActions';
 
 
 async function fetchParkings(lat: number, lon: number, radius: number) {
@@ -37,11 +38,17 @@ export function* fetchParkingsSaga() {
   }
 }
 
-export function* updateUrlLatLon(action: ParkingsPageActions.setParkingsPageCenterAction) {
+export function* updateUrlLatLonSaga(action: ParkingsPageActions.setParkingsPageCenterAction) {
   try {
-    yield put(push(`/parkings?lat=${action.payload.lat}&lon=${action.payload.lon}`));
+    const url = `/parkings?lat=${action.payload.lat}&lon=${action.payload.lon}`;
+    yield put(push(url));
     yield call(fetchParkingsSaga);
   } catch (err) {
     console.error(err);
   }
+}
+
+export function* synchronizeLatLonSaga() {
+  const { lat: latFromUrl, lon: lonFromUrl } = yield select(geoCoordinatesSelector);
+  yield put(setParkingsPageCenter(latFromUrl, lonFromUrl));
 }

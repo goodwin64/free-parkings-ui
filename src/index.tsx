@@ -2,15 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { createBrowserHistory } from 'history';
 
 import './index.css';
 import App from './containers/App/App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore';
+import { history } from './store/history';
 
 
-const history = createBrowserHistory();
 const store = configureStore(history);
 
 // @ts-ignore

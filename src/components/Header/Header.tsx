@@ -10,7 +10,9 @@ export default class Header extends React.PureComponent {
       <header>
         <Switch>
           <Route
+            exact
             path="/config"
+            // @ts-ignore
             component={BaseConfigPage}
           />
           <Route
