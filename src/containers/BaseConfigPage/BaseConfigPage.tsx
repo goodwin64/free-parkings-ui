@@ -13,7 +13,7 @@ interface BaseConfigPageProps {
 
 class BaseConfigPage extends React.PureComponent<BaseConfigPageProps> {
   handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.setBaseConfigRadius(evt.target.valueAsNumber);
+    this.props.setBaseConfigRadius(evt.target.valueAsNumber || 0);
   };
 
   render() {
@@ -24,6 +24,7 @@ class BaseConfigPage extends React.PureComponent<BaseConfigPageProps> {
           <input
             id="configSearchRadius"
             type="number"
+            min={0}
             onChange={this.handleChange}
             defaultValue={'' + this.props.radius}
           />
