@@ -1,6 +1,6 @@
 import { CHANGE_CENTER_LOCATION, PARKINGS_FETCH_START, PARKINGS_FETCH_SUCCESS } from './ParkingsPageConstants';
 import { ParkingsPageActions } from './ParkingsPageActions';
-import { BaseConfigInitialState } from '../BaseConfig/BaseConfigReducer';
+import { BaseConfigInitialState } from '../BaseConfigPage/BaseConfigReducer';
 import { Parking } from '../../interfaces/Parking';
 import { FreeSlot } from '../../interfaces/FreeSlot';
 
@@ -8,8 +8,6 @@ import { FreeSlot } from '../../interfaces/FreeSlot';
 export interface ParkingsPageState {
   readonly centerLat: number,
   readonly centerLon: number,
-  readonly defaultCenterLat: number,
-  readonly defaultCenterLon: number,
   readonly isFetchInProgress: boolean,
   readonly allParkings: Parking[],
   readonly freeParkings: FreeSlot[],
@@ -18,8 +16,6 @@ export interface ParkingsPageState {
 export const ParkingsPageInitialState: ParkingsPageState = {
   centerLat: BaseConfigInitialState.startPointLat,
   centerLon: BaseConfigInitialState.startPointLon,
-  defaultCenterLat: BaseConfigInitialState.startPointLat,
-  defaultCenterLon: BaseConfigInitialState.startPointLon,
   isFetchInProgress: false,
   allParkings: [],
   freeParkings: [],

@@ -1,12 +1,10 @@
 import { createSelector } from 'reselect';
 import { Search } from 'history';
 
-import { RootReducer } from '../rootReducer';
+import { RootReducer } from '../../store/rootReducer';
+import { defaultLatLonSelector } from '../BaseConfigPage/selectors';
 
-export const routeLocationSelector = createSelector(
-  [(state: RootReducer) => state.router],
-  (routeState) => routeState.location,
-);
+export const routeLocationSelector = (state: RootReducer) => state.router.location;
 
 export const routeParamsSelector = createSelector(
   [routeLocationSelector],
@@ -27,24 +25,21 @@ function paramsFromLocation({ search }: { search: Search }) {
         return {
           ...params,
           ...{ [key]: value },
-        }
-      }, {})
+        };
+      }, {});
   }
 
   return params;
 }
 
-export const defaultLatLonSelector = (state: RootReducer) => ({
-  lat: state.parkingsPage.defaultCenterLat,
-  lon: state.parkingsPage.defaultCenterLon,
-});
-
 export const geoCoordinatesSelector = createSelector(
   [routeParamsSelector, defaultLatLonSelector],
-  ({ lat, lon }: { lat?: number, lon?: number }, defaultLatLon) => ({
-    lat: Number(lat) || defaultLatLon.lat,
-    lon: Number(lon) || defaultLatLon.lon,
-  }),
+  ({ lat: latFromUrl, lon: lonFromUrl }: { lat?: number, lon?: number }, defaultLatLon) => {
+    return ({
+      lat: Number(latFromUrl) || defaultLatLon.lat,
+      lon: Number(lonFromUrl) || defaultLatLon.lon,
+    });
+  },
 );
 
 const parkingsPageDomainSelector = (state: RootReducer) => state.parkingsPage;
@@ -97,7 +92,7 @@ export const parkopediaResponseSelector = createSelector(
       'freeSlotsGeometry': [[2.3565156776867, 48.8558326235088]],
       'id': -1872756967,
     }, { 'freeSlotsGeometry': [[2.3565156776865, 48.85583262353]], 'id': -1872733884 }],
-  })
+  }),
 );
 
 export const allParkingsSelector = createSelector(

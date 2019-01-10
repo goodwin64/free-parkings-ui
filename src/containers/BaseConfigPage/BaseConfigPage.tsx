@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { resetBaseConfigRadius, setBaseConfigRadius } from '../../store/BaseConfig/BaseConfigActions';
+import { resetBaseConfigRadius, setBaseConfigRadius } from './BaseConfigActions';
 import { RootReducer } from '../../store/rootReducer';
 
 

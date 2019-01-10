@@ -4,7 +4,7 @@ import * as MapboxGl from 'mapbox-gl';
 import ReactMapboxGl from 'react-mapbox-gl';
 
 import * as style from './Map.module.css';
-import { setParkingsPageCenterActionCreator } from '../../store/ParkingsPage/ParkingsPageActions';
+import { setParkingsPageCenterActionCreator } from '../../containers/ParkingsPage/ParkingsPageActions';
 
 
 interface Park4uMapState {

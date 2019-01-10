@@ -7,13 +7,10 @@ import Park4uMap from '../../components/Map/Map';
 import Header from '../../components/Header/Header';
 import ParkingsPage from '../ParkingsPage/ParkingsPage';
 import { RootReducer } from '../../store/rootReducer';
-import { configDomainSelector } from '../../store/BaseConfig/selectors';
-import { BaseConfigState } from '../../store/BaseConfig/BaseConfigReducer';
-import { geoCoordinatesSelector } from '../../store/ParkingsPage/selectors';
-import {
-  setParkingsPageCenter,
-  setParkingsPageCenterActionCreator,
-} from '../../store/ParkingsPage/ParkingsPageActions';
+import { configDomainSelector } from '../BaseConfigPage/selectors';
+import { geoCoordinatesSelector } from '../ParkingsPage/selectors';
+import { BaseConfigState } from '../BaseConfigPage/BaseConfigReducer';
+import { setParkingsPageCenter, setParkingsPageCenterActionCreator } from '../ParkingsPage/ParkingsPageActions';
 
 import './App.global.css';
 import * as styles from './App.module.css';

@@ -10,13 +10,13 @@ import {
   allParkingsSelector,
   centerCoordinatesSelector,
   isParkingFetchInProgressSelector,
-} from '../../store/ParkingsPage/selectors';
+} from './selectors';
 import {
   fetchParkings,
   fetchParkingsActionCreator,
-} from '../../store/ParkingsPage/ParkingsPageActions';
+} from './ParkingsPageActions';
 import Loader from '../../components/Loader/Loader';
-import { searchRadiusSelector } from '../../store/BaseConfig/selectors';
+import { searchRadiusSelector } from '../BaseConfigPage/selectors';
 import './styles.css';
 
 
@@ -32,22 +32,8 @@ interface ParkingsPageProps {
 class ParkingsPage extends React.Component<ParkingsPageProps> {
   static defaultProps = {};
 
-  updateCenterIfMapMoved() {
-    const {
-      centerLat,
-      centerLon,
-    } = this.props;
-
-    this.props['history'].push(`/parkings?lat=${centerLat}&lon=${centerLon}`);
-  }
-
   componentDidMount(): void {
-    this.updateCenterIfMapMoved();
     this.props.fetchParkings();
-  }
-
-  componentWillReceiveProps(nextProps: Readonly<ParkingsPageProps>, nextContext: any): void {
-    this.updateCenterIfMapMoved();
   }
 
   render() {
