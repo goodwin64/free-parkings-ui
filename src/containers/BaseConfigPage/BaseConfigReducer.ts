@@ -4,15 +4,19 @@ import { BaseConfigAction } from './BaseConfigActions';
 
 export interface BaseConfigState {
   readonly parkingSearchRadius: number,
+  readonly startPointLat: number,
+  readonly startPointLon: number,
 }
 
-const initialState: BaseConfigState = {
-  parkingSearchRadius: 100,
+export const BaseConfigInitialState: BaseConfigState = {
+  parkingSearchRadius: 2000,
+  startPointLat: 48.855796,
+  startPointLon: 2.356566,
 };
 
 
 export default function baseConfigReducer(
-  state: BaseConfigState = initialState,
+  state: BaseConfigState = BaseConfigInitialState,
   action: BaseConfigAction,
 ): BaseConfigState {
   switch (action.type) {
@@ -25,7 +29,7 @@ export default function baseConfigReducer(
     case BASE_CONFIG_RADIUS_RESET: {
       return {
         ...state,
-        parkingSearchRadius: initialState.parkingSearchRadius,
+        parkingSearchRadius: BaseConfigInitialState.parkingSearchRadius,
       };
     }
     default: {
