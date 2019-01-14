@@ -3,18 +3,23 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
+import { ScaleControl } from 'react-mapbox-gl';
 
-import { RootReducer } from '../../store/rootReducer';
 import { Parking } from '../../interfaces/Parking';
-import { ParkingsLayer } from '../../components/LayerParkings/LayerParkings';
-import * as ParkingsPageSelectors from './ParkingsPageSelectors';
-import * as ParkingsPageActions from './ParkingsPageActions';
 import Loader from '../../components/Loader/Loader';
+import { RootReducer } from '../../store/rootReducer';
+import { RouterProps } from '../../interfaces/RouterProps';
+import * as ParkingsPageActions from './ParkingsPageActions';
+import * as ParkingsPageSelectors from './ParkingsPageSelectors';
 import { searchRadiusSelector } from '../BaseConfigPage/selectors';
+import withMap, { MapContextProps } from '../../components/Map/context';
+import { ParkingsLayer } from '../../components/LayerParkings/LayerParkings';
+
 import './styles.css';
+import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
 
 
-interface ParkingsPageProps {
+interface ParkingsPageOwnProps {
   centerLat: number,
   centerLon: number,
   radius: number,
@@ -22,6 +27,9 @@ interface ParkingsPageProps {
   fetchParkings: ParkingsPageActions.fetchParkingsActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   isParkingFetchInProgress: boolean,
+}
+
+interface ParkingsPageProps extends ParkingsPageOwnProps, RouterProps, MapContextProps {
 }
 
 class ParkingsPage extends React.Component<ParkingsPageProps> {
@@ -39,7 +47,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps> {
           {
             this.props.isParkingFetchInProgress
               ? <Loader/>
-              : <div>[{this.props.centerLat.toFixed(2)}:{this.props.centerLon.toFixed(2)}, {this.props.radius}m]</div>
+              : <CursorMapCenter {...this.props}/>
           }
         </div>
         <Link
@@ -51,6 +59,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps> {
         <ParkingsLayer
           parkings={this.props.allParkingsList}
         />
+        <ScaleControl/>
       </React.Fragment>
     );
   }
@@ -74,4 +83,5 @@ const withConnect = connect(mapStateToProps, {
 export default compose(
   withRouter,
   withConnect,
+  withMap,
 )(ParkingsPage);
