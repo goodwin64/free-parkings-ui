@@ -1,6 +1,8 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { distance } from '@turf/turf';
+import * as MapboxGl from 'mapbox-gl';
 import { Redirect, Route, Switch, withRouter } from 'react-router';
 
 import Park4uMap from '../../components/Map/Map';
@@ -14,7 +16,8 @@ import { setParkingsPageCenter, setParkingsPageCenterActionCreator } from '../Pa
 import BaseConfigPage from '../BaseConfigPage/BaseConfigPage';
 
 import './App.global.css';
-import * as styles from './App.module.css';
+import * as css from './App.module.css';
+import * as BaseConfigActions from '../BaseConfigPage/BaseConfigActions';
 
 
 interface AppProps {
@@ -22,6 +25,7 @@ interface AppProps {
   centerLatFromUrl: number,
   centerLonFromUrl: number,
   reCenter: setParkingsPageCenterActionCreator,
+  setSearchRadius: BaseConfigActions.setBaseConfigRadiusActionCreator,
 }
 
 export class App extends React.Component<AppProps> {
@@ -33,14 +37,39 @@ export class App extends React.Component<AppProps> {
     };
   }
 
+  recalculateSearchRadius(map: MapboxGl.Map) {
+    const bounds = map.getBounds();
+    const [west, east, center] = [bounds.getWest(), bounds.getEast(), bounds.getCenter()];
+
+    const totalWidth = distance(
+      [west, center.lat],
+      [east, center.lat],
+      { units: 'meters' }
+    );
+    const halfScreen = totalWidth / 2;
+
+    let searchRadius = Math.floor(halfScreen);
+    if (halfScreen > 7500) {
+      searchRadius = 7500;
+    } else if (halfScreen < 100) {
+      searchRadius = 100;
+    }
+    this.props.setSearchRadius(searchRadius);
+  }
+
+  onZoomEnd = (map: MapboxGl.Map) => {
+    this.recalculateSearchRadius(map);
+  };
+
   render() {
     return (
-      <main className={styles['App-container']}>
+      <main className={css['App-container']}>
         {false && <Header/>}
         <Park4uMap
           reCenter={this.props.reCenter}
           centerLat={this.props.centerLatFromUrl}
           centerLon={this.props.centerLonFromUrl}
+          onZoomEnd={this.onZoomEnd}
         >
           <Switch>
             <Route
@@ -77,6 +106,7 @@ function mapStateToProps(state: RootReducer) {
 
 const withConnect = connect(mapStateToProps, {
   reCenter: setParkingsPageCenter,
+  setSearchRadius: BaseConfigActions.setSearchRadius,
 });
 
 export default compose(

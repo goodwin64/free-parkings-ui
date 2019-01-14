@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@turf/distance": "^6.0.1",
     "connected-react-router": "^6.1.0",
     "history": "^4.7.2",
     "lodash": "^4.17.11",
@@ -16,7 +17,9 @@
     "react-scripts": "2.1.1",
     "redux": "^4.0.1",
     "redux-saga": "^0.16.2",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "sockjs-client": "^1.3.0",
+    "stompjs": "^2.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,6 +37,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@turf/turf": "^5.1.6",
     "@types/history": "^4.7.2",
     "@types/lodash": "^4.14.119",
     "@types/mapbox-gl": "^0.51.3",
@@ -42,6 +46,8 @@
     "@types/react-dom": "^16.0.11",
     "@types/react-redux": "^6.0.11",
     "@types/react-router-dom": "^4.3.1",
+    "@types/sockjs-client": "^1.1.0",
+    "@types/stompjs": "^2.3.4",
     "prop-types": "^15.6.2",
     "redux-devtools": "^3.5.0",
     "redux-devtools-extension": "^2.13.7",

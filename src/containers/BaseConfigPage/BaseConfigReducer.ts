@@ -1,4 +1,4 @@
-import { BASE_CONFIG_RADIUS_RESET, BASE_CONFIG_RADIUS_SET } from './BaseConfigConstants';
+import * as BaseConfigConstants from './BaseConfigConstants';
 import { BaseConfigAction } from './BaseConfigActions';
 
 
@@ -9,9 +9,9 @@ export interface BaseConfigState {
 }
 
 export const BaseConfigInitialState: BaseConfigState = {
-  parkingSearchRadius: 2000,
-  startPointLat: 48.855796,
-  startPointLon: 2.356566,
+  parkingSearchRadius: BaseConfigConstants.INITIAL_SEARCH_RADIUS,
+  startPointLat: BaseConfigConstants.PARIS_CENTER_LAT,
+  startPointLon: BaseConfigConstants.PARIS_CENTER_LON,
 };
 
 
@@ -20,13 +20,13 @@ export default function baseConfigReducer(
   action: BaseConfigAction,
 ): BaseConfigState {
   switch (action.type) {
-    case BASE_CONFIG_RADIUS_SET: {
+    case BaseConfigConstants.BASE_CONFIG_RADIUS_SET: {
       return {
         ...state,
         parkingSearchRadius: action.payload,
       };
     }
-    case BASE_CONFIG_RADIUS_RESET: {
+    case BaseConfigConstants.BASE_CONFIG_RADIUS_RESET: {
       return {
         ...state,
         parkingSearchRadius: BaseConfigInitialState.parkingSearchRadius,

@@ -5,13 +5,13 @@ import { ResponseParkings } from '../../interfaces/ResponseParkings';
 import { Parking } from '../../interfaces/Parking';
 import { PointGeometry } from '../../interfaces/PointGeometry';
 
-export function prepareResponseParkings(rawResponseParkings: ResponseParkings) {
+export function prepareResponseParkings(rawResponseParkings?: ResponseParkings) {
   let preparedResponse: ResponseParkings = {
     allParkings: [],
     freeSlots: [],
   };
 
-  if (!isObject(rawResponseParkings)) {
+  if (!rawResponseParkings || !isObject(rawResponseParkings)) {
     return preparedResponse;
   }
 

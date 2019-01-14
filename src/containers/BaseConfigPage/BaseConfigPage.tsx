@@ -3,20 +3,24 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
-import { resetBaseConfigRadius, setBaseConfigRadius } from './BaseConfigActions';
 import { RootReducer } from '../../store/rootReducer';
+import { RouterProps } from '../../interfaces/RouterProps';
+import withMap, { MapContextProps } from '../../components/Map/context';
+import { resetSearchRadius, setSearchRadius } from './BaseConfigActions';
 
 import * as style from './style.module.css';
 
 
-interface BaseConfigPageProps {
+interface BaseConfigPageOwnProps {
   radius: number,
-  setBaseConfigRadius: (radius: number) => void,
+  setSearchRadius: (radius: number) => void,
 }
+
+interface BaseConfigPageProps extends BaseConfigPageOwnProps, RouterProps, MapContextProps {}
 
 class BaseConfigPage extends React.Component<BaseConfigPageProps> {
   handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.setBaseConfigRadius(evt.target.valueAsNumber || 0);
+    this.props.setSearchRadius(evt.target.valueAsNumber || 0);
   };
 
   render() {
@@ -53,12 +57,15 @@ const mapStateToProps = function(state: RootReducer) {
 const withConnect = connect(
   mapStateToProps,
   {
-    setBaseConfigRadius,
-    resetBaseConfigRadius,
+    setSearchRadius,
+    resetSearchRadius,
   },
 );
 
 export default compose(
-  withRouter,
   withConnect,
+  withRouter,
+  withMap,
 )(BaseConfigPage);
+
+// export default withConnect(withRouter<BaseConfigPageProps>(BaseConfigPage));

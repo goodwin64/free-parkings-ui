@@ -7,10 +7,12 @@ import { searchRadiusSelector } from '../BaseConfigPage/selectors';
 import { ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import { setParkingsPageCenter } from './ParkingsPageActions';
+import { backendEndpoint } from '../../constants/backend';
+import { MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
 
 
 async function fetchParkings(lat: number, lon: number, radius: number) {
-  return fetch('http://34.247.51.123/area/update', {
+  return fetch(`${backendEndpoint}/area/update`, {
     method: 'POST',
     body: JSON.stringify({ lat, lon, radius }),
     headers: {
@@ -26,8 +28,13 @@ export function* fetchParkingsSaga() {
     const { lat, lon } = yield select(centerCoordinatesSelector);
     const radius = yield select(searchRadiusSelector);
 
-    const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, radius);
-    const preparedResponseParkings = prepareResponseParkings(rawResponseParkings);
+    let preparedResponseParkings;
+    if (radius > MAX_SEARCH_RADIUS_TO_FETCH) {
+      preparedResponseParkings = prepareResponseParkings();
+    } else {
+      const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, radius);
+      preparedResponseParkings = prepareResponseParkings(rawResponseParkings);
+    }
 
     yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
   } catch (e) {
