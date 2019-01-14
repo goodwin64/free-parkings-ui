@@ -50,7 +50,7 @@ class CursorMapCenter extends React.PureComponent<CursorMapCenterProps> {
     return (
       <div className={css['container']}>
         {
-          this.props.radius > MAX_SEARCH_RADIUS_TO_FETCH
+          false && this.props.radius > MAX_SEARCH_RADIUS_TO_FETCH
             ? CursorMapCenter.renderMagnifierPulsed()
             : this.renderCoordinatesMarker()
         }
