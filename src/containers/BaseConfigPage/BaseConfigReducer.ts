@@ -6,12 +6,14 @@ export interface BaseConfigState {
   readonly parkingSearchRadius: number,
   readonly startPointLat: number,
   readonly startPointLon: number,
+  readonly sessionUid: string,
 }
 
 export const BaseConfigInitialState: BaseConfigState = {
   parkingSearchRadius: BaseConfigConstants.INITIAL_SEARCH_RADIUS,
   startPointLat: BaseConfigConstants.PARIS_CENTER_LAT,
   startPointLon: BaseConfigConstants.PARIS_CENTER_LON,
+  sessionUid: String(Math.random()).slice(2),
 };
 
 
