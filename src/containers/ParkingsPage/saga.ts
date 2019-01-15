@@ -24,33 +24,31 @@ async function fetchParkings(lat: number, lon: number, radius: number, uid: stri
 }
 
 export function* fetchParkingsSaga() {
-  try {
-    const { lat, lon } = yield select(centerCoordinatesSelector);
-    const radius = yield select(searchRadiusSelector);
+  const { lat, lon } = yield select(centerCoordinatesSelector);
+  const radius = yield select(searchRadiusSelector);
     const uid = yield select(sessionUidSelector);
 
-    let preparedResponseParkings;
+  let preparedResponseParkings;
+  try {
     if (radius > MAX_SEARCH_RADIUS_TO_FETCH) {
       preparedResponseParkings = prepareResponseParkings();
     } else {
       const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, radius, uid);
       preparedResponseParkings = prepareResponseParkings(rawResponseParkings);
     }
-
-    yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
   } catch (e) {
     console.error('fetch parkings:', e);
     const mockParkings = yield select(parkopediaResponseSelector);
-    const preparedResponseParkings = prepareResponseParkings(mockParkings);
-    yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
+    preparedResponseParkings = prepareResponseParkings(mockParkings);
   }
+
+  yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
 }
 
 export function* updateUrlLatLonSaga(action: ParkingsPageActions.setParkingsPageCenterAction) {
   try {
     const url = `/parkings?lat=${action.payload.lat}&lon=${action.payload.lon}`;
     yield put(push(url));
-    yield call(fetchParkingsSaga);
   } catch (err) {
     console.error(err);
   }

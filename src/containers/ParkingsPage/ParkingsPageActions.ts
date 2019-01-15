@@ -18,9 +18,9 @@ export type setParkingsPageCenterAction = ActionType<typeof setParkingsPageCente
 export type setParkingsPageCenterActionCreator = (lat: number, lon: number) => setParkingsPageCenterAction;
 
 
-export const fetchParkings = () => action(PARKINGS_FETCH_START);
-export type fetchParkingsAction = ActionType<typeof fetchParkings>;
-export type fetchParkingsActionCreator = () => fetchParkingsAction;
+export const fetchParkingsStart = () => action(PARKINGS_FETCH_START);
+export type fetchParkingsStartAction = ActionType<typeof fetchParkingsStart>;
+export type fetchParkingsStartActionCreator = () => fetchParkingsStartAction;
 
 
 export const synchronizeLatLon = () => action(SYNCHRONIZE_LAT_LON);
@@ -36,4 +36,4 @@ export type fetchParkingsSuccessAction = ActionType<typeof fetchParkingsSuccess>
 // export type fetchParkingsSuccessActionCreator = () => fetchParkingsSuccessAction;
 
 
-export type ParkingsPageActions = setParkingsPageCenterAction | fetchParkingsAction | fetchParkingsSuccessAction;
+export type ParkingsPageActions = setParkingsPageCenterAction | fetchParkingsStartAction | fetchParkingsSuccessAction;
