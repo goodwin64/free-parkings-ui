@@ -3,7 +3,7 @@ import { call, put, select } from 'redux-saga/effects';
 
 import { centerCoordinatesSelector, geoCoordinatesSelector, parkopediaResponseSelector } from './ParkingsPageSelectors';
 import { prepareResponseParkings } from './adapters';
-import { searchRadiusSelector } from '../BaseConfigPage/selectors';
+import { searchRadiusSelector, sessionUidSelector } from '../BaseConfigPage/selectors';
 import { ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import { setParkingsPageCenter } from './ParkingsPageActions';
@@ -11,10 +11,10 @@ import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
 
 
-async function fetchParkings(lat: number, lon: number, radius: number) {
+async function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
   return fetch(`${backendEndpoint}/area/update`, {
     method: 'POST',
-    body: JSON.stringify({ lat, lon, radius }),
+    body: JSON.stringify({ lat, lon, radius, uid }),
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -27,12 +27,13 @@ export function* fetchParkingsSaga() {
   try {
     const { lat, lon } = yield select(centerCoordinatesSelector);
     const radius = yield select(searchRadiusSelector);
+    const uid = yield select(sessionUidSelector);
 
     let preparedResponseParkings;
     if (radius > MAX_SEARCH_RADIUS_TO_FETCH) {
       preparedResponseParkings = prepareResponseParkings();
     } else {
-      const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, radius);
+      const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, radius, uid);
       preparedResponseParkings = prepareResponseParkings(rawResponseParkings);
     }
 

@@ -16,3 +16,8 @@ export const defaultLatLonSelector = createSelector(
     lon: configDomain.startPointLon,
   })
 );
+
+export const sessionUidSelector = createSelector(
+  [configDomainSelector],
+  (configDomain) => configDomain.sessionUid,
+);
