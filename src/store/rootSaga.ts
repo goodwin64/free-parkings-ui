@@ -1,6 +1,10 @@
-import { takeEvery, takeLatest } from 'redux-saga/effects';
+import { takeEvery, takeLatest, throttle } from 'redux-saga/effects';
 
-import { fetchParkingsSaga, synchronizeLatLonSaga, updateUrlLatLonSaga } from '../containers/ParkingsPage/saga';
+import {
+  fetchParkingsSaga,
+  synchronizeLatLonSaga,
+  updateUrlLatLonSaga,
+} from '../containers/ParkingsPage/saga';
 import {
   CHANGE_CENTER_LOCATION,
   PARKINGS_FETCH_START,
@@ -9,7 +13,7 @@ import {
 
 
 function* initSaga() {
-  yield takeLatest(PARKINGS_FETCH_START, fetchParkingsSaga);
+  yield throttle(3000, PARKINGS_FETCH_START, fetchParkingsSaga);
   yield takeEvery(CHANGE_CENTER_LOCATION, updateUrlLatLonSaga);
   yield takeLatest(SYNCHRONIZE_LAT_LON, synchronizeLatLonSaga);
 }

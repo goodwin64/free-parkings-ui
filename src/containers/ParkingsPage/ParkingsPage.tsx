@@ -1,7 +1,6 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { ScaleControl } from 'react-mapbox-gl';
 
@@ -17,6 +16,7 @@ import { ParkingsLayer } from '../../components/LayerParkings/LayerParkings';
 
 import './styles.css';
 import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
+import Button from '../../components/Button/Button';
 
 
 interface ParkingsPageOwnProps {
@@ -24,7 +24,7 @@ interface ParkingsPageOwnProps {
   centerLon: number,
   radius: number,
   allParkingsList: Parking[],
-  fetchParkings: ParkingsPageActions.fetchParkingsActionCreator,
+  fetchParkings: ParkingsPageActions.fetchParkingsStartActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   isParkingFetchInProgress: boolean,
 }
@@ -50,12 +50,16 @@ class ParkingsPage extends React.Component<ParkingsPageProps> {
               : <CursorMapCenter {...this.props}/>
           }
         </div>
-        <Link
-          to="/config"
+        <div
           style={{ position: 'absolute', left: 0, bottom: 0 }}
         >
-          <button>⚙️</button>
-        </Link>
+          <Button
+            onClick={this.props.fetchParkings}
+            disabled={this.props.isParkingFetchInProgress}
+          >
+            GET PARKINGS
+          </Button>
+        </div>
         <ParkingsLayer
           parkings={this.props.allParkingsList}
         />
@@ -76,7 +80,7 @@ function mapStateToProps(state: RootReducer) {
 }
 
 const withConnect = connect(mapStateToProps, {
-  fetchParkings: ParkingsPageActions.fetchParkings,
+  fetchParkings: ParkingsPageActions.fetchParkingsStart,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,
 });
 
