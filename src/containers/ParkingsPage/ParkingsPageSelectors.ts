@@ -36,8 +36,8 @@ export const geoCoordinatesSelector = createSelector(
   [routeParamsSelector, defaultLatLonSelector],
   ({ lat: latFromUrl, lon: lonFromUrl }: { lat?: number, lon?: number }, defaultLatLon) => {
     return ({
-      lat: Number(latFromUrl) || defaultLatLon.lat,
-      lon: Number(lonFromUrl) || defaultLatLon.lon,
+      lat: isFinite(Number(latFromUrl)) ? Number(latFromUrl) : defaultLatLon.lat,
+      lon: isFinite(Number(lonFromUrl)) ? Number(lonFromUrl) : defaultLatLon.lon,
     });
   },
 );

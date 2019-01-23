@@ -15,7 +15,6 @@ import { BaseConfigState } from '../BaseConfigPage/BaseConfigReducer';
 import { setParkingsPageCenter, setParkingsPageCenterActionCreator } from '../ParkingsPage/ParkingsPageActions';
 import BaseConfigPage from '../BaseConfigPage/BaseConfigPage';
 
-import './App.global.css';
 import * as css from './App.module.css';
 import * as BaseConfigActions from '../BaseConfigPage/BaseConfigActions';
 
