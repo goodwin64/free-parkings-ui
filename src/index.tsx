@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router } from 'react-router';
+import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 
-import './index.css';
+import './index.global.css';
 import App from './containers/App/App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore';
@@ -13,7 +13,16 @@ import { history } from './store/history';
 const store = configureStore(history);
 
 // @ts-ignore
-const AppConnected = () => (<Provider store={store}><Router history={history}><App /></Router></Provider>);
+const renderApp = () => <App />;
+
+// TS check hack
+const AppConnected = () => (
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      { renderApp() }
+    </ConnectedRouter>
+  </Provider>
+);
 
 ReactDOM.render(<AppConnected/>, document.getElementById('root'));
 
