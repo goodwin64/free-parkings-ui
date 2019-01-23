@@ -62,6 +62,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps> {
         </div>
         <ParkingsLayer
           parkings={this.props.allParkingsList}
+          zoomLevel={this.props.MapboxMap.getZoom()}
         />
         <ScaleControl/>
       </React.Fragment>
