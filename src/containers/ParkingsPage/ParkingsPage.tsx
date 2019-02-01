@@ -20,6 +20,7 @@ import Button from '../../components/Button/Button';
 import Park4uMap from '../../components/Map/Map';
 import Search from '../../components/Search/Search';
 import { Place } from '../../interfaces/Place';
+import { FreeSlot } from '../../interfaces/FreeSlot';
 import { MapboxPlace } from '../../interfaces/MapboxPlace';
 
 
@@ -43,6 +44,7 @@ interface ParkingsPageOwnProps {
   centerLon: number,
   radius: number,
   allParkingsList: Parking[],
+  freeParkingsList: FreeSlot[],
   fetchParkings: ParkingsPageActions.fetchParkingsStartActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
@@ -143,6 +145,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
         </div>
         <ParkingsLayer
           parkings={this.props.allParkingsList}
+          freeParkings={this.props.freeParkingsList}
           zoomLevel={this.props.MapboxMap.getZoom()}
         />
         <ScaleControl/>
@@ -154,6 +157,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 function mapStateToProps(state: RootReducer) {
   return {
     allParkingsList: ParkingsPageSelectors.allParkingsSelector(state),
+    freeParkingsList: ParkingsPageSelectors.freeParkingsSelector(state),
     isParkingFetchInProgress: ParkingsPageSelectors.isParkingFetchInProgressSelector(state),
     centerLat: ParkingsPageSelectors.centerCoordinatesSelector(state).lat,
     centerLon: ParkingsPageSelectors.centerCoordinatesSelector(state).lon,

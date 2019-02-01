@@ -9,6 +9,7 @@ import * as ParkingsPageActions from './ParkingsPageActions';
 import { setParkingsPageCenter } from './ParkingsPageActions';
 import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
+import getMockedFreeSlots from './getMockedFreeSlots';
 
 
 async function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
@@ -42,6 +43,7 @@ export function* fetchParkingsSaga() {
     preparedResponseParkings = prepareResponseParkings(mockParkings);
   }
 
+  preparedResponseParkings.freeSlots = getMockedFreeSlots();
   yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
 }
 
