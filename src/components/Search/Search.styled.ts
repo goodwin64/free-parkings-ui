@@ -23,7 +23,7 @@ export const Container = styled.div`
   top: 0;
   transform: translateX(-50%);
   width: 100%;
-  z-index: 1;
+  z-index: 4;
 `;
 
 export const List = styled.ul`
