@@ -9,11 +9,7 @@ import {
 import { PreparedParkings } from '../../interfaces/ResponseParkings';
 
 
-export const setParkingsPageCenter = (lat: number, lon: number) =>
-  action(CHANGE_CENTER_LOCATION, {
-    lat,
-    lon,
-  });
+export const setParkingsPageCenter = (lat: number, lon: number) => action(CHANGE_CENTER_LOCATION, { lat, lon });
 export type setParkingsPageCenterAction = ActionType<typeof setParkingsPageCenter>;
 export type setParkingsPageCenterActionCreator = (lat: number, lon: number) => setParkingsPageCenterAction;
 
@@ -28,12 +24,11 @@ export type synchronizeLatLonAction = ActionType<typeof synchronizeLatLon>;
 export type synchronizeLatLonActionCreator = () => synchronizeLatLonAction;
 
 
-export const fetchParkingsSuccess = (parkings: PreparedParkings) =>
-  action(PARKINGS_FETCH_SUCCESS, {
-    parkings
-  });
+export const fetchParkingsSuccess = (parkings: PreparedParkings) => action(PARKINGS_FETCH_SUCCESS, { parkings });
 export type fetchParkingsSuccessAction = ActionType<typeof fetchParkingsSuccess>;
-// export type fetchParkingsSuccessActionCreator = () => fetchParkingsSuccessAction;
+export type fetchParkingsSuccessActionCreator = () => fetchParkingsSuccessAction;
 
 
-export type ParkingsPageActions = setParkingsPageCenterAction | fetchParkingsStartAction | fetchParkingsSuccessAction;
+export type ParkingsPageActions = setParkingsPageCenterAction
+  | fetchParkingsStartAction
+  | fetchParkingsSuccessAction;

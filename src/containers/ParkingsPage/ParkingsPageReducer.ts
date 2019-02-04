@@ -8,6 +8,7 @@ import { FreeParking } from '../../interfaces/FreeParking';
 export interface ParkingsPageState {
   readonly centerLat: number,
   readonly centerLon: number,
+  readonly lastParkingsCheckTimestamp: number,
   readonly isFetchInProgress: boolean,
   readonly allParkings: ParkopediaParking[],
   readonly freeParkings: FreeParking[],
@@ -16,6 +17,7 @@ export interface ParkingsPageState {
 export const ParkingsPageInitialState: ParkingsPageState = {
   centerLat: BaseConfigInitialState.startPointLat,
   centerLon: BaseConfigInitialState.startPointLon,
+  lastParkingsCheckTimestamp: 0,
   isFetchInProgress: false,
   allParkings: [],
   freeParkings: [],
