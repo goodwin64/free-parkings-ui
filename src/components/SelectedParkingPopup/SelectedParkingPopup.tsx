@@ -2,13 +2,13 @@ import React from 'react';
 import * as turf from '@turf/turf';
 import { Popup } from 'react-mapbox-gl';
 
-import { Parking } from '../../interfaces/Parking';
+import { ParkopediaParking } from '../../interfaces/Parking';
 import * as styles from './SelectedParkingPopup.module.css';
 import './SelectedParkingPopup.global.css';
 
 
 interface SelectedParkingPopupProps {
-  selectedParking: Parking | null,
+  selectedParking: ParkopediaParking | null,
   closePopup: () => void,
 }
 
@@ -46,7 +46,7 @@ class SelectedParkingPopup extends React.PureComponent<SelectedParkingPopupProps
         <p>
           {this.props.selectedParking.restrictions.length > 0
             ? this.props.selectedParking.restrictions.join(', ')
-            : 'None'
+            : 'N/A'
           }
         </p>
 
@@ -54,7 +54,7 @@ class SelectedParkingPopup extends React.PureComponent<SelectedParkingPopupProps
         <p>
           {this.props.selectedParking.features.length > 0
             ? this.props.selectedParking.features.join(', ')
-            : 'None'
+            : 'N/A'
           }
         </p>
       </Popup>

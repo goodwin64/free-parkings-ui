@@ -44,7 +44,7 @@ export default function parkingsPageReducer(
       return {
         ...state,
         allParkings: action.payload.parkings.allParkings,
-        freeParkings: action.payload.parkings.freeSlots,
+        freeParkings: action.payload.parkings.freeParkings,
         isFetchInProgress: false,
       };
     }

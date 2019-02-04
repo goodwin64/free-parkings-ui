@@ -6,14 +6,14 @@ import { ScaleControl } from 'react-mapbox-gl';
 
 import { Place } from '../../interfaces/Place';
 import Park4uMap from '../../components/Map/Map';
-import { Parking, ParkopediaParking } from '../../interfaces/Parking';
 import Search from '../../components/Search/Search';
 import Loader from '../../components/Loader/Loader';
 import Button from '../../components/Button/Button';
-import { FreeParking } from '../../interfaces/FreeParking';
 import { RootReducer } from '../../store/rootReducer';
 import { MapboxPlace } from '../../interfaces/MapboxPlace';
 import { RouterProps } from '../../interfaces/RouterProps';
+import { FreeParking } from '../../interfaces/FreeParking';
+import { ParkopediaParking } from '../../interfaces/Parking';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import * as ParkingsPageSelectors from './ParkingsPageSelectors';
 import { searchRadiusSelector } from '../BaseConfigPage/selectors';
@@ -60,7 +60,7 @@ interface ParkingsPageState {
   options: Place[];
   selected?: Place;
   center: [number, number];
-  selectedParking: Parking | null,
+  selectedParking: ParkopediaParking | null,
 }
 
 class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState> {
@@ -120,7 +120,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     this.props.setParkingsPageCenter(lat, lon);
   };
 
-  openPopup: openPopup = (parking: Parking) => {
+  openPopup: openPopup = (parking: ParkopediaParking) => {
     this.setState({ selectedParking: parking });
   };
 

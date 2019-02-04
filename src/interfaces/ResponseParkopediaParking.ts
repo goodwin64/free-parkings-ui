@@ -1,14 +1,12 @@
 import { PointGeometry } from './PointGeometry';
 
 
-export interface Parking {
+export interface ResponseParkopediaParking {
   id: number,
   parkingGeometry: PointGeometry[],
-}
-
-export interface ParkopediaParking extends Parking {
-  costPerHour: string,
+  cost: string | null,
   maxStayDuration: number,
+  maxHeight: number | null,
   restrictions: string[],
   features: string[],
 }

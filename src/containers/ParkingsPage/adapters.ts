@@ -1,17 +1,19 @@
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 
-import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
-import { ParkopediaParking, ResponseParkopediaParking } from '../../interfaces/Parking';
+import { ParkopediaParking} from '../../interfaces/Parking';
 import { PointGeometry } from '../../interfaces/PointGeometry';
+import { ResponseParkopediaParking } from '../../interfaces/ResponseParkopediaParking';
+import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
+import { FreeParking, ResponseFreeParking } from '../../interfaces/FreeParking';
 
 
-export function prepareParkopediaResponseParkings(
+export function prepareParkings(
   rawResponseParkings?: ResponseParkings
 ): PreparedParkings {
   let preparedResponse: PreparedParkings = {
     allParkings: [],
-    freeSlots: [],
+    freeParkings: [],
   };
 
   if (!rawResponseParkings || !isObject(rawResponseParkings)) {
@@ -22,6 +24,10 @@ export function prepareParkopediaResponseParkings(
     preparedResponse.allParkings = prepareParkopediaParkings(rawResponseParkings.allParkings);
   }
 
+  if (isArray(rawResponseParkings.freeSlots)) {
+    preparedResponse.freeParkings = prepareFreeParkings(rawResponseParkings.freeSlots);
+  }
+
   return preparedResponse;
 }
 
@@ -29,11 +35,15 @@ function prepareParkopediaParkings(allParkings: ResponseParkopediaParking[]): Pa
   return allParkings.map(prepareParkopediaParkingSlot);
 }
 
+function prepareFreeParkings(freeParkings: ResponseFreeParking[]): FreeParking[] {
+  return freeParkings.map(prepareFreeParkingSlot);
+}
+
 function prepareParkopediaParkingSlot(parkingSlot: ResponseParkopediaParking): ParkopediaParking {
   let preparedParking: ParkopediaParking = {
     id: -1,
     parkingGeometry: [],
-    costPerHour: 'N/A',
+    costPerHour: '',
     maxStayDuration: 0,
     restrictions: [],
     features: [],
@@ -67,6 +77,27 @@ function prepareParkopediaParkingSlot(parkingSlot: ResponseParkopediaParking): P
   }
 
   return preparedParking;
+}
+
+function prepareFreeParkingSlot(parkingSlot: ResponseFreeParking): FreeParking {
+  let preparedFreeParking: FreeParking = {
+    id: -1,
+    parkingGeometry: [],
+  };
+
+  if (isArray(parkingSlot.freeSlotsGeometry)) {
+    // FIXME .map().filter() ts issue - change array arity
+    // @ts-ignore
+    preparedFreeParking.parkingGeometry = parkingSlot.freeSlotsGeometry
+      .map(preparePoint)
+      .filter(Boolean);
+  }
+
+  if (parkingSlot.id) {
+    preparedFreeParking.id = parkingSlot.id;
+  }
+
+  return preparedFreeParking;
 }
 
 /**

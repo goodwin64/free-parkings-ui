@@ -4,10 +4,10 @@ import { Feature, Layer } from 'react-mapbox-gl';
 import { COLORS } from '../../constants/colors';
 import withMap, { MapContextProps } from '../Map/context';
 import { FreeParking } from '../../interfaces/FreeParking';
-import { Parking, ParkopediaParking } from '../../interfaces/Parking';
+import { ParkopediaParking } from '../../interfaces/Parking';
 
 
-export type openPopup = (p: Parking) => void;
+export type openPopup = (p: ParkopediaParking) => void;
 interface ParkingsLayerProps extends MapContextProps {
   parkings: ParkopediaParking[],
   freeParkings: FreeParking[],
@@ -135,35 +135,12 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
     );
   }
 
-  renderFreeParkingsClickableArea() {
-    return (
-      <Layer
-        type="line"
-        layout={ParkingsLayer.lineLayout}
-        paint={ParkingsLayer.getLinePaint(this.props.zoomLevel, true, true)}
-        id={ParkingsLayer.freeParkingsClickableAreaLayerId}
-      >
-        {
-          this.props.freeParkings.map((freeParking) => (
-            <Feature
-              key={freeParking.id}
-              coordinates={freeParking.parkingGeometry}
-              onMouseEnter={() => this.onMouseOver(freeParking)}
-              onMouseLeave={this.onMouseOut}
-            />
-          ))
-        }
-      </Layer>
-    );
-  }
-
   render() {
     return (
       <React.Fragment>
         { this.renderAllParkings() }
         { this.renderAllParkingsClickableArea() }
         { this.renderFreeParkings() }
-        { this.renderFreeParkingsClickableArea() }
       </React.Fragment>
     );
   }

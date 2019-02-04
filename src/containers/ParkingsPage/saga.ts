@@ -2,14 +2,13 @@ import { push } from 'connected-react-router';
 import { call, put, select } from 'redux-saga/effects';
 
 import { centerCoordinatesSelector, geoCoordinatesSelector, parkopediaResponseSelector } from './ParkingsPageSelectors';
-import { prepareParkopediaResponseParkings } from './adapters';
+import { prepareParkings } from './adapters';
 import { searchRadiusSelector, sessionUidSelector } from '../BaseConfigPage/selectors';
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import { setParkingsPageCenter } from './ParkingsPageActions';
 import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
-import getMockedFreeSlots from './getMockedFreeSlots';
 
 
 async function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
@@ -32,18 +31,17 @@ export function* fetchParkingsSaga() {
   let preparedResponseParkings: PreparedParkings;
   try {
     if (radius > MAX_SEARCH_RADIUS_TO_FETCH) {
-      preparedResponseParkings = prepareParkopediaResponseParkings();
+      preparedResponseParkings = prepareParkings();
     } else {
       const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, radius, uid);
-      preparedResponseParkings = prepareParkopediaResponseParkings(rawResponseParkings);
+      preparedResponseParkings = prepareParkings(rawResponseParkings);
     }
   } catch (e) {
     console.error('fetch parkings:', e);
     const mockParkings = yield select(parkopediaResponseSelector);
-    preparedResponseParkings = prepareParkopediaResponseParkings(mockParkings);
+    preparedResponseParkings = prepareParkings(mockParkings);
   }
 
-  preparedResponseParkings.freeSlots = getMockedFreeSlots();
   yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
 }
 
