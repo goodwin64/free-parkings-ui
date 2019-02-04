@@ -2,13 +2,14 @@ import { push } from 'connected-react-router';
 import { call, put, select } from 'redux-saga/effects';
 
 import { centerCoordinatesSelector, geoCoordinatesSelector, parkopediaResponseSelector } from './ParkingsPageSelectors';
-import { prepareResponseParkings } from './adapters';
+import { prepareParkopediaResponseParkings } from './adapters';
 import { searchRadiusSelector, sessionUidSelector } from '../BaseConfigPage/selectors';
-import { ResponseParkings } from '../../interfaces/ResponseParkings';
+import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import { setParkingsPageCenter } from './ParkingsPageActions';
 import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
+import getMockedFreeSlots from './getMockedFreeSlots';
 
 
 async function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
@@ -28,20 +29,21 @@ export function* fetchParkingsSaga() {
   const radius = yield select(searchRadiusSelector);
     const uid = yield select(sessionUidSelector);
 
-  let preparedResponseParkings;
+  let preparedResponseParkings: PreparedParkings;
   try {
     if (radius > MAX_SEARCH_RADIUS_TO_FETCH) {
-      preparedResponseParkings = prepareResponseParkings();
+      preparedResponseParkings = prepareParkopediaResponseParkings();
     } else {
       const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, radius, uid);
-      preparedResponseParkings = prepareResponseParkings(rawResponseParkings);
+      preparedResponseParkings = prepareParkopediaResponseParkings(rawResponseParkings);
     }
   } catch (e) {
     console.error('fetch parkings:', e);
     const mockParkings = yield select(parkopediaResponseSelector);
-    preparedResponseParkings = prepareResponseParkings(mockParkings);
+    preparedResponseParkings = prepareParkopediaResponseParkings(mockParkings);
   }
 
+  preparedResponseParkings.freeSlots = getMockedFreeSlots();
   yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
 }
 

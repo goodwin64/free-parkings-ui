@@ -3,14 +3,15 @@
   --colorExtraText: #757575;
   --colorInputText: #8b94a1;
   --colorDisabled: #cfd0d6;
+  --colorGreyPopup: #d2d2d2;
   --colorSelection: #e8eef8;
   --colorBackground: #f1f2f5;
   --colorAccent1: #68ce55;
   --colorAccent2: #bf2647;
   --colorAccent3: #f1970f;
+  --colorAccent4: #2962ff;
   --colorAntiMain: #ffffff;
   --colorRouteInactive: #b6b6b6;
-  --colorAccent4: #2962ff;
 }
 
 body {

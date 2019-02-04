@@ -6,7 +6,7 @@ import {
   PARKINGS_FETCH_SUCCESS,
   SYNCHRONIZE_LAT_LON,
 } from './ParkingsPageConstants';
-import { ResponseParkings } from '../../interfaces/ResponseParkings';
+import { PreparedParkings } from '../../interfaces/ResponseParkings';
 
 
 export const setParkingsPageCenter = (lat: number, lon: number) =>
@@ -28,7 +28,7 @@ export type synchronizeLatLonAction = ActionType<typeof synchronizeLatLon>;
 export type synchronizeLatLonActionCreator = () => synchronizeLatLonAction;
 
 
-export const fetchParkingsSuccess = (parkings: ResponseParkings) =>
+export const fetchParkingsSuccess = (parkings: PreparedParkings) =>
   action(PARKINGS_FETCH_SUCCESS, {
     parkings
   });

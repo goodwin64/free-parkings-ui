@@ -1,8 +1,13 @@
-import { Parking } from './Parking';
-import { FreeSlot } from './FreeSlot';
+import { ParkopediaParking, ResponseParkopediaParking } from './Parking';
+import { FreeParking } from './FreeParking';
 
 
 export interface ResponseParkings {
-  allParkings: Parking[],
-  freeSlots: FreeSlot[],
+  allParkings: ResponseParkopediaParking[],
+  freeSlots: FreeParking[],
+}
+
+export interface PreparedParkings {
+  allParkings: ParkopediaParking[],
+  freeSlots: FreeParking[],
 }
