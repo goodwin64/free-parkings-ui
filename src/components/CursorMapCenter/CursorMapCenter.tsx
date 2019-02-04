@@ -1,58 +1,38 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import magnifier from '../../assets/images/magnifier.svg';
-import * as css from './CursorMapCenter.module.css';
-import { MAX_SEARCH_RADIUS_TO_FETCH } from '../../containers/BaseConfigPage/BaseConfigConstants';
+import mapMarker from '../../assets/images/mapMarker.png';
+import * as styles from './CursorMapCenter.module.css';
 
 
 interface CursorMapCenterProps {
-  centerLat: number,
-  centerLon: number,
-  radius: number,
+  isSearchRadiusTooBig: boolean,
 }
 
 class CursorMapCenter extends React.PureComponent<CursorMapCenterProps> {
-  static propTypes = {
-    centerLat: PropTypes.number.isRequired,
-    centerLon: PropTypes.number.isRequired,
-    radius: PropTypes.number.isRequired,
-  };
-
   static renderMagnifierPulsed() {
     return (
       <React.Fragment>
-        <img src={magnifier} alt="" className={css['magnifier-pulse']}/>
+        <img src={magnifier} alt="" className={styles['magnifierPulse']}/>
+        <br/>
+        <h2 className={styles['zoomInMessage']}>Please zoom in to load parkings</h2>
       </React.Fragment>
     );
   }
 
-  renderCoordinatesMarker() {
-    const {
-      centerLat,
-      centerLon,
-      radius,
-    } = this.props;
-
-    const [lat, lon] = [
-      centerLat.toFixed(2),
-      centerLon.toFixed(2),
-    ];
-
+  static renderCoordinatesMarker() {
     return (
-      <React.Fragment>
-        [{lat}:{lon},{radius}m]
-      </React.Fragment>
+      <img src={mapMarker} alt="You're here" className={styles['YourMarkerImage']}/>
     );
   }
 
   render() {
     return (
-      <div className={css['container']}>
+      <div className={styles['CursorMapCenterContainer']}>
         {
-          false && this.props.radius > MAX_SEARCH_RADIUS_TO_FETCH
+          this.props.isSearchRadiusTooBig
             ? CursorMapCenter.renderMagnifierPulsed()
-            : this.renderCoordinatesMarker()
+            : CursorMapCenter.renderCoordinatesMarker()
         }
       </div>
     );

@@ -1,10 +1,15 @@
 import styled from 'styled-components';
+import { COLORS } from '../../constants/colors';
 
 
 export const Input = styled('input')<{}>`
-  color: #666;
-  font-size: 13px;
+  background-color: ${COLORS.colorMainText};
+  border-radius: 3px;
+  color: ${COLORS.colorAntiMain};
+  font-size: 15px;
+  font-weight: 500;
   height: 100%;
+  opacity: 0.8;
   outline: none;
   padding: 0 20px 0 10px;
   width: 100%;
@@ -14,33 +19,31 @@ export const Input = styled('input')<{}>`
   }
 `;
 
-export const Container = styled.div`
-  background-color: white;
+export const SearchContainer = styled.div`
   height: 48px;
   left: 50%;
   max-width: 480px;
   position: absolute;
-  top: 0;
+  top: 20px;
   transform: translateX(-50%);
   width: 100%;
-  z-index: 4;
+  z-index: var(--zIndexSearchContainer);
+  
+  @media (max-width: 768px) {
+    max-width: 80%;
+  }
 `;
 
 export const List = styled.ul`
-  background-color: white;
+  background-color: ${COLORS.colorMainText};
+  color: ${COLORS.colorAntiMain};
+  opacity: 0.8;
   list-style-type: none;
   padding: 6px 20px;
 `;
 
 export const Item = styled.li`
-  color: #666;
   cursor: pointer;
   font-size: 13px;
   padding: 4px 0px;
-`;
-
-export const SearchButtonContainer = styled.div`
-  position: absolute;
-  top: 0;
-  left: 100%;
 `;

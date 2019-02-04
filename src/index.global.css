@@ -1,23 +1,24 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 :root {
-  --colorMainText: #333333;
+  --colorMainText: #1e1e1e;
   --colorExtraText: #757575;
-  --colorInputText: #8b94a1;
-  --colorDisabled: #cfd0d6;
   --colorGreyPopup: #d2d2d2;
-  --colorSelection: #e8eef8;
-  --colorBackground: #f1f2f5;
-  --colorAccent1: #68ce55;
+  --colorAccent1: #7ceb7e;
   --colorAccent2: #bf2647;
   --colorAccent3: #f1970f;
   --colorAccent4: #2962ff;
   --colorAntiMain: #ffffff;
   --colorRouteInactive: #b6b6b6;
+
+  --zIndexSearchContainer: 4;
+  --zIndexCenterMarker: 5;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: DINNextCYR, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 * {
@@ -29,16 +30,24 @@ code {
     monospace;
 }
 
-p, ul {
+p,
+ul,
+input,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
 }
 
-input {
+input, button {
   border: 0;
+  font-family: inherit;
 }
 
 button {
-  border: 0;
   padding: 0;
   background-color: initial;
   cursor: pointer;
@@ -50,6 +59,10 @@ a[href="https://www.mapbox.com/about/maps/"],
 a[href="http://www.openstreetmap.org/about/"],
 a.mapbox-improve-map {
   display: none !important;
+}
+
+div.mapboxgl-map {
+  font-family: inherit;
 }
 
 /* END: Reset Mapbox styles */

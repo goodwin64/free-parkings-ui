@@ -71,11 +71,11 @@ class SearchDropdown extends React.Component<SearchDropdownProps, SearchDropdown
     const { value } = this.state;
 
     return (
-      <styled.Container>
+      <styled.SearchContainer>
         <styled.Input
           onChange={this.onSearchInputChange}
           value={value}
-          placeholder="Search by POI or LatLon"
+          placeholder="Search"
           onKeyPress={this.onKeyPress}
           title="Lat: [-90..90], Lon: [-180..180]"
         />
@@ -95,7 +95,7 @@ class SearchDropdown extends React.Component<SearchDropdownProps, SearchDropdown
             </styled.List>
           )
         }
-      </styled.Container>
+      </styled.SearchContainer>
     );
   }
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { ScaleControl } from 'react-mapbox-gl';
 
 import { Place } from '../../interfaces/Place';
 import Park4uMap from '../../components/Map/Map';
@@ -16,7 +15,7 @@ import { FreeParking } from '../../interfaces/FreeParking';
 import { ParkopediaParking } from '../../interfaces/Parking';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import * as ParkingsPageSelectors from './ParkingsPageSelectors';
-import { searchRadiusSelector } from '../BaseConfigPage/selectors';
+import { isSearchRadiusTooBigSelector, searchRadiusSelector } from '../BaseConfigPage/selectors';
 import withMap, { MapContextProps } from '../../components/Map/context';
 import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
 import ParkingsLayer, { openPopup } from '../../components/LayerParkings/LayerParkings';
@@ -50,6 +49,7 @@ interface ParkingsPageOwnProps {
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
   isParkingFetchInProgress: boolean,
+  isSearchRadiusTooBig: boolean,
 }
 
 interface ParkingsPageProps extends ParkingsPageOwnProps, RouterProps, MapContextProps {
@@ -79,9 +79,9 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 
   componentDidMount(): void {
     this.props.synchronizeLatLon();
-    setInterval(() => {
+    // setInterval(() => {
       this.props.fetchParkings();
-    }, 10000);
+    // }, 10000);
   }
 
   private fetchPlaces = (query: string) => {
@@ -143,7 +143,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
           {
             this.props.isParkingFetchInProgress
               ? <Loader/>
-              : <CursorMapCenter {...this.props}/>
+              : <CursorMapCenter isSearchRadiusTooBig={this.props.isSearchRadiusTooBig}/>
           }
         </div>
         <div
@@ -151,9 +151,10 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
         >
           <Button
             onClick={this.props.fetchParkings}
-            disabled={this.props.isParkingFetchInProgress}
+            disabled={this.props.isParkingFetchInProgress || this.props.isSearchRadiusTooBig}
+            className={styles['GetParkingsButton']}
           >
-            GET PARKINGS
+            LOAD PARKINGS
           </Button>
         </div>
         <ParkingsLayer
@@ -167,7 +168,6 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
           selectedParking={this.state.selectedParking}
           closePopup={this.closePopup}
         />
-        <ScaleControl/>
       </React.Fragment>
     );
   }
@@ -181,6 +181,7 @@ function mapStateToProps(state: RootReducer) {
     centerLat: ParkingsPageSelectors.centerCoordinatesSelector(state).lat,
     centerLon: ParkingsPageSelectors.centerCoordinatesSelector(state).lon,
     radius: searchRadiusSelector(state),
+    isSearchRadiusTooBig: isSearchRadiusTooBigSelector(state),
   };
 }
 

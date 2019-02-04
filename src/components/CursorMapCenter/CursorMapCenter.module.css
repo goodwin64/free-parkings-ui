@@ -1,14 +1,34 @@
-.container {
-    width: 120px;
-    height: 50px;
+.CursorMapCenterContainer {
+    height: 100px;
+    text-align: center;
     line-height: 50px;
-    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
 }
 
-.magnifier-pulse {
+@media screen and (max-width: 768px) {
+    .CursorMapCenterContainer {
+        width: 500px;
+    }
+}
+
+.magnifierPulse {
     animation: pulse 2s infinite;
     width: 100%;
     height: 100%;
+}
+
+.zoomInMessage {
+    font-size: 32px;
+    color: var(--colorAntiMain);
+    text-shadow: 1px 1px #888;
+}
+
+.YourMarkerImage {
+    height: 100px;
+    bottom: 50%;
 }
 
 @keyframes pulse {
