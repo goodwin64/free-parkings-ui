@@ -1,4 +1,4 @@
-import { FreeSlot } from '../../interfaces/FreeSlot';
+import { FreeParking } from '../../interfaces/FreeParking';
 import { PointGeometry } from '../../interfaces/PointGeometry';
 
 const data = [
@@ -518,14 +518,15 @@ const data = [
   }
 ];
 
-export default function getFreeslots(): FreeSlot[] {
+export default function getFreeslots(): FreeParking[] {
 
   // @ts-ignore
   return data.map((freeSlot) => {
     return {
-      ...freeSlot,
+      id: freeSlot.id,
+      slotOrientation: freeSlot.slotOrientation,
       // @ts-ignore
-      freeSlotsGeometry: freeSlot.freeSlotsGeometry.map((point: PointGeometry) => {
+      parkingGeometry: freeSlot.freeSlotsGeometry.map((point: PointGeometry) => {
         return [
           point[1],
           point[0],

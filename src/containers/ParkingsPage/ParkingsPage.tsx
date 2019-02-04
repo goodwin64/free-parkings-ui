@@ -4,24 +4,25 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { ScaleControl } from 'react-mapbox-gl';
 
-import { Parking } from '../../interfaces/Parking';
+import { Place } from '../../interfaces/Place';
+import Park4uMap from '../../components/Map/Map';
+import { Parking, ParkopediaParking } from '../../interfaces/Parking';
+import Search from '../../components/Search/Search';
 import Loader from '../../components/Loader/Loader';
+import Button from '../../components/Button/Button';
+import { FreeParking } from '../../interfaces/FreeParking';
 import { RootReducer } from '../../store/rootReducer';
+import { MapboxPlace } from '../../interfaces/MapboxPlace';
 import { RouterProps } from '../../interfaces/RouterProps';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import * as ParkingsPageSelectors from './ParkingsPageSelectors';
 import { searchRadiusSelector } from '../BaseConfigPage/selectors';
 import withMap, { MapContextProps } from '../../components/Map/context';
-import { ParkingsLayer } from '../../components/LayerParkings/LayerParkings';
+import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
+import ParkingsLayer, { openPopup } from '../../components/LayerParkings/LayerParkings';
+import SelectedParkingPopup from '../../components/SelectedParkingPopup/SelectedParkingPopup';
 
 import * as styles from './styles.module.css';
-import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
-import Button from '../../components/Button/Button';
-import Park4uMap from '../../components/Map/Map';
-import Search from '../../components/Search/Search';
-import { Place } from '../../interfaces/Place';
-import { FreeSlot } from '../../interfaces/FreeSlot';
-import { MapboxPlace } from '../../interfaces/MapboxPlace';
 
 
 const req = (url: string, body?: any, method = 'GET') =>
@@ -43,8 +44,8 @@ interface ParkingsPageOwnProps {
   centerLat: number,
   centerLon: number,
   radius: number,
-  allParkingsList: Parking[],
-  freeParkingsList: FreeSlot[],
+  allParkingsList: ParkopediaParking[],
+  freeParkingsList: FreeParking[],
   fetchParkings: ParkingsPageActions.fetchParkingsStartActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
@@ -59,6 +60,7 @@ interface ParkingsPageState {
   options: Place[];
   selected?: Place;
   center: [number, number];
+  selectedParking: Parking | null,
 }
 
 class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState> {
@@ -70,6 +72,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
       query: '',
       options: [],
       selected: undefined,
+      selectedParking: null,
       center: [props.MapboxMap.getCenter().lng, props.MapboxMap.getCenter().lat],
     };
   }
@@ -117,6 +120,14 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     this.props.setParkingsPageCenter(lat, lon);
   };
 
+  openPopup: openPopup = (parking: Parking) => {
+    this.setState({ selectedParking: parking });
+  };
+
+  closePopup = () => {
+    this.setState({ selectedParking: null });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -147,6 +158,12 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
           parkings={this.props.allParkingsList}
           freeParkings={this.props.freeParkingsList}
           zoomLevel={this.props.MapboxMap.getZoom()}
+          openPopup={this.openPopup}
+          closePopup={this.closePopup}
+        />
+        <SelectedParkingPopup
+          selectedParking={this.state.selectedParking}
+          closePopup={this.closePopup}
         />
         <ScaleControl/>
       </React.Fragment>

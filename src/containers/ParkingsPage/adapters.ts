@@ -1,12 +1,15 @@
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 
-import { ResponseParkings } from '../../interfaces/ResponseParkings';
-import { Parking } from '../../interfaces/Parking';
+import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
+import { ParkopediaParking, ResponseParkopediaParking } from '../../interfaces/Parking';
 import { PointGeometry } from '../../interfaces/PointGeometry';
 
-export function prepareResponseParkings(rawResponseParkings?: ResponseParkings) {
-  let preparedResponse: ResponseParkings = {
+
+export function prepareParkopediaResponseParkings(
+  rawResponseParkings?: ResponseParkings
+): PreparedParkings {
+  let preparedResponse: PreparedParkings = {
     allParkings: [],
     freeSlots: [],
   };
@@ -16,21 +19,24 @@ export function prepareResponseParkings(rawResponseParkings?: ResponseParkings) 
   }
 
   if (isArray(rawResponseParkings.allParkings)) {
-    preparedResponse.allParkings = prepareAllParkings(rawResponseParkings.allParkings);
+    preparedResponse.allParkings = prepareParkopediaParkings(rawResponseParkings.allParkings);
   }
 
   return preparedResponse;
 }
 
-function prepareAllParkings(allParkings: Parking[]): Parking[] {
-  return allParkings.map(prepareParkingSlot);
+function prepareParkopediaParkings(allParkings: ResponseParkopediaParking[]): ParkopediaParking[] {
+  return allParkings.map(prepareParkopediaParkingSlot);
 }
 
-function prepareParkingSlot(parkingSlot: Parking): Parking {
-  let preparedParking: Parking = {
+function prepareParkopediaParkingSlot(parkingSlot: ResponseParkopediaParking): ParkopediaParking {
+  let preparedParking: ParkopediaParking = {
     id: -1,
     parkingGeometry: [],
-    parkingGeometryType: 'polyline',
+    costPerHour: 'N/A',
+    maxStayDuration: 0,
+    restrictions: [],
+    features: [],
   };
 
   if (isArray(parkingSlot.parkingGeometry)) {
@@ -44,8 +50,20 @@ function prepareParkingSlot(parkingSlot: Parking): Parking {
     preparedParking.id = parkingSlot.id;
   }
 
-  if (parkingSlot.parkingGeometryType) {
-    preparedParking.parkingGeometryType = parkingSlot.parkingGeometryType;
+  if (parkingSlot.cost) {
+    preparedParking.costPerHour = parkingSlot.cost;
+  }
+
+  if (parkingSlot.maxStayDuration) {
+    preparedParking.maxStayDuration = parkingSlot.maxStayDuration;
+  }
+
+  if (parkingSlot.restrictions) {
+    preparedParking.restrictions = parkingSlot.restrictions;
+  }
+
+  if (parkingSlot.features) {
+    preparedParking.features = parkingSlot.features;
   }
 
   return preparedParking;

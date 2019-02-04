@@ -1,16 +1,16 @@
 import { CHANGE_CENTER_LOCATION, PARKINGS_FETCH_START, PARKINGS_FETCH_SUCCESS } from './ParkingsPageConstants';
 import { ParkingsPageActions } from './ParkingsPageActions';
 import { BaseConfigInitialState } from '../BaseConfigPage/BaseConfigReducer';
-import { Parking } from '../../interfaces/Parking';
-import { FreeSlot } from '../../interfaces/FreeSlot';
+import { ParkopediaParking } from '../../interfaces/Parking';
+import { FreeParking } from '../../interfaces/FreeParking';
 
 
 export interface ParkingsPageState {
   readonly centerLat: number,
   readonly centerLon: number,
   readonly isFetchInProgress: boolean,
-  readonly allParkings: Parking[],
-  readonly freeParkings: FreeSlot[],
+  readonly allParkings: ParkopediaParking[],
+  readonly freeParkings: FreeParking[],
 }
 
 export const ParkingsPageInitialState: ParkingsPageState = {
