@@ -1,4 +1,9 @@
-import { CHANGE_CENTER_LOCATION, PARKINGS_FETCH_START, PARKINGS_FETCH_SUCCESS } from './ParkingsPageConstants';
+import {
+  CHANGE_CENTER_LOCATION,
+  PARKINGS_REQUEST_FOR_FETCH,
+  PARKINGS_FETCH_SUCCESS,
+  PARKINGS_FETCH_START,
+} from './ParkingsPageConstants';
 import { ParkingsPageActions } from './ParkingsPageActions';
 import { BaseConfigInitialState } from '../BaseConfigPage/BaseConfigReducer';
 import { ParkopediaParking } from '../../interfaces/Parking';
@@ -10,6 +15,7 @@ export interface ParkingsPageState {
   readonly centerLon: number,
   readonly lastParkingsCheckTimestamp: number,
   readonly isFetchInProgress: boolean,
+  readonly wasFetchPerformed: boolean,
   readonly allParkings: ParkopediaParking[],
   readonly freeParkings: FreeParking[],
 }
@@ -19,6 +25,7 @@ export const ParkingsPageInitialState: ParkingsPageState = {
   centerLon: BaseConfigInitialState.startPointLon,
   lastParkingsCheckTimestamp: 0,
   isFetchInProgress: false,
+  wasFetchPerformed: false,
   allParkings: [],
   freeParkings: [],
 };
@@ -36,10 +43,16 @@ export default function parkingsPageReducer(
         centerLon: action.payload.lon,
       };
     }
-    case PARKINGS_FETCH_START: {
+    case PARKINGS_REQUEST_FOR_FETCH: {
       return {
         ...state,
         isFetchInProgress: true,
+      };
+    }
+    case PARKINGS_FETCH_START: {
+      return {
+        ...state,
+        wasFetchPerformed: true,
       };
     }
     case PARKINGS_FETCH_SUCCESS: {

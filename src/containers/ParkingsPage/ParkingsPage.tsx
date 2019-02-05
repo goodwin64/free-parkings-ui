@@ -16,8 +16,10 @@ import { ParkopediaParking } from '../../interfaces/Parking';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import * as ParkingsPageSelectors from './ParkingsPageSelectors';
 import { isSearchRadiusTooBigSelector, searchRadiusSelector } from '../BaseConfigPage/selectors';
+import { wasFetchPerformedSelector } from './ParkingsPageSelectors';
 import withMap, { MapContextProps } from '../../components/Map/context';
 import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
+import { MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
 import ParkingsLayer, { openPopup } from '../../components/LayerParkings/LayerParkings';
 import SelectedParkingPopup from '../../components/SelectedParkingPopup/SelectedParkingPopup';
 
@@ -45,11 +47,12 @@ interface ParkingsPageOwnProps {
   radius: number,
   allParkingsList: ParkopediaParking[],
   freeParkingsList: FreeParking[],
-  fetchParkings: ParkingsPageActions.fetchParkingsStartActionCreator,
+  fetchParkings: ParkingsPageActions.fetchParkingsRequestActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
   isParkingFetchInProgress: boolean,
   isSearchRadiusTooBig: boolean,
+  wasFetchPerformedOnce: boolean,
 }
 
 interface ParkingsPageProps extends ParkingsPageOwnProps, RouterProps, MapContextProps {
@@ -130,6 +133,21 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     this.setState({ selectedParking: null });
   };
 
+  renderNoParkingsWarning() {
+    return (
+      this.props.wasFetchPerformedOnce
+      && this.props.radius < MAX_SEARCH_RADIUS_TO_FETCH
+      && !this.props.isParkingFetchInProgress
+      && this.props.allParkingsList.length === 0
+      && (
+        <h3 className="NoParkingsWarning">
+          No parkings nearby<br/>
+          Try to get parkings for another location
+        </h3>
+      )
+    )
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -145,6 +163,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
               ? <Loader/>
               : <CursorMapCenter isSearchRadiusTooBig={this.props.isSearchRadiusTooBig}/>
           }
+          { this.renderNoParkingsWarning() }
         </div>
         <div
           className={styles['GetParkingsButtonContainer']}
@@ -178,6 +197,7 @@ function mapStateToProps(state: RootReducer) {
     allParkingsList: ParkingsPageSelectors.allParkingsSelector(state),
     freeParkingsList: ParkingsPageSelectors.freeParkingsSelector(state),
     isParkingFetchInProgress: ParkingsPageSelectors.isParkingFetchInProgressSelector(state),
+    wasFetchPerformedOnce: wasFetchPerformedSelector(state),
     centerLat: ParkingsPageSelectors.centerCoordinatesSelector(state).lat,
     centerLon: ParkingsPageSelectors.centerCoordinatesSelector(state).lon,
     radius: searchRadiusSelector(state),
@@ -186,7 +206,7 @@ function mapStateToProps(state: RootReducer) {
 }
 
 const withConnect = connect(mapStateToProps, {
-  fetchParkings: ParkingsPageActions.fetchParkingsStart,
+  fetchParkings: ParkingsPageActions.fetchParkingsRequest,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,
 });

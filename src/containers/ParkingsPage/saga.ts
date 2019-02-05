@@ -48,6 +48,7 @@ export function* fetchParkingsSaga() {
     if (canFetchParkings) {
       const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, searchRadius, uid);
       preparedResponseParkings = prepareParkings(rawResponseParkings);
+      yield put(ParkingsPageActions.fetchParkingsStart());
     } else {
       preparedResponseParkings = prepareParkings();
     }
