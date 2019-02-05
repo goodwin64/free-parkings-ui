@@ -11,6 +11,8 @@ import { searchRadiusSelector, sessionUidSelector } from '../BaseConfigPage/sele
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import {
+  checkParkopediaUpdatesSuccess,
+  fetchParkingsRequest,
   setParkingsPageCenter,
 } from './ParkingsPageActions';
 import { backendEndpoint } from '../../constants/backend';
@@ -37,13 +39,12 @@ async function fetchParkopediaParkingsAvailability(url: string) {
 }
 
 export function* fetchParkingsSaga() {
-  const areThereParkopediaUpdates = true//yield checkForParkopediaUpdates();
   const { lat, lon } = yield select(centerCoordinatesSelector);
   const searchRadius = yield select(searchRadiusSelector);
   const uid = yield select(sessionUidSelector);
 
   let preparedResponseParkings: PreparedParkings;
-  const canFetchParkings = searchRadius < MAX_SEARCH_RADIUS_TO_FETCH && areThereParkopediaUpdates;
+  const canFetchParkings = searchRadius < MAX_SEARCH_RADIUS_TO_FETCH;
   try {
     if (canFetchParkings) {
       const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, searchRadius, uid);
@@ -85,11 +86,18 @@ export function* checkForParkopediaUpdates() {
   try {
     const {
       updates,
+      timestamp,
     }: ResponseParkopediaAvailability = yield call(fetchParkopediaParkingsAvailability, url);
     updatesCount = updates;
+    yield put(checkParkopediaUpdatesSuccess({
+      timestamp,
+      updatesCount: updates,
+    }));
   } catch (e) {
     console.error('Failed to detect whether there are Parkopedia updates');
   }
 
-  return updatesCount > 0;
+  if (updatesCount > 0) {
+    yield put(fetchParkingsRequest());
+  }
 }
