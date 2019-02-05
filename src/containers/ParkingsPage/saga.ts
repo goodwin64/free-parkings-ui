@@ -37,7 +37,7 @@ async function fetchParkopediaParkingsAvailability(url: string) {
 }
 
 export function* fetchParkingsSaga() {
-  const areThereParkopediaUpdates = yield checkForParkopediaUpdates();
+  const areThereParkopediaUpdates = true//yield checkForParkopediaUpdates();
   const { lat, lon } = yield select(centerCoordinatesSelector);
   const searchRadius = yield select(searchRadiusSelector);
   const uid = yield select(sessionUidSelector);
