@@ -17,8 +17,8 @@
 
 .NoParkingsWarning {
     color: var(--colorAntiMain);
-    font-size: x-large;
-    line-height: 32px;
+    font-size: 20px;
+    line-height: 20px;
 }
 
 .NoParkingsWarning {

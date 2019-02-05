@@ -2,7 +2,7 @@ import {
   CHANGE_CENTER_LOCATION,
   PARKINGS_REQUEST_FOR_FETCH,
   PARKINGS_FETCH_SUCCESS,
-  PARKINGS_FETCH_START,
+  PARKINGS_FETCH_START, CHECK_PARKOPEDIA_UPDATES_SUCCESS,
 } from './ParkingsPageConstants';
 import { ParkingsPageActions } from './ParkingsPageActions';
 import { BaseConfigInitialState } from '../BaseConfigPage/BaseConfigReducer';
@@ -14,6 +14,7 @@ export interface ParkingsPageState {
   readonly centerLat: number,
   readonly centerLon: number,
   readonly lastParkingsCheckTimestamp: number,
+  readonly lastParkingsCheckUpdatesCount: number,
   readonly isFetchInProgress: boolean,
   readonly wasFetchPerformed: boolean,
   readonly allParkings: ParkopediaParking[],
@@ -24,6 +25,7 @@ export const ParkingsPageInitialState: ParkingsPageState = {
   centerLat: BaseConfigInitialState.startPointLat,
   centerLon: BaseConfigInitialState.startPointLon,
   lastParkingsCheckTimestamp: 0,
+  lastParkingsCheckUpdatesCount: 0,
   isFetchInProgress: false,
   wasFetchPerformed: false,
   allParkings: [],
@@ -41,6 +43,8 @@ export default function parkingsPageReducer(
         ...state,
         centerLat: action.payload.lat,
         centerLon: action.payload.lon,
+        lastParkingsCheckTimestamp: ParkingsPageInitialState.lastParkingsCheckTimestamp,
+        lastParkingsCheckUpdatesCount: ParkingsPageInitialState.lastParkingsCheckUpdatesCount,
       };
     }
     case PARKINGS_REQUEST_FOR_FETCH: {
@@ -60,6 +64,14 @@ export default function parkingsPageReducer(
         ...state,
         allParkings: action.payload.parkings.allParkings,
         freeParkings: action.payload.parkings.freeParkings,
+        isFetchInProgress: false,
+      };
+    }
+    case CHECK_PARKOPEDIA_UPDATES_SUCCESS: {
+      return {
+        ...state,
+        lastParkingsCheckTimestamp: action.payload.timestamp,
+        lastParkingsCheckUpdatesCount: action.payload.updatesCount,
         isFetchInProgress: false,
       };
     }

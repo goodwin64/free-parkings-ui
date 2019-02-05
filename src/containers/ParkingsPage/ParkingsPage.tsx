@@ -50,6 +50,7 @@ interface ParkingsPageOwnProps {
   fetchParkings: ParkingsPageActions.fetchParkingsRequestActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
+  checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequestActionCreator,
   isParkingFetchInProgress: boolean,
   isSearchRadiusTooBig: boolean,
   wasFetchPerformedOnce: boolean,
@@ -82,9 +83,10 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 
   componentDidMount(): void {
     this.props.synchronizeLatLon();
-    // setInterval(() => {
-      this.props.fetchParkings();
-    // }, 10000);
+    this.props.fetchParkings();
+    setInterval(() => {
+      this.props.checkParkopediaUpdates();
+    }, 5000);
   }
 
   private fetchPlaces = (query: string) => {
@@ -209,6 +211,7 @@ const withConnect = connect(mapStateToProps, {
   fetchParkings: ParkingsPageActions.fetchParkingsRequest,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,
+  checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequest,
 });
 
 export default compose(
