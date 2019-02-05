@@ -59,6 +59,11 @@ export const isParkingFetchInProgressSelector = createSelector(
   (parkingsPageDomain) => parkingsPageDomain.isFetchInProgress,
 );
 
+export const wasFetchPerformedSelector = createSelector(
+  [parkingsPageDomainSelector],
+  (parkingsPageDomain) => parkingsPageDomain.wasFetchPerformed,
+);
+
 export const centerCoordinatesSelector = createSelector(
   [parkingsPageDomainSelector],
   (parkingsPageDomain) => ({
