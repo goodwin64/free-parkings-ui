@@ -140,7 +140,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
       && !this.props.isParkingFetchInProgress
       && this.props.allParkingsList.length === 0
       && (
-        <h3 className="NoParkingsWarning">
+        <h3 className={styles['NoParkingsWarning']}>
           No parkings nearby<br/>
           Try to get parkings for another location
         </h3>
