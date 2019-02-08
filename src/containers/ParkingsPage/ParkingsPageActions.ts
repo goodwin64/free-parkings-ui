@@ -8,6 +8,7 @@ import {
   PARKINGS_FETCH_START,
   CHECK_PARKOPEDIA_UPDATES_REQUEST,
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
+  CLEAR_FREE_SLOTS,
 } from './ParkingsPageConstants';
 import { PreparedParkings } from '../../interfaces/ResponseParkings';
 import { ParkopediaAvailability } from '../../interfaces/ParkopediaAvailability';
@@ -48,9 +49,15 @@ export type checkParkopediaUpdatesSuccessAction = ActionType<typeof checkParkope
 export type checkParkopediaUpdatesSuccessActionCreator = (parkopediaAvailability: ParkopediaAvailability) => checkParkopediaUpdatesSuccessAction;
 
 
+export const clearFreeSlots = () => action(CLEAR_FREE_SLOTS);
+export type clearFreeSlotsAction = ActionType<typeof clearFreeSlots>;
+export type clearFreeSlotsActionCreator = () => clearFreeSlotsAction;
+
+
 export type ParkingsPageActions = setParkingsPageCenterAction
   | fetchParkingsRequestAction
   | fetchParkingsStartAction
   | fetchParkingsSuccessAction
   | checkParkopediaUpdatesRequestAction
-  | checkParkopediaUpdatesSuccessAction;
+  | checkParkopediaUpdatesSuccessAction
+  | clearFreeSlotsAction;

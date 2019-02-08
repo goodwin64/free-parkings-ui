@@ -2,7 +2,9 @@ import {
   CHANGE_CENTER_LOCATION,
   PARKINGS_REQUEST_FOR_FETCH,
   PARKINGS_FETCH_SUCCESS,
-  PARKINGS_FETCH_START, CHECK_PARKOPEDIA_UPDATES_SUCCESS,
+  PARKINGS_FETCH_START,
+  CHECK_PARKOPEDIA_UPDATES_SUCCESS,
+  CLEAR_FREE_SLOTS,
 } from './ParkingsPageConstants';
 import { ParkingsPageActions } from './ParkingsPageActions';
 import { BaseConfigInitialState } from '../BaseConfigPage/BaseConfigReducer';
@@ -74,6 +76,13 @@ export default function parkingsPageReducer(
         lastParkingsCheckUpdatesCount: action.payload.updatesCount,
         isFetchInProgress: false,
       };
+    }
+    case CLEAR_FREE_SLOTS: {
+      return {
+        ...state,
+        freeParkings: ParkingsPageInitialState.freeParkings,
+        lastParkingsCheckTimestamp: ParkingsPageInitialState.lastParkingsCheckTimestamp,
+      }
     }
     default: {
       return state;
