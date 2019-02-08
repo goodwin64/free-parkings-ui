@@ -47,6 +47,7 @@ interface ParkingsPageOwnProps {
   radius: number,
   allParkingsList: ParkopediaParking[],
   freeParkingsList: FreeParking[],
+  clearFreeSlots: ParkingsPageActions.clearFreeSlotsActionCreator,
   fetchParkings: ParkingsPageActions.fetchParkingsRequestActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
@@ -150,6 +151,29 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     )
   }
 
+  renderControlButtons() {
+    return (
+      <div
+        className={styles['ParkingsControlButtonsContainer']}
+      >
+        <Button
+          onClick={this.props.fetchParkings}
+          disabled={this.props.isParkingFetchInProgress || this.props.isSearchRadiusTooBig}
+          className={styles['LoadParkingsButton']}
+        >
+          Load parkings
+        </Button>
+
+        <Button
+          onClick={this.props.clearFreeSlots}
+          className={styles['ClearFreeSlotsButton']}
+        >
+          Clear Free Slots
+        </Button>
+      </div>
+    )
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -167,17 +191,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
           }
           { this.renderNoParkingsWarning() }
         </div>
-        <div
-          className={styles['GetParkingsButtonContainer']}
-        >
-          <Button
-            onClick={this.props.fetchParkings}
-            disabled={this.props.isParkingFetchInProgress || this.props.isSearchRadiusTooBig}
-            className={styles['GetParkingsButton']}
-          >
-            LOAD PARKINGS
-          </Button>
-        </div>
+        { this.renderControlButtons() }
         <ParkingsLayer
           parkings={this.props.allParkingsList}
           freeParkings={this.props.freeParkingsList}
@@ -208,6 +222,7 @@ function mapStateToProps(state: RootReducer) {
 }
 
 const withConnect = connect(mapStateToProps, {
+  clearFreeSlots: ParkingsPageActions.clearFreeSlots,
   fetchParkings: ParkingsPageActions.fetchParkingsRequest,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,

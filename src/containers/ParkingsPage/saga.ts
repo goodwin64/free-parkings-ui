@@ -101,3 +101,13 @@ export function* checkForParkopediaUpdates() {
     yield put(fetchParkingsRequest());
   }
 }
+
+export function* clearFreeSlotsSaga() {
+  try {
+    yield call(fetch, `${backendEndpoint}/admin/cloudevents/drop`, {
+      method: 'POST',
+    });
+  } catch (e) {
+    console.error('Failed to clear free slots');
+  }
+}
