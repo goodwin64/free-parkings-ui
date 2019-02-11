@@ -2,13 +2,14 @@ import { action, ActionType } from 'typesafe-actions';
 
 import {
   CHANGE_CENTER_LOCATION,
-  PARKINGS_REQUEST_FOR_FETCH,
-  PARKINGS_FETCH_SUCCESS,
-  SYNCHRONIZE_LAT_LON,
-  PARKINGS_FETCH_START,
+  CHANGE_ZOOM_LEVEL,
   CHECK_PARKOPEDIA_UPDATES_REQUEST,
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
   CLEAR_FREE_SLOTS,
+  PARKINGS_FETCH_START,
+  PARKINGS_FETCH_SUCCESS,
+  PARKINGS_REQUEST_FOR_FETCH,
+  SYNCHRONIZE_LAT_LON,
 } from './ParkingsPageConstants';
 import { PreparedParkings } from '../../interfaces/ResponseParkings';
 import { ParkopediaAvailability } from '../../interfaces/ParkopediaAvailability';
@@ -17,6 +18,11 @@ import { ParkopediaAvailability } from '../../interfaces/ParkopediaAvailability'
 export const setParkingsPageCenter = (lat: number, lon: number) => action(CHANGE_CENTER_LOCATION, { lat, lon });
 export type setParkingsPageCenterAction = ActionType<typeof setParkingsPageCenter>;
 export type setParkingsPageCenterActionCreator = (lat: number, lon: number) => setParkingsPageCenterAction;
+
+
+export const setZoomLevel = (zoomLevel: number) => action(CHANGE_ZOOM_LEVEL, zoomLevel);
+export type setZoomLevelAction = ActionType<typeof setZoomLevel>;
+export type setZoomLevelActionCreator = (zoomLevel: number) => setZoomLevelAction;
 
 
 export const fetchParkingsStart = () => action(PARKINGS_FETCH_START);
@@ -55,9 +61,11 @@ export type clearFreeSlotsActionCreator = () => clearFreeSlotsAction;
 
 
 export type ParkingsPageActions = setParkingsPageCenterAction
+  | setZoomLevelAction
   | fetchParkingsRequestAction
   | fetchParkingsStartAction
   | fetchParkingsSuccessAction
   | checkParkopediaUpdatesRequestAction
   | checkParkopediaUpdatesSuccessAction
-  | clearFreeSlotsAction;
+  | clearFreeSlotsAction
+;

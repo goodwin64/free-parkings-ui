@@ -6,6 +6,7 @@ export interface BaseConfigState {
   readonly parkingSearchRadius: number,
   readonly startPointLat: number,
   readonly startPointLon: number,
+  readonly defaultZoomLevel: number,
   readonly sessionUid: string,
 }
 
@@ -13,6 +14,7 @@ export const BaseConfigInitialState: BaseConfigState = {
   parkingSearchRadius: BaseConfigConstants.INITIAL_SEARCH_RADIUS,
   startPointLat: BaseConfigConstants.PARIS_CENTER_LAT,
   startPointLon: BaseConfigConstants.PARIS_CENTER_LON,
+  defaultZoomLevel: 7,
   sessionUid: String(Math.random()).slice(2),
 };
 

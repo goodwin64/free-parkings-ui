@@ -5,6 +5,7 @@ import {
   PARKINGS_FETCH_START,
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
   CLEAR_FREE_SLOTS,
+  CHANGE_ZOOM_LEVEL,
 } from './ParkingsPageConstants';
 import { ParkingsPageActions } from './ParkingsPageActions';
 import { BaseConfigInitialState } from '../BaseConfigPage/BaseConfigReducer';
@@ -15,6 +16,7 @@ import { FreeParking } from '../../interfaces/FreeParking';
 export interface ParkingsPageState {
   readonly centerLat: number,
   readonly centerLon: number,
+  readonly zoomLevel: number,
   readonly lastParkingsCheckTimestamp: number,
   readonly lastParkingsCheckUpdatesCount: number,
   readonly isFetchInProgress: boolean,
@@ -26,6 +28,7 @@ export interface ParkingsPageState {
 export const ParkingsPageInitialState: ParkingsPageState = {
   centerLat: BaseConfigInitialState.startPointLat,
   centerLon: BaseConfigInitialState.startPointLon,
+  zoomLevel: BaseConfigInitialState.defaultZoomLevel,
   lastParkingsCheckTimestamp: 0,
   lastParkingsCheckUpdatesCount: 0,
   isFetchInProgress: false,
@@ -48,6 +51,12 @@ export default function parkingsPageReducer(
         lastParkingsCheckTimestamp: ParkingsPageInitialState.lastParkingsCheckTimestamp,
         lastParkingsCheckUpdatesCount: ParkingsPageInitialState.lastParkingsCheckUpdatesCount,
       };
+    }
+    case CHANGE_ZOOM_LEVEL: {
+      return {
+        ...state,
+        zoomLevel: action.payload,
+      }
     }
     case PARKINGS_REQUEST_FOR_FETCH: {
       return {
