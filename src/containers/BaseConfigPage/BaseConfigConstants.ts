@@ -11,3 +11,5 @@ export const MAX_SEARCH_RADIUS_TO_FETCH = 1000;
 export const INITIAL_SEARCH_RADIUS = 2000;
 export const PARIS_CENTER_LAT = 48.855796;
 export const PARIS_CENTER_LON = 2.356566;
+
+export const ZOOM_LEVEL_AFTER_SEARCH = 16.248; // ~600m search radius

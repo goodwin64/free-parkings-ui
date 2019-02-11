@@ -9,32 +9,25 @@ import Park4uMap from '../../components/Map/Map';
 import Header from '../../components/Header/Header';
 import ParkingsPage from '../ParkingsPage/ParkingsPage';
 import { RootReducer } from '../../store/rootReducer';
-import { configDomainSelector } from '../BaseConfigPage/selectors';
-import { geoCoordinatesSelector } from '../ParkingsPage/ParkingsPageSelectors';
-import { BaseConfigState } from '../BaseConfigPage/BaseConfigReducer';
+import { geoCoordinatesSelector, zoomLevelSelector } from '../ParkingsPage/ParkingsPageSelectors';
 import { setParkingsPageCenter, setParkingsPageCenterActionCreator } from '../ParkingsPage/ParkingsPageActions';
 import BaseConfigPage from '../BaseConfigPage/BaseConfigPage';
 
 import * as css from './App.module.css';
 import * as BaseConfigActions from '../BaseConfigPage/BaseConfigActions';
+import * as ParkingsPageActions from '../ParkingsPage/ParkingsPageActions';
 
 
 interface AppProps {
-  config: BaseConfigState,
+  zoomLevel: number,
   centerLatFromUrl: number,
   centerLonFromUrl: number,
   reCenter: setParkingsPageCenterActionCreator,
+  setZoomLevel: ParkingsPageActions.setZoomLevelActionCreator,
   setSearchRadius: BaseConfigActions.setBaseConfigRadiusActionCreator,
 }
 
 export class App extends React.Component<AppProps> {
-  constructor(props: AppProps) {
-    super(props);
-    this.state = {
-      centerLat: props.config.startPointLat,
-      centerLon: props.config.startPointLon,
-    };
-  }
 
   recalculateSearchRadius(map: MapboxGl.Map) {
     const bounds = map.getBounds();
@@ -58,6 +51,11 @@ export class App extends React.Component<AppProps> {
 
   onZoomEnd = (map: MapboxGl.Map) => {
     this.recalculateSearchRadius(map);
+    this.props.setZoomLevel(map.getZoom());
+  };
+
+  onMapLoad = (map: MapboxGl.Map) => {
+    this.recalculateSearchRadius(map);
   };
 
   render() {
@@ -69,6 +67,8 @@ export class App extends React.Component<AppProps> {
           centerLat={this.props.centerLatFromUrl}
           centerLon={this.props.centerLonFromUrl}
           onZoomEnd={this.onZoomEnd}
+          onMapLoad={this.onMapLoad}
+          zoomLevel={this.props.zoomLevel}
         >
           <Switch>
             <Route
@@ -97,14 +97,15 @@ export class App extends React.Component<AppProps> {
 
 function mapStateToProps(state: RootReducer) {
   return {
-    config: configDomainSelector(state),
     centerLatFromUrl: geoCoordinatesSelector(state).lat,
     centerLonFromUrl: geoCoordinatesSelector(state).lon,
+    zoomLevel: zoomLevelSelector(state),
   };
 }
 
 const withConnect = connect(mapStateToProps, {
   reCenter: setParkingsPageCenter,
+  setZoomLevel: ParkingsPageActions.setZoomLevel,
   setSearchRadius: BaseConfigActions.setSearchRadius,
 });
 

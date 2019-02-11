@@ -42,6 +42,8 @@ export const geoCoordinatesSelector = createSelector(
   },
 );
 
+export const zoomLevelSelector = (state: RootReducer) => state.parkingsPage.zoomLevel;
+
 const parkingsPageDomainSelector = (state: RootReducer) => state.parkingsPage;
 
 export const allParkingsSelector = createSelector(

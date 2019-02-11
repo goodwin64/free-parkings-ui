@@ -19,7 +19,7 @@ import { isSearchRadiusTooBigSelector, searchRadiusSelector } from '../BaseConfi
 import { wasFetchPerformedSelector } from './ParkingsPageSelectors';
 import withMap, { MapContextProps } from '../../components/Map/context';
 import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
-import { MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
+import { MAX_SEARCH_RADIUS_TO_FETCH, ZOOM_LEVEL_AFTER_SEARCH } from '../BaseConfigPage/BaseConfigConstants';
 import ParkingsLayer, { openPopup } from '../../components/LayerParkings/LayerParkings';
 import SelectedParkingPopup from '../../components/SelectedParkingPopup/SelectedParkingPopup';
 
@@ -47,6 +47,7 @@ interface ParkingsPageOwnProps {
   radius: number,
   allParkingsList: ParkopediaParking[],
   freeParkingsList: FreeParking[],
+  setZoomLevel: ParkingsPageActions.setZoomLevelActionCreator,
   clearFreeSlots: ParkingsPageActions.clearFreeSlotsActionCreator,
   fetchParkings: ParkingsPageActions.fetchParkingsRequestActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
@@ -64,7 +65,6 @@ interface ParkingsPageState {
   query: string;
   options: Place[];
   selected?: Place;
-  center: [number, number];
   selectedParking: ParkopediaParking | null,
 }
 
@@ -78,7 +78,6 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
       options: [],
       selected: undefined,
       selectedParking: null,
-      center: [props.MapboxMap.getCenter().lng, props.MapboxMap.getCenter().lat],
     };
   }
 
@@ -113,10 +112,8 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     const selected = this.state.options[index];
     const [selectedLon, selectedLat] = selected.center;
     this.props.setParkingsPageCenter(selectedLat, selectedLon);
-    this.setState({
-      selected,
-      center: selected.center,
-    });
+    this.props.setZoomLevel(ZOOM_LEVEL_AFTER_SEARCH);
+    this.setState(() => ({ selected }));
   };
 
   private onPoiSearch = (query: string) => {
@@ -126,6 +123,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 
   private onLatLonSearch = (lat: number, lon: number) => {
     this.props.setParkingsPageCenter(lat, lon);
+    this.props.setZoomLevel(ZOOM_LEVEL_AFTER_SEARCH);
   };
 
   openPopup: openPopup = (parking: ParkopediaParking) => {
@@ -222,6 +220,7 @@ function mapStateToProps(state: RootReducer) {
 }
 
 const withConnect = connect(mapStateToProps, {
+  setZoomLevel: ParkingsPageActions.setZoomLevel,
   clearFreeSlots: ParkingsPageActions.clearFreeSlots,
   fetchParkings: ParkingsPageActions.fetchParkingsRequest,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,

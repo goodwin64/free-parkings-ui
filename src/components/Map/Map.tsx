@@ -6,21 +6,24 @@ import ReactMapboxGl from 'react-mapbox-gl';
 import Loader from '../Loader/Loader';
 import { MapContext } from './context';
 import * as style from './Map.module.css';
-import { setParkingsPageCenterActionCreator } from '../../containers/ParkingsPage/ParkingsPageActions';
+import * as ParkingsPageActions from '../../containers/ParkingsPage/ParkingsPageActions';
 
 
 interface Park4uMapState {
   center: [number, number],
-  zoom: [number],
+  // don't use number primitive for this purpose - internal "react-mapbox-gl" optimizations
+  zoomLevel: [number];
   MapboxMapRef: (MapboxGl.Map | null),
 }
 
 interface Park4uMapProps {
   children?: any,
-  reCenter: setParkingsPageCenterActionCreator,
+  reCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
   onZoomEnd: (map: MapboxGl.Map) => void,
+  onMapLoad: (map: MapboxGl.Map) => void,
   centerLat: number,
   centerLon: number,
+  zoomLevel: number,
 }
 
 class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
@@ -42,7 +45,7 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
     super(props);
     this.state = {
       center: [props.centerLon, props.centerLat],
-      zoom: [7],
+      zoomLevel: [7],
       MapboxMapRef: null,
     };
   }
@@ -54,6 +57,12 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
         center: [nextProps.centerLon, nextProps.centerLat],
       });
     }
+    const isZoomLevelChanged = this.props.zoomLevel !== nextProps.zoomLevel;
+    if (isZoomLevelChanged) {
+      this.setState({
+        zoomLevel: [nextProps.zoomLevel],
+      });
+    }
   }
 
   onMoveEnd = (map: MapboxGl.Map) => {
@@ -63,6 +72,7 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
 
   onMapLoad = (map: MapboxGl.Map) => {
     this.setState(() => ({ MapboxMapRef: map }));
+    this.props.onMapLoad(map);
   };
 
   onZoomEnd = (map: MapboxGl.Map) => {
@@ -76,7 +86,7 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
           style={Park4uMap.stylesUrl}
           containerStyle={Park4uMap.mapStyle}
           center={this.state.center}
-          zoom={this.state.zoom}
+          zoom={this.state.zoomLevel}
           onMoveEnd={this.onMoveEnd}
           onStyleLoad={this.onMapLoad}
           onZoomEnd={this.onZoomEnd}
