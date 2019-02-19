@@ -4,7 +4,7 @@ import {
   PARKINGS_FETCH_SUCCESS,
   PARKINGS_FETCH_START,
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
-  CLEAR_FREE_SLOTS,
+  CLEAR_ALL_FREE_SLOTS,
   CHANGE_ZOOM_LEVEL,
 } from './ParkingsPageConstants';
 import { ParkingsPageActions } from './ParkingsPageActions';
@@ -86,7 +86,7 @@ export default function parkingsPageReducer(
         isFetchInProgress: false,
       };
     }
-    case CLEAR_FREE_SLOTS: {
+    case CLEAR_ALL_FREE_SLOTS: {
       return {
         ...state,
         freeParkings: ParkingsPageInitialState.freeParkings,

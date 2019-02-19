@@ -39,13 +39,7 @@ export class App extends React.Component<AppProps> {
       { units: 'meters' }
     );
     const halfScreen = totalWidth / 2;
-
-    let searchRadius = Math.floor(halfScreen);
-    if (halfScreen > 7500) {
-      searchRadius = 7500;
-    } else if (halfScreen < 100) {
-      searchRadius = 100;
-    }
+    const searchRadius = Math.floor(halfScreen);
     this.props.setSearchRadius(searchRadius);
   }
 

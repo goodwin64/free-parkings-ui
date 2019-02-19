@@ -2,6 +2,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { createStructuredSelector } from 'reselect';
 
 import { Place } from '../../interfaces/Place';
 import Park4uMap from '../../components/Map/Map';
@@ -9,19 +10,20 @@ import Search from '../../components/Search/Search';
 import Loader from '../../components/Loader/Loader';
 import Button from '../../components/Button/Button';
 import { RootReducer } from '../../store/rootReducer';
+import Sidebar from '../../components/Sidebar/Sidebar';
 import { MapboxPlace } from '../../interfaces/MapboxPlace';
 import { RouterProps } from '../../interfaces/RouterProps';
 import { FreeParking } from '../../interfaces/FreeParking';
 import { ParkopediaParking } from '../../interfaces/Parking';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import * as ParkingsPageSelectors from './ParkingsPageSelectors';
-import { isSearchRadiusTooBigSelector, searchRadiusSelector } from '../BaseConfigPage/selectors';
-import { wasFetchPerformedSelector } from './ParkingsPageSelectors';
 import withMap, { MapContextProps } from '../../components/Map/context';
+import * as BaseConfigActions from '../BaseConfigPage/BaseConfigActions';
+import * as BaseConfigSelectors from '../BaseConfigPage/BaseConfigSelectors';
 import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
-import { MAX_SEARCH_RADIUS_TO_FETCH, ZOOM_LEVEL_AFTER_SEARCH } from '../BaseConfigPage/BaseConfigConstants';
 import ParkingsLayer, { openPopup } from '../../components/LayerParkings/LayerParkings';
 import SelectedParkingPopup from '../../components/SelectedParkingPopup/SelectedParkingPopup';
+import { MAX_SEARCH_RADIUS_TO_FETCH, ZOOM_LEVEL_AFTER_SEARCH } from '../BaseConfigPage/BaseConfigConstants';
 
 import * as styles from './styles.module.css';
 
@@ -47,18 +49,25 @@ interface ParkingsPageOwnProps {
   radius: number,
   allParkingsList: ParkopediaParking[],
   freeParkingsList: FreeParking[],
-  setZoomLevel: ParkingsPageActions.setZoomLevelActionCreator,
-  clearFreeSlots: ParkingsPageActions.clearFreeSlotsActionCreator,
-  fetchParkings: ParkingsPageActions.fetchParkingsRequestActionCreator,
-  synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
-  setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
-  checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequestActionCreator,
   isParkingFetchInProgress: boolean,
   isSearchRadiusTooBig: boolean,
   wasFetchPerformedOnce: boolean,
+  isSidebarOpen: boolean,
 }
 
-interface ParkingsPageProps extends ParkingsPageOwnProps, RouterProps, MapContextProps {
+interface ParkingsPageDispatchProps {
+  openSidebar: BaseConfigActions.openSidebarActionCreator,
+  closeSidebar: BaseConfigActions.closeSidebarActionCreator,
+  setZoomLevel: ParkingsPageActions.setZoomLevelActionCreator,
+  fetchParkings: ParkingsPageActions.fetchParkingsRequestActionCreator,
+  synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
+  clearAllFreeSlots: ParkingsPageActions.clearAllFreeSlotsActionCreator,
+  clearVisibleFreeSlots: ParkingsPageActions.clearVisibleFreeSlotsActionCreator,
+  setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
+  checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequestActionCreator,
+}
+
+interface ParkingsPageProps extends ParkingsPageOwnProps, ParkingsPageDispatchProps, RouterProps, MapContextProps {
 }
 
 interface ParkingsPageState {
@@ -161,13 +170,6 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
         >
           Load parkings
         </Button>
-
-        <Button
-          onClick={this.props.clearFreeSlots}
-          className={styles['ClearFreeSlotsButton']}
-        >
-          Clear Free Slots
-        </Button>
       </div>
     )
   }
@@ -201,29 +203,50 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
           selectedParking={this.state.selectedParking}
           closePopup={this.closePopup}
         />
+        <Sidebar
+          isOpen={this.props.isSidebarOpen}
+          openSidebar={this.props.openSidebar}
+          closeSidebar={this.props.closeSidebar}
+        >
+          <Button
+            onClick={this.props.clearAllFreeSlots}
+            className={styles['ClearAllFreeSlotsButton']}
+          >
+            Clear All Free Slots
+          </Button>
+
+          <Button
+            onClick={this.props.clearVisibleFreeSlots}
+            className={styles['ClearVisibleFreeSlotsButton']}
+          >
+            Clear Visible Free Slots
+          </Button>
+        </Sidebar>
       </React.Fragment>
     );
   }
 }
 
-function mapStateToProps(state: RootReducer) {
-  return {
-    allParkingsList: ParkingsPageSelectors.allParkingsSelector(state),
-    freeParkingsList: ParkingsPageSelectors.freeParkingsSelector(state),
-    isParkingFetchInProgress: ParkingsPageSelectors.isParkingFetchInProgressSelector(state),
-    wasFetchPerformedOnce: wasFetchPerformedSelector(state),
-    centerLat: ParkingsPageSelectors.centerCoordinatesSelector(state).lat,
-    centerLon: ParkingsPageSelectors.centerCoordinatesSelector(state).lon,
-    radius: searchRadiusSelector(state),
-    isSearchRadiusTooBig: isSearchRadiusTooBigSelector(state),
-  };
-}
+const mapStateToProps = createStructuredSelector<RootReducer, ParkingsPageOwnProps>({
+  allParkingsList: ParkingsPageSelectors.allParkingsSelector,
+  freeParkingsList: ParkingsPageSelectors.freeParkingsSelector,
+  isParkingFetchInProgress: ParkingsPageSelectors.isParkingFetchInProgressSelector,
+  wasFetchPerformedOnce: ParkingsPageSelectors.wasFetchPerformedSelector,
+  centerLat: ParkingsPageSelectors.centerCoordinatesLatitudeSelector,
+  centerLon: ParkingsPageSelectors.centerCoordinatesLongitudeSelector,
+  radius: BaseConfigSelectors.searchRadiusSelector,
+  isSearchRadiusTooBig: BaseConfigSelectors.isSearchRadiusTooBigSelector,
+  isSidebarOpen: BaseConfigSelectors.isSidebarOpenSelector,
+});
 
 const withConnect = connect(mapStateToProps, {
+  openSidebar: BaseConfigActions.openSidebar,
+  closeSidebar: BaseConfigActions.closeSidebar,
   setZoomLevel: ParkingsPageActions.setZoomLevel,
-  clearFreeSlots: ParkingsPageActions.clearFreeSlots,
   fetchParkings: ParkingsPageActions.fetchParkingsRequest,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,
+  clearAllFreeSlots: ParkingsPageActions.clearAllFreeSlots,
+  clearVisibleFreeSlots: ParkingsPageActions.clearVisibleFreeSlots,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,
   checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequest,
 });

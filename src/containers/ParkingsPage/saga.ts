@@ -7,7 +7,7 @@ import {
   lastParkingsCheckTimestampSelector,
 } from './ParkingsPageSelectors';
 import { prepareParkings } from './adapters';
-import { searchRadiusSelector, sessionUidSelector } from '../BaseConfigPage/selectors';
+import { searchRadiusSelector, sessionUidSelector } from '../BaseConfigPage/BaseConfigSelectors';
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import {
@@ -102,12 +102,27 @@ export function* checkForParkopediaUpdates() {
   }
 }
 
-export function* clearFreeSlotsSaga() {
+export function* clearAllFreeSlotsSaga() {
   try {
     yield call(fetch, `${backendEndpoint}/admin/cloudevents/drop`, {
       method: 'POST',
     });
   } catch (e) {
-    console.error('Failed to clear free slots');
+    console.error('Failed to clear all free slots');
+  }
+}
+
+export function* clearVisibleFreeSlotsSaga() {
+  const { lat, lon } = yield select(centerCoordinatesSelector);
+  const radius = yield select(searchRadiusSelector);
+  const uid = yield select(sessionUidSelector);
+
+  try {
+    yield call(fetch, `${backendEndpoint}/admin/cloudevents/drop/area`, {
+      method: 'POST',
+      body: JSON.stringify({ lat, lon, radius, uid }),
+    });
+  } catch (e) {
+    console.error('Failed to clear visible free slots');
   }
 }

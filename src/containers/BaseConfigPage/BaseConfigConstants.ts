@@ -1,5 +1,7 @@
 export const BASE_CONFIG_RADIUS_SET = 'config/BASE_CONFIG_RADIUS_SET';
 export const BASE_CONFIG_RADIUS_RESET = 'config/BASE_CONFIG_RADIUS_RESET';
+export const BASE_CONFIG_OPEN_SIDEBAR = 'config/BASE_CONFIG_OPEN_SIDEBAR';
+export const BASE_CONFIG_CLOSE_SIDEBAR = 'config/BASE_CONFIG_CLOSE_SIDEBAR';
 
 /**
  * Used to detect whether to fetch parkings.

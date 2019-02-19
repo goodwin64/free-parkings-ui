@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 import { Search } from 'history';
 
 import { RootReducer } from '../../store/rootReducer';
-import { defaultLatLonSelector } from '../BaseConfigPage/selectors';
+import { defaultLatLonSelector } from '../BaseConfigPage/BaseConfigSelectors';
 
 export const routeLocationSelector = (state: RootReducer) => state.router.location;
 
@@ -72,6 +72,16 @@ export const centerCoordinatesSelector = createSelector(
     lat: parkingsPageDomain.centerLat,
     lon: parkingsPageDomain.centerLon,
   }),
+);
+
+export const centerCoordinatesLatitudeSelector = createSelector(
+  [centerCoordinatesSelector],
+  (centerCoordinates) => centerCoordinates.lat,
+);
+
+export const centerCoordinatesLongitudeSelector = createSelector(
+  [centerCoordinatesSelector],
+  (centerCoordinates) => centerCoordinates.lon,
 );
 
 export const lastParkingsCheckTimestampSelector = createSelector(

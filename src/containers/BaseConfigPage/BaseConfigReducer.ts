@@ -8,6 +8,7 @@ export interface BaseConfigState {
   readonly startPointLon: number,
   readonly defaultZoomLevel: number,
   readonly sessionUid: string,
+  readonly isSidebarOpen: boolean,
 }
 
 export const BaseConfigInitialState: BaseConfigState = {
@@ -16,6 +17,7 @@ export const BaseConfigInitialState: BaseConfigState = {
   startPointLon: BaseConfigConstants.STUTTGART_CENTER_LON,
   defaultZoomLevel: 7,
   sessionUid: String(Math.random()).slice(2),
+  isSidebarOpen: false,
 };
 
 
@@ -34,6 +36,18 @@ export default function baseConfigReducer(
       return {
         ...state,
         parkingSearchRadius: BaseConfigInitialState.parkingSearchRadius,
+      };
+    }
+    case BaseConfigConstants.BASE_CONFIG_OPEN_SIDEBAR: {
+      return {
+        ...state,
+        isSidebarOpen: true,
+      };
+    }
+    case BaseConfigConstants.BASE_CONFIG_CLOSE_SIDEBAR: {
+      return {
+        ...state,
+        isSidebarOpen: false,
       };
     }
     default: {

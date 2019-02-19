@@ -1,0 +1,32 @@
+.SidebarContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 40px;
+    position: absolute;
+    transition: transform 0.25s ease-in-out;
+    z-index: var(--zIndexSidebarContainer);
+}
+
+.SidebarContainerOpened {
+    transform: translateX(0%);
+}
+
+.SidebarContainerClosed {
+    transform: translateX(-100%);
+}
+
+.OpenSidebarButton,
+.CloseSidebarButton {
+    color: var(--colorAntiMain);
+    font-size: 60px;
+    outline: none;
+    position: absolute;
+    right: -50px;
+    top: 0;
+    width: 50px;
+}
+
+.CloseSidebarButton {
+    transform: rotate(180deg);
+}
