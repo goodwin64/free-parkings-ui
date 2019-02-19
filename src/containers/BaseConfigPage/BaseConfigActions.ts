@@ -1,13 +1,25 @@
 import { action, ActionType } from 'typesafe-actions';
 
-import { BASE_CONFIG_RADIUS_RESET, BASE_CONFIG_RADIUS_SET } from './BaseConfigConstants';
+import * as BaseConfigConstants from './BaseConfigConstants';
 
-export const setSearchRadius = (radius: number) => action(BASE_CONFIG_RADIUS_SET, radius);
+export const setSearchRadius = (radius: number) => action(BaseConfigConstants.BASE_CONFIG_RADIUS_SET, radius);
 export type setBaseConfigRadiusAction = ActionType<typeof setSearchRadius>;
 export type setBaseConfigRadiusActionCreator = (radius: number) => setBaseConfigRadiusAction;
 
-export const resetSearchRadius = () => action(BASE_CONFIG_RADIUS_RESET);
+export const resetSearchRadius = () => action(BaseConfigConstants.BASE_CONFIG_RADIUS_RESET);
 export type resetBaseConfigRadiusAction = ActionType<typeof resetSearchRadius>;
 
+export const openSidebar = () => action(BaseConfigConstants.BASE_CONFIG_OPEN_SIDEBAR);
+export type openSidebarAction = ActionType<typeof openSidebar>;
+export type openSidebarActionCreator = () => openSidebarAction;
 
-export type BaseConfigAction = setBaseConfigRadiusAction | resetBaseConfigRadiusAction;
+export const closeSidebar = () => action(BaseConfigConstants.BASE_CONFIG_CLOSE_SIDEBAR);
+export type closeSidebarAction = ActionType<typeof closeSidebar>;
+export type closeSidebarActionCreator = () => closeSidebarAction;
+
+
+export type BaseConfigAction = setBaseConfigRadiusAction
+  | resetBaseConfigRadiusAction
+  | openSidebarAction
+  | closeSidebarAction
+;

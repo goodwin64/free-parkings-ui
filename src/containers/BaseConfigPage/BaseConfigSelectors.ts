@@ -27,3 +27,8 @@ export const sessionUidSelector = createSelector(
   [configDomainSelector],
   (configDomain) => configDomain.sessionUid,
 );
+
+export const isSidebarOpenSelector = createSelector(
+  [configDomainSelector],
+  (configDomain) => configDomain.isSidebarOpen,
+);

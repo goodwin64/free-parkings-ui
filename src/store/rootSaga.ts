@@ -2,7 +2,8 @@ import { takeEvery, takeLatest, throttle } from 'redux-saga/effects';
 
 import {
   checkForParkopediaUpdates,
-  clearFreeSlotsSaga,
+  clearAllFreeSlotsSaga,
+  clearVisibleFreeSlotsSaga,
   fetchParkingsSaga,
   synchronizeLatLonSaga,
   updateUrlLatLonSaga,
@@ -10,7 +11,8 @@ import {
 import {
   CHANGE_CENTER_LOCATION,
   CHECK_PARKOPEDIA_UPDATES_REQUEST,
-  CLEAR_FREE_SLOTS,
+  CLEAR_ALL_FREE_SLOTS,
+  CLEAR_VISIBLE_FREE_SLOTS,
   PARKINGS_REQUEST_FOR_FETCH,
   SYNCHRONIZE_LAT_LON,
 } from '../containers/ParkingsPage/ParkingsPageConstants';
@@ -21,7 +23,8 @@ function* initSaga() {
   yield takeEvery(CHANGE_CENTER_LOCATION, updateUrlLatLonSaga);
   yield takeEvery(CHECK_PARKOPEDIA_UPDATES_REQUEST, checkForParkopediaUpdates);
   yield takeLatest(SYNCHRONIZE_LAT_LON, synchronizeLatLonSaga);
-  yield takeEvery(CLEAR_FREE_SLOTS, clearFreeSlotsSaga);
+  yield takeEvery(CLEAR_ALL_FREE_SLOTS, clearAllFreeSlotsSaga);
+  yield takeEvery(CLEAR_VISIBLE_FREE_SLOTS, clearVisibleFreeSlotsSaga);
 }
 
 export default initSaga;

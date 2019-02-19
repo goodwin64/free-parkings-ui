@@ -13,6 +13,7 @@
 
   --zIndexCenterMarker: 2;
   --zIndexSearchContainer: 4;
+  --zIndexSidebarContainer: 5;
 }
 
 body {

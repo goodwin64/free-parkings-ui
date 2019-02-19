@@ -5,7 +5,8 @@ import {
   CHANGE_ZOOM_LEVEL,
   CHECK_PARKOPEDIA_UPDATES_REQUEST,
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
-  CLEAR_FREE_SLOTS,
+  CLEAR_ALL_FREE_SLOTS,
+  CLEAR_VISIBLE_FREE_SLOTS,
   PARKINGS_FETCH_START,
   PARKINGS_FETCH_SUCCESS,
   PARKINGS_REQUEST_FOR_FETCH,
@@ -55,9 +56,14 @@ export type checkParkopediaUpdatesSuccessAction = ActionType<typeof checkParkope
 export type checkParkopediaUpdatesSuccessActionCreator = (parkopediaAvailability: ParkopediaAvailability) => checkParkopediaUpdatesSuccessAction;
 
 
-export const clearFreeSlots = () => action(CLEAR_FREE_SLOTS);
-export type clearFreeSlotsAction = ActionType<typeof clearFreeSlots>;
-export type clearFreeSlotsActionCreator = () => clearFreeSlotsAction;
+export const clearAllFreeSlots = () => action(CLEAR_ALL_FREE_SLOTS);
+export type clearAllFreeSlotsAction = ActionType<typeof clearAllFreeSlots>;
+export type clearAllFreeSlotsActionCreator = () => clearAllFreeSlotsAction;
+
+
+export const clearVisibleFreeSlots = () => action(CLEAR_VISIBLE_FREE_SLOTS);
+export type clearVisibleFreeSlotsAction = ActionType<typeof clearVisibleFreeSlots>;
+export type clearVisibleFreeSlotsActionCreator = () => clearVisibleFreeSlotsAction;
 
 
 export type ParkingsPageActions = setParkingsPageCenterAction
@@ -67,5 +73,6 @@ export type ParkingsPageActions = setParkingsPageCenterAction
   | fetchParkingsSuccessAction
   | checkParkopediaUpdatesRequestAction
   | checkParkopediaUpdatesSuccessAction
-  | clearFreeSlotsAction
+  | clearAllFreeSlotsAction
+  | clearVisibleFreeSlotsAction
 ;
