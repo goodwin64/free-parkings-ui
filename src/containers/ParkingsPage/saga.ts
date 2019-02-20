@@ -125,4 +125,6 @@ export function* clearVisibleFreeSlotsSaga() {
   } catch (e) {
     console.error('Failed to clear visible free slots');
   }
+
+  yield put(fetchParkingsRequest());
 }
