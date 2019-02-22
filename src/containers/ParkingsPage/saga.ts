@@ -121,6 +121,10 @@ export function* clearVisibleFreeSlotsSaga() {
     yield call(fetch, `${backendEndpoint}/admin/cloudevents/drop/area`, {
       method: 'POST',
       body: JSON.stringify({ lat, lon, radius, uid }),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
     });
   } catch (e) {
     console.error('Failed to clear visible free slots');
