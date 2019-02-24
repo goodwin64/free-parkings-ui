@@ -31,15 +31,14 @@ export class App extends React.Component<AppProps> {
 
   recalculateSearchRadius(map: MapboxGl.Map) {
     const bounds = map.getBounds();
-    const [west, east, center] = [bounds.getWest(), bounds.getEast(), bounds.getCenter()];
+    const [northWest, center] = [bounds.getNorthWest(), bounds.getCenter()];
 
-    const totalWidth = distance(
-      [west, center.lat],
-      [east, center.lat],
+    const halfScreenDiagonal = distance(
+      [northWest.lng, northWest.lat],
+      [center.lng, center.lat],
       { units: 'meters' }
     );
-    const halfScreen = totalWidth / 2;
-    const searchRadius = Math.floor(halfScreen);
+    const searchRadius = Math.floor(halfScreenDiagonal);
     this.props.setSearchRadius(searchRadius);
   }
 
