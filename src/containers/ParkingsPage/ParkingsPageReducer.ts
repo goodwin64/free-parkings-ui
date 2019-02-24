@@ -9,7 +9,7 @@ import {
 } from './ParkingsPageConstants';
 import { ParkingsPageActions } from './ParkingsPageActions';
 import { BaseConfigInitialState } from '../BaseConfigPage/BaseConfigReducer';
-import { ParkopediaParking } from '../../interfaces/Parking';
+import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
 import { FreeParking } from '../../interfaces/FreeParking';
 
 

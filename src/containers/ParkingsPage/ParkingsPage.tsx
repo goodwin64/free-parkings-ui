@@ -14,7 +14,7 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import { MapboxPlace } from '../../interfaces/MapboxPlace';
 import { RouterProps } from '../../interfaces/RouterProps';
 import { FreeParking } from '../../interfaces/FreeParking';
-import { ParkopediaParking } from '../../interfaces/Parking';
+import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
 import * as ParkingsPageActions from './ParkingsPageActions';
 import * as ParkingsPageSelectors from './ParkingsPageSelectors';
 import withMap, { MapContextProps } from '../../components/Map/context';
@@ -74,7 +74,7 @@ interface ParkingsPageState {
   query: string;
   options: Place[];
   selected?: Place;
-  selectedParking: ParkopediaParking | null,
+  selectedParking: ParkopediaParking | FreeParking | null,
 }
 
 class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState> {
@@ -135,7 +135,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     this.props.setZoomLevel(ZOOM_LEVEL_AFTER_SEARCH);
   };
 
-  openPopup: openPopup = (parking: ParkopediaParking) => {
+  openPopup: openPopup = (parking: ParkopediaParking | FreeParking) => {
     this.setState({ selectedParking: parking });
   };
 

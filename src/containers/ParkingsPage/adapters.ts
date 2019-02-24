@@ -1,11 +1,11 @@
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 
-import { ParkopediaParking} from '../../interfaces/Parking';
+import { PARKOPEDIA_PARKING_TYPE, ParkopediaParking } from '../../interfaces/ParkopediaParking';
 import { PointGeometry } from '../../interfaces/PointGeometry';
-import { ResponseParkopediaParking } from '../../interfaces/ResponseParkopediaParking';
+import { ResponseParkopediaParking } from '../../interfaces/ParkopediaParking';
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
-import { FreeParking, ResponseFreeParking } from '../../interfaces/FreeParking';
+import { FREE_PARKING_TYPE, FreeParking, ResponseFreeParking } from '../../interfaces/FreeParking';
 
 
 export function prepareParkings(
@@ -41,12 +41,13 @@ function prepareFreeParkings(freeParkings: ResponseFreeParking[]): FreeParking[]
 
 function prepareParkopediaParkingSlot(parkingSlot: ResponseParkopediaParking): ParkopediaParking {
   let preparedParking: ParkopediaParking = {
-    id: -1,
+    id: '-1',
     parkingGeometry: [],
     costPerHour: '',
     maxStayDuration: 0,
     restrictions: [],
     features: [],
+    parkingType: PARKOPEDIA_PARKING_TYPE,
   };
 
   if (isArray(parkingSlot.parkingGeometry)) {
@@ -81,8 +82,12 @@ function prepareParkopediaParkingSlot(parkingSlot: ResponseParkopediaParking): P
 
 function prepareFreeParkingSlot(parkingSlot: ResponseFreeParking): FreeParking {
   let preparedFreeParking: FreeParking = {
-    id: -1,
+    id: '-1',
     parkingGeometry: [],
+    parkingType: FREE_PARKING_TYPE,
+    slotOrientation: 'parallel',
+    matched: false,
+    slotLength: 'N/A',
   };
 
   if (isArray(parkingSlot.freeSlotsGeometry)) {
@@ -95,6 +100,18 @@ function prepareFreeParkingSlot(parkingSlot: ResponseFreeParking): FreeParking {
 
   if (parkingSlot.id) {
     preparedFreeParking.id = parkingSlot.id;
+  }
+
+  if (parkingSlot.slotOrientation) {
+    preparedFreeParking.slotOrientation = parkingSlot.slotOrientation;
+  }
+
+  if (parkingSlot.matched) {
+    preparedFreeParking.matched = parkingSlot.matched;
+  }
+
+  if (parkingSlot.slotLength) {
+    preparedFreeParking.slotLength = parkingSlot.slotLength;
   }
 
   return preparedFreeParking;

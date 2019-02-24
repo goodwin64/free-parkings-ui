@@ -1,6 +1,6 @@
-import { ParkopediaParking} from './Parking';
+import { ParkopediaParking} from './ParkopediaParking';
 import { FreeParking, ResponseFreeParking } from './FreeParking';
-import { ResponseParkopediaParking } from './ResponseParkopediaParking';
+import { ResponseParkopediaParking } from './ParkopediaParking';
 
 
 export interface ResponseParkings {
