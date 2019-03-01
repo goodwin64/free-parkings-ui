@@ -7,6 +7,7 @@ import Loader from '../Loader/Loader';
 import { MapContext } from './context';
 import * as style from './Map.module.css';
 import * as ParkingsPageActions from '../../containers/ParkingsPage/ParkingsPageActions';
+import { DEFAULT_ZOOM_LEVEL } from '../../containers/BaseConfigPage/BaseConfigConstants';
 
 
 interface Park4uMapState {
@@ -45,7 +46,7 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
     super(props);
     this.state = {
       center: [props.centerLon, props.centerLat],
-      zoomLevel: [7],
+      zoomLevel: [DEFAULT_ZOOM_LEVEL],
       MapboxMapRef: null,
     };
   }

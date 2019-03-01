@@ -23,7 +23,7 @@ import * as BaseConfigSelectors from '../BaseConfigPage/BaseConfigSelectors';
 import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
 import ParkingsLayer, { openPopup } from '../../components/LayerParkings/LayerParkings';
 import SelectedParkingPopup from '../../components/SelectedParkingPopup/SelectedParkingPopup';
-import { MAX_SEARCH_RADIUS_TO_FETCH, ZOOM_LEVEL_AFTER_SEARCH } from '../BaseConfigPage/BaseConfigConstants';
+import { MAX_SEARCH_RADIUS_TO_FETCH, DEFAULT_ZOOM_LEVEL } from '../BaseConfigPage/BaseConfigConstants';
 
 import * as styles from './styles.module.css';
 
@@ -121,7 +121,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     const selected = this.state.options[index];
     const [selectedLon, selectedLat] = selected.center;
     this.props.setParkingsPageCenter(selectedLat, selectedLon);
-    this.props.setZoomLevel(ZOOM_LEVEL_AFTER_SEARCH);
+    this.props.setZoomLevel(DEFAULT_ZOOM_LEVEL);
     this.setState(() => ({ selected }));
   };
 
@@ -132,7 +132,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 
   private onLatLonSearch = (lat: number, lon: number) => {
     this.props.setParkingsPageCenter(lat, lon);
-    this.props.setZoomLevel(ZOOM_LEVEL_AFTER_SEARCH);
+    this.props.setZoomLevel(DEFAULT_ZOOM_LEVEL);
   };
 
   openPopup: openPopup = (parking: ParkopediaParking | FreeParking) => {

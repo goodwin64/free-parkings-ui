@@ -14,4 +14,4 @@ export const INITIAL_SEARCH_RADIUS = 2000;
 export const STUTTGART_CENTER_LAT = 48.95851141119337;
 export const STUTTGART_CENTER_LON = 9.133532296726912;
 
-export const ZOOM_LEVEL_AFTER_SEARCH = 16.248; // ~600m search radius
+export const DEFAULT_ZOOM_LEVEL = 16.248; // ~600m search radius
