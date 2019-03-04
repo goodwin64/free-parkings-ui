@@ -1,7 +1,6 @@
 .SidebarContainer {
     display: flex;
     flex-direction: column;
-    height: 100%;
     padding: 20px 40px;
     position: absolute;
     transition: transform 0.25s ease-in-out;

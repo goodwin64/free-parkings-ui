@@ -2,6 +2,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import { ZoomControl } from 'react-mapbox-gl';
 import { createStructuredSelector } from 'reselect';
 
 import { Place } from '../../interfaces/Place';
@@ -222,6 +223,9 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
             Clear Visible Free Slots
           </Button>
         </Sidebar>
+        <ZoomControl
+          position="bottom-right"
+        />
       </React.Fragment>
     );
   }
