@@ -1,1 +1,1 @@
-export const backendEndpoint = 'http://34.247.51.123/api';
+export const backendEndpoint = 'https://parkings-app.herokuapp.com';
