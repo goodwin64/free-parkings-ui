@@ -1,33 +1,74 @@
-import { Route, Switch } from 'react-router';
-import BaseConfigPage from '../../containers/BaseConfigPage/BaseConfigPage';
-import { Link } from 'react-router-dom';
 import React from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { createStructuredSelector } from 'reselect';
+
+import { userSelector } from '../../containers/UserPage/selectors';
+import { RootReducer } from '../../store/rootReducer';
+import { User } from '../../interfaces/User';
+import * as styles from './Header.module.css';
 
 
-export default class Header extends React.PureComponent {
+interface HeaderOwnProps {
+  user: User,
+}
+interface HeaderState {}
+
+class Header extends React.PureComponent<HeaderOwnProps, HeaderState> {
+  static renderLogo() {
+    return (
+      <h1 className={styles['HeaderLogo']}>
+        F<span className={styles['HeaderLogoFull']}>ree</span>
+        {' '}
+        P<span className={styles['HeaderLogoFull']}>arkings</span>
+      </h1>
+    );
+  }
+
+  renderUserPanel() {
+    return (
+      <section className={styles['HeaderUserPanel']}>
+        {
+          this.props.user.avatarUrl && (
+            <img
+              src={this.props.user.avatarUrl}
+              alt=""
+              className={styles['HeaderUserPanelAvatar']}
+            />
+          )
+        }
+        {
+          this.props.user.isAuthorized && (
+            <Link
+              to="/user-dashboard"
+            >
+              {this.props.user.name}
+            </Link>
+          )
+        }
+      </section>
+    );
+  }
+
   render() {
     return (
-      <header>
-        <Switch>
-          <Route
-            exact
-            path="/config"
-            // @ts-ignore
-            component={BaseConfigPage}
-          />
-          <Route
-            path="/"
-            render={() => (
-              <Link
-                to="/config"
-                style={{ position: 'absolute' }}
-              >
-                <button>config</button>
-              </Link>
-            )}
-          />
-        </Switch>
+      <header className={styles['HeaderContainer']}>
+        { Header.renderLogo() }
+        { this.renderUserPanel() }
       </header>
     )
   }
 }
+
+const mapStateToProps = createStructuredSelector<RootReducer, HeaderOwnProps>({
+  user: userSelector,
+});
+
+const mapDispatchToProps = {};
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+
+export default compose(
+  withConnect,
+)(Header);

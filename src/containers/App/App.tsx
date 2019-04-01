@@ -54,7 +54,7 @@ export class App extends React.Component<AppProps> {
   render() {
     return (
       <main className={css['AppContainer']}>
-        {false && <Header/>}
+        <Header/>
         <Park4uMap
           reCenter={this.props.reCenter}
           centerLat={this.props.centerLatFromUrl}
