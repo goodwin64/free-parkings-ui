@@ -1,6 +1,8 @@
 import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import * as MapboxGl from 'mapbox-gl';
+import { distance } from '@turf/turf';
 import { withRouter } from 'react-router';
 import { ZoomControl } from 'react-mapbox-gl';
 import { createStructuredSelector } from 'reselect';
@@ -54,6 +56,7 @@ interface ParkingsPageOwnProps {
   isSearchRadiusTooBig: boolean,
   wasFetchPerformedOnce: boolean,
   isSidebarOpen: boolean,
+  zoomLevel: number,
 }
 
 interface ParkingsPageDispatchProps {
@@ -61,6 +64,7 @@ interface ParkingsPageDispatchProps {
   closeSidebar: BaseConfigActions.closeSidebarActionCreator,
   setZoomLevel: ParkingsPageActions.setZoomLevelActionCreator,
   fetchParkings: ParkingsPageActions.fetchParkingsRequestActionCreator,
+  setSearchRadius: BaseConfigActions.setSearchRadiusActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   clearAllFreeSlots: ParkingsPageActions.clearAllFreeSlotsActionCreator,
   clearVisibleFreeSlots: ParkingsPageActions.clearVisibleFreeSlotsActionCreator,
@@ -94,9 +98,9 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
   componentDidMount(): void {
     this.props.synchronizeLatLon();
     this.props.fetchParkings();
-    setInterval(() => {
-      this.props.checkParkopediaUpdates();
-    }, 5000);
+    // setInterval(() => {
+    //   this.props.checkParkopediaUpdates();
+    // }, 5000);
   }
 
   private fetchPlaces = (query: string) => {
@@ -144,6 +148,28 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     this.setState({ selectedParking: null });
   };
 
+  recalculateSearchRadius(map: MapboxGl.Map) {
+    const bounds = map.getBounds();
+    const [northWest, center] = [bounds.getNorthWest(), bounds.getCenter()];
+
+    const halfScreenDiagonal = distance(
+      [northWest.lng, northWest.lat],
+      [center.lng, center.lat],
+      { units: 'meters' },
+    );
+    const searchRadius = Math.floor(halfScreenDiagonal);
+    this.props.setSearchRadius(searchRadius);
+  }
+
+  onZoomEnd = (map: MapboxGl.Map) => {
+    this.recalculateSearchRadius(map);
+    this.props.setZoomLevel(map.getZoom());
+  };
+
+  onMapLoad = (map: MapboxGl.Map) => {
+    this.recalculateSearchRadius(map);
+  };
+
   renderNoParkingsWarning() {
     return (
       this.props.wasFetchPerformedOnce
@@ -156,7 +182,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
           Try to get parkings for another location
         </h3>
       )
-    )
+    );
   }
 
   renderControlButtons() {
@@ -172,12 +198,19 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
           Load parkings
         </Button>
       </div>
-    )
+    );
   }
 
   render() {
     return (
-      <React.Fragment>
+      <Park4uMap
+        reCenter={this.props.setParkingsPageCenter}
+        centerLat={this.props.centerLat}
+        centerLon={this.props.centerLon}
+        onZoomEnd={this.onZoomEnd}
+        onMapLoad={this.onMapLoad}
+        zoomLevel={this.props.zoomLevel}
+      >
         <Search
           onPoiSearch={this.onPoiSearch}
           onSelectItem={this.onSelectItem}
@@ -190,13 +223,13 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
               ? <Loader/>
               : <CursorMapCenter isSearchRadiusTooBig={this.props.isSearchRadiusTooBig}/>
           }
-          { this.renderNoParkingsWarning() }
+          {this.renderNoParkingsWarning()}
         </div>
-        { this.renderControlButtons() }
+        {this.renderControlButtons()}
         <ParkingsLayer
           parkings={this.props.allParkingsList}
           freeParkings={this.props.freeParkingsList}
-          zoomLevel={this.props.MapboxMap.getZoom()}
+          zoomLevel={this.props.zoomLevel}
           openPopup={this.openPopup}
           closePopup={this.closePopup}
         />
@@ -226,27 +259,29 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
         <ZoomControl
           position="bottom-right"
         />
-      </React.Fragment>
+      </Park4uMap>
     );
   }
 }
 
 const mapStateToProps = createStructuredSelector<RootReducer, ParkingsPageOwnProps>({
+  radius: BaseConfigSelectors.searchRadiusSelector,
+  zoomLevel: ParkingsPageSelectors.zoomLevelSelector,
+  isSidebarOpen: BaseConfigSelectors.isSidebarOpenSelector,
   allParkingsList: ParkingsPageSelectors.allParkingsSelector,
   freeParkingsList: ParkingsPageSelectors.freeParkingsSelector,
-  isParkingFetchInProgress: ParkingsPageSelectors.isParkingFetchInProgressSelector,
-  wasFetchPerformedOnce: ParkingsPageSelectors.wasFetchPerformedSelector,
   centerLat: ParkingsPageSelectors.centerCoordinatesLatitudeSelector,
   centerLon: ParkingsPageSelectors.centerCoordinatesLongitudeSelector,
-  radius: BaseConfigSelectors.searchRadiusSelector,
   isSearchRadiusTooBig: BaseConfigSelectors.isSearchRadiusTooBigSelector,
-  isSidebarOpen: BaseConfigSelectors.isSidebarOpenSelector,
+  wasFetchPerformedOnce: ParkingsPageSelectors.wasFetchPerformedSelector,
+  isParkingFetchInProgress: ParkingsPageSelectors.isParkingFetchInProgressSelector,
 });
 
 const withConnect = connect(mapStateToProps, {
   openSidebar: BaseConfigActions.openSidebar,
   closeSidebar: BaseConfigActions.closeSidebar,
   setZoomLevel: ParkingsPageActions.setZoomLevel,
+  setSearchRadius: BaseConfigActions.setSearchRadius,
   fetchParkings: ParkingsPageActions.fetchParkingsRequest,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,
   clearAllFreeSlots: ParkingsPageActions.clearAllFreeSlots,

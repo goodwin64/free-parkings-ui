@@ -30,21 +30,30 @@ class Header extends React.PureComponent<HeaderOwnProps, HeaderState> {
     return (
       <section className={styles['HeaderUserPanel']}>
         {
-          this.props.user.avatarUrl && (
-            <img
-              src={this.props.user.avatarUrl}
-              alt=""
-              className={styles['HeaderUserPanelAvatar']}
-            />
-          )
-        }
-        {
           this.props.user.isAuthorized && (
             <Link
               to="/user-dashboard"
             >
               {this.props.user.name}
             </Link>
+          )
+        }
+        {
+          this.props.user.isAuthorized && (
+            <Link
+              to="/login"
+            >
+              Logout
+            </Link>
+          )
+        }
+        {
+          this.props.user.avatarUrl && (
+            <img
+              src={this.props.user.avatarUrl}
+              alt=""
+              className={styles['HeaderUserPanelAvatar']}
+            />
           )
         }
       </section>

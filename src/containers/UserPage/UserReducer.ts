@@ -6,7 +6,7 @@ export interface UserState extends User {
 
 export const UserPageInitialState: UserState = {
   avatarUrl: 'https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png',
-  name: '',
+  name: 'Max',
   gender: undefined,
   isAuthorized: true,
 };

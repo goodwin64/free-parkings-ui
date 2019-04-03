@@ -22,14 +22,7 @@ import { ResponseParkopediaAvailability } from '../../interfaces/ResponseParkope
 
 
 async function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
-  return fetch(`${backendEndpoint}/area/update`, {
-    method: 'POST',
-    body: JSON.stringify({ lat, lon, radius, uid }),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
+  return fetch(`${backendEndpoint}/parkings`)
     .then((response) => response.json());
 }
 

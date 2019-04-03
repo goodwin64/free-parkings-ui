@@ -9,6 +9,7 @@
     "history": "^4.7.2",
     "lodash": "^4.17.11",
     "mapbox-gl": "^0.52.0",
+    "path": "^0.12.7",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-mapbox-gl": "^4.0.2",

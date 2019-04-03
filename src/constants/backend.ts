@@ -1,1 +1,1 @@
-export const backendEndpoint = 'https://parkings-app.herokuapp.com';
+export const backendEndpoint = 'https://free-parkings-api.herokuapp.com';
