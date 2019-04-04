@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700');
 
 :root {
-  --colorMainText: #1e1e1e;
+  --colorMainText: #333333;
   --colorExtraText: #757575;
   --colorGreyPopup: #d2d2d2;
   --colorAccent1: #7ceb7e;
@@ -19,7 +19,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 * {
