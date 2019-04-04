@@ -1,6 +1,5 @@
 .HeaderContainer {
-    height: 50px;
-    background-color: var(--colorAccent1);
+    background-color: var(--colorMainText);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -9,6 +8,7 @@
 .HeaderLogo {
     font-size: 36px;
     cursor: default;
+    color: var(--colorAccent1);
 }
 
 .HeaderLogoFull {

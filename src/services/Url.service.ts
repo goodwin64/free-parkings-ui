@@ -5,8 +5,11 @@ export default class UrlService {
     return '/';
   }
 
-  public static get parkings() {
-    console.log(path.join(UrlService.rootUrl, '/parkings'));
+  public static get parkingsPageUrl() {
     return path.join(UrlService.rootUrl, '/parkings');
+  }
+
+  public static get loginPageUrl() {
+    return path.join(UrlService.rootUrl, '/login');
   }
 }

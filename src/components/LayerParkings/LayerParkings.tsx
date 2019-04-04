@@ -52,7 +52,7 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
         ? 'transparent'
         : isFreeParking
           ? COLORS.greenParking
-          : COLORS.blueParking
+          : COLORS.colorAccent4
     );
 
     return {

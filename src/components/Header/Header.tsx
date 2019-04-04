@@ -8,6 +8,7 @@ import { userSelector } from '../../containers/UserPage/selectors';
 import { RootReducer } from '../../store/rootReducer';
 import { User } from '../../interfaces/User';
 import * as styles from './Header.module.css';
+import UrlService from '../../services/Url.service';
 
 
 interface HeaderOwnProps {
@@ -41,7 +42,7 @@ class Header extends React.PureComponent<HeaderOwnProps, HeaderState> {
         {
           this.props.user.isAuthorized && (
             <Link
-              to="/login"
+              to={UrlService.loginPageUrl}
             >
               Logout
             </Link>

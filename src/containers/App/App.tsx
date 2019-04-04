@@ -4,9 +4,12 @@ import { Redirect, Route, Switch } from 'react-router';
 import * as css from './App.module.css';
 import LoginPage from '../LoginPage/LoginPage';
 import Header from '../../components/Header/Header';
-import ParkingsPage from '../ParkingsPage/ParkingsPage';
-import BaseConfigPage from '../BaseConfigPage/BaseConfigPage';
 import UrlService from '../../services/Url.service';
+
+// @ts-ignore
+const ParkingsPage = React.lazy(() => import('../ParkingsPage/ParkingsPage'));
+// @ts-ignore
+const BaseConfigPage = React.lazy(() => import('../BaseConfigPage/BaseConfigPage'));
 
 
 interface AppProps {}
@@ -16,37 +19,33 @@ export class App extends React.Component<AppProps> {
     return (
       <main className={css['AppContainer']}>
         <Header/>
-        <Switch>
-          <Route
-            exact
-            path="/config"
-            // @ts-ignore
-            component={BaseConfigPage}
-          />
-          <Route
-            // path="/parkings"
-            path={UrlService.parkings}
-
-            // @ts-ignore
-            component={ParkingsPage}
-          />
-          <Route
-            path="/login"
-            component={LoginPage}
-          />
-          <Redirect
-            exact
-            path="/"
-            to="/parkings"
-          />
-        </Switch>
+        <React.Suspense fallback={<div>Loading...</div>}>
+          <Switch>
+            <Route
+              exact
+              path="/config"
+              // @ts-ignore
+              component={BaseConfigPage}
+            />
+            <Route
+              path={UrlService.parkingsPageUrl}
+              // @ts-ignore
+              component={ParkingsPage}
+            />
+            <Route
+              path={UrlService.loginPageUrl}
+              component={LoginPage}
+            />
+            <Redirect
+              exact
+              path="/"
+              to="/parkings"
+            />
+          </Switch>
+        </React.Suspense>
       </main>
     );
   }
 }
-
-// export default compose(
-//   withRouter,
-// )(App);
 
 export default App;
