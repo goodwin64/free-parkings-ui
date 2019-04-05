@@ -1,4 +1,4 @@
-import { takeEvery, takeLatest, throttle } from 'redux-saga/effects';
+import { all, takeEvery, takeLatest, throttle } from 'redux-saga/effects';
 
 import {
   checkForParkopediaUpdates,
@@ -16,6 +16,7 @@ import {
   PARKINGS_REQUEST_FOR_FETCH,
   SYNCHRONIZE_LAT_LON,
 } from '../containers/ParkingsPage/ParkingsPageConstants';
+import loginPageSagas from '../containers/LoginPage/saga';
 
 
 function* initSaga() {
@@ -25,6 +26,9 @@ function* initSaga() {
   yield takeLatest(SYNCHRONIZE_LAT_LON, synchronizeLatLonSaga);
   yield takeEvery(CLEAR_ALL_FREE_SLOTS, clearAllFreeSlotsSaga);
   yield takeEvery(CLEAR_VISIBLE_FREE_SLOTS, clearVisibleFreeSlotsSaga);
+  yield all([
+    ...loginPageSagas,
+  ]);
 }
 
 export default initSaga;

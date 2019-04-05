@@ -1,7 +1,11 @@
-import React, { FormEvent } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 
 import FormsValidatorService from '../../services/FormsValidator.service';
 import * as styled from './LoginPage.styled';
+import { signinUser, signinUserActionCreator } from './LoginPageActions';
 
 
 interface LoginPageState {
@@ -14,10 +18,16 @@ interface LoginPageState {
   passwordVisible: boolean,
 }
 
-class LoginPage extends React.PureComponent<any, LoginPageState> {
+interface LoginPageDispatchProps {
+  signinUser: signinUserActionCreator,
+}
+
+interface LoginPageProps extends LoginPageDispatchProps {}
+
+class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
   static propTypes = {
-    // signinUser: PropTypes.func.isRequired,
-    // inProgress: PropTypes.bool.isRequired,
+    signinUser: PropTypes.func.isRequired,
+    inProgress: PropTypes.bool.isRequired,
   };
 
   state: LoginPageState = {
@@ -60,8 +70,7 @@ class LoginPage extends React.PureComponent<any, LoginPageState> {
         emailTouched: false,
         passwordTouched: false,
       });
-      // this.props.signinUser(this.state.email, this.state.password);
-      console.log('signinUser', this.state.email, this.state.password);
+      this.props.signinUser(this.state.email, this.state.password);
     }
   };
 
@@ -91,7 +100,7 @@ class LoginPage extends React.PureComponent<any, LoginPageState> {
     }
   };
 
-  togglePasswordVisibility = (e: FormEvent) => {
+  togglePasswordVisibility = (e: React.FormEvent) => {
     e.preventDefault();
     this.setState((prevState) => ({
       passwordVisible: !prevState.passwordVisible,
@@ -105,7 +114,9 @@ class LoginPage extends React.PureComponent<any, LoginPageState> {
           <styled.LoginFormHeader>
             Log in
           </styled.LoginFormHeader>
-          <styled.LoginForm onSubmit={this.onSubmit}>
+          <styled.LoginForm
+            onSubmit={this.onSubmit}
+          >
             <styled.TextFieldLabel>
               <p>Email</p>
               <styled.LoginFormInput
@@ -127,7 +138,6 @@ class LoginPage extends React.PureComponent<any, LoginPageState> {
               <p>Password</p>
               <styled.LoginFormInput
                 type={this.state.passwordVisible ? 'text' : 'password'}
-                name="password"
                 autoComplete="current-password"
                 placeholder="Enter password"
                 value={this.state.password}
@@ -158,4 +168,12 @@ class LoginPage extends React.PureComponent<any, LoginPageState> {
   }
 }
 
-export default LoginPage;
+const mapDispatchToProps = {
+  signinUser,
+};
+
+const withConnect = connect(null, mapDispatchToProps);
+
+export default compose(
+  withConnect,
+)(LoginPage);
