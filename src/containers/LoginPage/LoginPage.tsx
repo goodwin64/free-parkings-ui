@@ -5,7 +5,10 @@ import { connect } from 'react-redux';
 
 import FormsValidatorService from '../../services/FormsValidator.service';
 import * as styled from './LoginPage.styled';
-import { signinUser, signinUserActionCreator } from './LoginPageActions';
+import { signinUserAttempt, signinUserAttemptActionCreator } from './LoginPageActions';
+import { createStructuredSelector } from 'reselect';
+import { areCredentialsInvalidSelector, isSigninAttemptInProgressSelector } from './selectors';
+import { RootReducer } from '../../store/rootReducer';
 
 
 interface LoginPageState {
@@ -18,16 +21,23 @@ interface LoginPageState {
   passwordVisible: boolean,
 }
 
-interface LoginPageDispatchProps {
-  signinUser: signinUserActionCreator,
+interface LoginPageOwnProps {
+  areCredentialsInvalid: boolean,
+  isSigninAttemptInProgress: boolean,
 }
 
-interface LoginPageProps extends LoginPageDispatchProps {}
+interface LoginPageDispatchProps {
+  signinUser: signinUserAttemptActionCreator,
+}
+
+interface LoginPageProps extends LoginPageOwnProps, LoginPageDispatchProps {}
 
 class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
   static propTypes = {
     signinUser: PropTypes.func.isRequired,
     inProgress: PropTypes.bool.isRequired,
+    areCredentialsInvalid: PropTypes.bool.isRequired,
+    isSigninAttemptInProgress: PropTypes.bool.isRequired,
   };
 
   state: LoginPageState = {
@@ -53,7 +63,11 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
   }
 
   get isSubmitNotAllowed() {
-    return !this.state.emailValid || !this.state.passwordValid || (!this.state.emailTouched && !this.state.passwordTouched);
+    return !this.state.emailValid || !this.state.passwordValid || this.props.isSigninAttemptInProgress;
+  }
+
+  get areCredentialsInvalid() {
+    return this.props.areCredentialsInvalid && !this.state.passwordTouched && !this.state.emailTouched;
   }
 
   onSubmit = (e: React.FormEvent) => {
@@ -77,6 +91,7 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
   onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({
     email: e.target.value,
     emailValid: FormsValidatorService.isEmailValid(e.target.value),
+    emailTouched: true,
   });
 
   onEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => this.setState({
@@ -88,6 +103,7 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
   onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({
     password: e.target.value,
     passwordValid: e.target.value.length !== 0,
+    passwordTouched: true,
   });
 
   onPasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -161,6 +177,11 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
                 value="Log in"
               />
             </styled.SubmitButtonContainer>
+            <styled.ErrorBlock
+              visible={this.areCredentialsInvalid}
+            >
+              ● wrong email or password
+            </styled.ErrorBlock>
           </styled.LoginForm>
         </styled.LoginFormContainer>
       </styled.PageWrapper>
@@ -168,11 +189,16 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
   }
 }
 
+const mapStateToProps = createStructuredSelector<RootReducer, LoginPageOwnProps>({
+  areCredentialsInvalid: areCredentialsInvalidSelector,
+  isSigninAttemptInProgress: isSigninAttemptInProgressSelector,
+});
+
 const mapDispatchToProps = {
-  signinUser,
+  signinUser: signinUserAttempt,
 };
 
-const withConnect = connect(null, mapDispatchToProps);
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(
   withConnect,

@@ -22,7 +22,7 @@ export const LoginFormContainer = styled.div`
 
 export const LoginForm = styled.form`
   background-color: ${COLORS.colorAntiMain};
-  padding: 28px 75px 40px;
+  padding: 30px 75px 15px;
 `;
 
 export const LoginFormHeader = styled.h2`
@@ -48,7 +48,6 @@ export const TextFieldLabel = styled.label`
 export const LoginFormInput = styled(CommonTextFieldInput)`
   font-size: 16px;
   height: 40px;
-  margin-bottom: 5px;
   padding: 12px 40px 12px 20px;
   transition: border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   width: 100%;
@@ -59,13 +58,13 @@ export const ErrorBlock = styled.div<{
 }>`
   color: ${COLORS.colorAccent2};
   font-size: 12px;
-  margin-top: -5px;
-  min-height: 30px;
+  height: 30px;
+  line-height: 30px;
   visibility: ${(props) => props.visible ? 'visible' : 'hidden'};
 `;
 
 export const ShowPasswordEyeButton = styled.button`
-  bottom: 14px;
+  bottom: 8px;
   position: absolute;
   right: 10px;
 `;
