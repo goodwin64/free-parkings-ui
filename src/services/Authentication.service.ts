@@ -1,10 +1,5 @@
 // import LocalStorageService from './LocalStorage.service';
-import { USER_ROLE_GUEST, UserAuthInfo } from '../interfaces/UserAuthInfo';
 
-
-export const defaultUserAuthInfo: UserAuthInfo = {
-  role: USER_ROLE_GUEST,
-};
 
 function checkStatus(response: Response) {
   if (response.status >= 200 && response.status < 300) {

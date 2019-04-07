@@ -4,15 +4,14 @@ import { connectRouter, RouterState } from 'connected-react-router';
 
 import baseConfigReducer, { BaseConfigState } from '../containers/BaseConfigPage/BaseConfigReducer';
 import parkingsPageReducer, { ParkingsPageState } from '../containers/ParkingsPage/ParkingsPageReducer';
-import userReducer, { UserState } from '../containers/UserPage/UserReducer';
-import loginPageReducer, { LoginPageState } from '../containers/LoginPage/reducer';
+import userReducer, { UserState } from './userState/reducer';
+
 
 export interface RootReducer {
   router: RouterState,
   config: BaseConfigState,
   parkingsPage: ParkingsPageState,
   user: UserState,
-  authInfo: LoginPageState,
 }
 
 function createRootReducer(history: History<LocationState>) {
@@ -21,7 +20,6 @@ function createRootReducer(history: History<LocationState>) {
     config: baseConfigReducer,
     parkingsPage: parkingsPageReducer,
     user: userReducer,
-    authInfo: loginPageReducer,
   });
 }
 

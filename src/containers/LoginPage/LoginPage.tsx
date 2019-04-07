@@ -5,18 +5,18 @@ import { connect } from 'react-redux';
 
 import FormsValidatorService from '../../services/FormsValidator.service';
 import * as styled from './LoginPage.styled';
-import { signinUserAttempt, signinUserAttemptActionCreator } from './LoginPageActions';
+import { signinUserAttempt, signinUserAttemptActionCreator } from '../../store/userState/actions';
 import { createStructuredSelector } from 'reselect';
-import { areCredentialsInvalidSelector, isSigninAttemptInProgressSelector } from './selectors';
+import { areCredentialsInvalidSelector, isSigninAttemptInProgressSelector } from '../../store/userState/selectors';
 import { RootReducer } from '../../store/rootReducer';
 
 
 interface LoginPageState {
-  email: string,
+  username: string,
   password: string,
-  emailValid: boolean,
+  usernameValid: boolean,
   passwordValid: boolean,
-  emailTouched: boolean,
+  usernameTouched: boolean,
   passwordTouched: boolean,
   passwordVisible: boolean,
 }
@@ -35,17 +35,16 @@ interface LoginPageProps extends LoginPageOwnProps, LoginPageDispatchProps {}
 class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
   static propTypes = {
     signinUser: PropTypes.func.isRequired,
-    inProgress: PropTypes.bool.isRequired,
     areCredentialsInvalid: PropTypes.bool.isRequired,
     isSigninAttemptInProgress: PropTypes.bool.isRequired,
   };
 
   state: LoginPageState = {
-    email: '',
+    username: '',
     password: '',
-    emailValid: true,
+    usernameValid: true,
     passwordValid: true,
-    emailTouched: false,
+    usernameTouched: false,
     passwordTouched: false,
     passwordVisible: false,
   };
@@ -54,8 +53,8 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
     // this.props.pageReset();
   }
 
-  get isEmailErrorShown() {
-    return !this.state.emailValid && this.state.emailTouched;
+  get isUsernameErrorShown() {
+    return !this.state.usernameValid && this.state.usernameTouched;
   }
 
   get isPasswordErrorShown() {
@@ -63,41 +62,41 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
   }
 
   get isSubmitNotAllowed() {
-    return !this.state.emailValid || !this.state.passwordValid || this.props.isSigninAttemptInProgress;
+    return !this.state.usernameValid || !this.state.passwordValid || this.props.isSigninAttemptInProgress;
   }
 
   get areCredentialsInvalid() {
-    return this.props.areCredentialsInvalid && !this.state.passwordTouched && !this.state.emailTouched;
+    return this.props.areCredentialsInvalid && !this.state.passwordTouched && !this.state.usernameTouched;
   }
 
   onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!FormsValidatorService.isEmailValid(this.state.email) || this.state.password.length === 0) {
+    if (!FormsValidatorService.isUsernameValid(this.state.username) || this.state.password.length === 0) {
       this.setState({
-        emailValid: FormsValidatorService.isEmailValid(this.state.email),
+        usernameValid: FormsValidatorService.isUsernameValid(this.state.username),
         passwordValid: this.state.password.length !== 0,
-        emailTouched: true,
+        usernameTouched: true,
         passwordTouched: true,
       });
     } else {
       this.setState({
-        emailTouched: false,
+        usernameTouched: false,
         passwordTouched: false,
       });
-      this.props.signinUser(this.state.email, this.state.password);
+      this.props.signinUser(this.state.username, this.state.password);
     }
   };
 
-  onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({
-    email: e.target.value,
-    emailValid: FormsValidatorService.isEmailValid(e.target.value),
-    emailTouched: true,
+  onUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({
+    username: e.target.value,
+    usernameValid: FormsValidatorService.isUsernameValid(e.target.value),
+    usernameTouched: true,
   });
 
-  onEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => this.setState({
-    email: e.target.value,
-    emailValid: FormsValidatorService.isEmailValid(e.target.value),
-    emailTouched: true,
+  onUsernameBlur = (e: React.FocusEvent<HTMLInputElement>) => this.setState({
+    username: e.target.value,
+    usernameValid: FormsValidatorService.isUsernameValid(e.target.value),
+    usernameTouched: true,
   });
 
   onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => this.setState({
@@ -134,21 +133,21 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
             onSubmit={this.onSubmit}
           >
             <styled.TextFieldLabel>
-              <p>Email</p>
+              <p>Username</p>
               <styled.LoginFormInput
-                type="email"
+                type="text"
                 autoComplete="username"
-                placeholder="Enter your email"
-                value={this.state.email}
-                onChange={this.onEmailChange}
-                onBlur={this.onEmailBlur}
-                error={this.isEmailErrorShown}
+                placeholder="Enter your username"
+                value={this.state.username}
+                onChange={this.onUsernameChange}
+                onBlur={this.onUsernameBlur}
+                error={this.isUsernameErrorShown}
               />
             </styled.TextFieldLabel>
             <styled.ErrorBlock
-              visible={this.isEmailErrorShown}
+              visible={this.isUsernameErrorShown}
             >
-              ● wrong email
+              ● wrong username
             </styled.ErrorBlock>
             <styled.TextFieldLabel>
               <p>Password</p>
@@ -180,7 +179,7 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
             <styled.ErrorBlock
               visible={this.areCredentialsInvalid}
             >
-              ● wrong email or password
+              ● wrong username or password
             </styled.ErrorBlock>
           </styled.LoginForm>
         </styled.LoginFormContainer>

@@ -1,10 +1,10 @@
-import { defaultUserAuthInfo } from './Authentication.service';
 import { UserAuthInfo } from '../interfaces/UserAuthInfo';
+import { defaultUserAuthInfo } from '../store/userState/reducer';
 
 
 export default class LocalStorageService {
   public static getAuthInfo(): UserAuthInfo {
-    const userAuthInfoJSON: string | null = localStorage.getItem('authInfo');
+    const userAuthInfoJSON: string | null = localStorage.getItem('userAuthInfo');
     if (!userAuthInfoJSON) {
       return defaultUserAuthInfo;
     }
@@ -12,7 +12,7 @@ export default class LocalStorageService {
   }
 
   public static hasAuthInfo() {
-    return Boolean(localStorage.getItem('authInfo'));
+    return Boolean(localStorage.getItem('userAuthInfo'));
   }
 
   public static getAccessToken() {
@@ -20,10 +20,10 @@ export default class LocalStorageService {
   }
 
   public static setAuthInfo(info: UserAuthInfo) {
-    localStorage.setItem('authInfo', JSON.stringify(info));
+    localStorage.setItem('userAuthInfo', JSON.stringify(info));
   }
 
   public static removeAuthInfo() {
-    localStorage.removeItem('authInfo');
+    localStorage.removeItem('userAuthInfo');
   }
 }

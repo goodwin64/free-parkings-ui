@@ -16,7 +16,7 @@ import {
   PARKINGS_REQUEST_FOR_FETCH,
   SYNCHRONIZE_LAT_LON,
 } from '../containers/ParkingsPage/ParkingsPageConstants';
-import loginPageSagas from '../containers/LoginPage/saga';
+import loginPageSagas from './userState/saga';
 
 
 function* initSaga() {

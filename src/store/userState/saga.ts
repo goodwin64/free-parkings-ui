@@ -3,18 +3,19 @@ import { push } from 'connected-react-router';
 import identity from 'lodash/identity';
 
 import { backendEndpoint } from '../../constants/backend';
-import { signinUserAttemptAction, signinUserError, signinUserSuccess } from './LoginPageActions';
+import { signinUserAttemptAction, signinUserError, signinUserSuccess } from './actions';
 import LocalStorageService from '../../services/LocalStorage.service';
-import { USER_SIGN_IN_ATTEMPT } from '../App/constants';
+import { USER_SIGN_IN_ATTEMPT, USER_SIGN_OUT } from '../../containers/App/constants';
 import UrlService from '../../services/Url.service';
-import { USER_ROLE_ADMIN, USER_ROLE_DRIVER, USER_ROLE_GUEST, UserAuthInfo } from '../../interfaces/UserAuthInfo';
+import { UserAuthInfo } from '../../interfaces/UserAuthInfo';
 import { request } from '../../services/Authentication.service';
+import { USER_ROLE_ADMIN, USER_ROLE_DRIVER, USER_ROLE_GUEST } from './reducer';
 
 
 const adapter = identity;
 
-export function* redirectToPageByRole(userAuthInfo: UserAuthInfo) {
-  if (userAuthInfo.role === USER_ROLE_GUEST) {
+function* redirectToPageByRole(userAuthInfo: UserAuthInfo) {
+  if (!userAuthInfo.role || userAuthInfo.role === USER_ROLE_GUEST) {
     yield put(push(UrlService.loginPageUrl));
   } else if (userAuthInfo.role === USER_ROLE_ADMIN) {
     yield put(push(UrlService.adminDashboardPageUrl));
@@ -23,21 +24,18 @@ export function* redirectToPageByRole(userAuthInfo: UserAuthInfo) {
   }
 }
 
-export function* signinUserAttemptSaga(action: signinUserAttemptAction) {
-  console.log('signinUserAttemptSaga');
-  const { email, password } = action.payload;
+function* signinUserAttemptSaga(action: signinUserAttemptAction) {
+  const { username, password } = action.payload;
   const url = `${backendEndpoint}/auth`;
 
   try {
     const rawUserAuthInfo: UserAuthInfo = yield call(request, url, {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ username, password }),
       headers: {
-        // 'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
     });
-    console.log('rawUserAuthInfo', rawUserAuthInfo);
     const userAuthInfo = adapter(rawUserAuthInfo);
     yield call(LocalStorageService.setAuthInfo, userAuthInfo);
     yield put(signinUserSuccess(userAuthInfo));
@@ -47,8 +45,13 @@ export function* signinUserAttemptSaga(action: signinUserAttemptAction) {
   }
 }
 
+function* signoutUserSaga() {
+  yield call(LocalStorageService.removeAuthInfo);
+}
+
 const loginPageSagas = [
   takeLatest(USER_SIGN_IN_ATTEMPT, signinUserAttemptSaga),
+  takeLatest(USER_SIGN_OUT, signoutUserSaga),
 ];
 
 export default loginPageSagas;

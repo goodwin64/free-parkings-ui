@@ -4,19 +4,27 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
-import { userSelector } from '../../containers/UserPage/selectors';
+import { userStateSelector } from '../../store/userState/selectors';
 import { RootReducer } from '../../store/rootReducer';
-import { User } from '../../interfaces/User';
 import * as styles from './Header.module.css';
 import UrlService from '../../services/Url.service';
+import { UserState } from '../../store/userState/reducer';
+import { userSignOut, userSignOutActionCreator } from '../../store/userState/actions';
 
 
 interface HeaderOwnProps {
-  user: User,
+  user: UserState,
 }
-interface HeaderState {}
 
-class Header extends React.PureComponent<HeaderOwnProps, HeaderState> {
+interface HeaderDispatchProps {
+  userSignOut: userSignOutActionCreator,
+}
+
+interface HeaderProps extends HeaderOwnProps, HeaderDispatchProps {}
+
+interface HeaderLocalState {}
+
+class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
   static renderLogo() {
     return (
       <h1 className={styles['HeaderLogo']}>
@@ -28,31 +36,28 @@ class Header extends React.PureComponent<HeaderOwnProps, HeaderState> {
   }
 
   renderUserPanel() {
+    if (!this.props.user.userAuthInfo.isAuthorized) {
+      return null;
+    }
+
     return (
       <section className={styles['HeaderUserPanel']}>
+        <Link
+          to="/user-dashboard"
+        >
+          {this.props.user.userPersonalInfo.username}
+        </Link>
+        <Link
+          to={UrlService.loginPageUrl}
+          onClick={this.props.userSignOut}
+        >
+          Logout
+        </Link>
         {
-          this.props.user.isAuthorized && (
-            <Link
-              to="/user-dashboard"
-            >
-              {this.props.user.name}
-            </Link>
-          )
-        }
-        {
-          this.props.user.isAuthorized && (
-            <Link
-              to={UrlService.loginPageUrl}
-            >
-              Logout
-            </Link>
-          )
-        }
-        {
-          this.props.user.avatarUrl && (
+          this.props.user.userPersonalInfo.avatarUrl && (
             <img
-              src={this.props.user.avatarUrl}
-              alt=""
+              src={this.props.user.userPersonalInfo.avatarUrl}
+              alt="Avatar"
               className={styles['HeaderUserPanelAvatar']}
             />
           )
@@ -72,10 +77,12 @@ class Header extends React.PureComponent<HeaderOwnProps, HeaderState> {
 }
 
 const mapStateToProps = createStructuredSelector<RootReducer, HeaderOwnProps>({
-  user: userSelector,
+  user: userStateSelector,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  userSignOut,
+};
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
