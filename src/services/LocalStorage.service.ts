@@ -1,29 +1,32 @@
-import { UserAuthInfo } from '../interfaces/UserAuthInfo';
-import { defaultUserAuthInfo } from '../store/userState/reducer';
+import { UserInfo } from '../interfaces/UserInfo';
 
 
 export default class LocalStorageService {
-  public static getAuthInfo(): UserAuthInfo {
-    const userAuthInfoJSON: string | null = localStorage.getItem('userAuthInfo');
+  public static getUserInfo(): UserInfo | null {
+    const userAuthInfoJSON: string | null = localStorage.getItem('userInfo');
     if (!userAuthInfoJSON) {
-      return defaultUserAuthInfo;
+      return null;
     }
     return JSON.parse(userAuthInfoJSON);
   }
 
-  public static hasAuthInfo() {
-    return Boolean(localStorage.getItem('userAuthInfo'));
+  public static hasUserInfo() {
+    return Boolean(localStorage.getItem('userInfo'));
   }
 
   public static getAccessToken() {
-    return LocalStorageService.getAuthInfo().accessToken;
+    const userInfo = LocalStorageService.getUserInfo();
+    if (!userInfo || !userInfo.accessToken) {
+      return null;
+    }
+    return userInfo.accessToken;
   }
 
-  public static setAuthInfo(info: UserAuthInfo) {
-    localStorage.setItem('userAuthInfo', JSON.stringify(info));
+  public static setUserInfo(info: UserInfo) {
+    localStorage.setItem('userInfo', JSON.stringify(info));
   }
 
-  public static removeAuthInfo() {
-    localStorage.removeItem('userAuthInfo');
+  public static removeUserInfo() {
+    localStorage.removeItem('userInfo');
   }
 }

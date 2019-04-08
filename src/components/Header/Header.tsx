@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 
-import { userStateSelector } from '../../store/userState/selectors';
+import { userInfoSelector } from '../../store/userState/selectors';
 import { RootReducer } from '../../store/rootReducer';
 import * as styles from './Header.module.css';
 import UrlService from '../../services/Url.service';
-import { UserState } from '../../store/userState/reducer';
+import { UserInfo } from '../../interfaces/UserInfo';
 import { userSignOut, userSignOutActionCreator } from '../../store/userState/actions';
 
 
 interface HeaderOwnProps {
-  user: UserState,
+  user: UserInfo,
 }
 
 interface HeaderDispatchProps {
@@ -36,7 +36,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
   }
 
   renderUserPanel() {
-    if (!this.props.user.userAuthInfo.isAuthorized) {
+    if (!this.props.user.isAuthorized) {
       return null;
     }
 
@@ -45,7 +45,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
         <Link
           to="/user-dashboard"
         >
-          {this.props.user.userPersonalInfo.username}
+          {this.props.user.username}
         </Link>
         <Link
           to={UrlService.loginPageUrl}
@@ -54,9 +54,9 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
           Logout
         </Link>
         {
-          this.props.user.userPersonalInfo.avatarUrl && (
+          this.props.user.avatarUrl && (
             <img
-              src={this.props.user.userPersonalInfo.avatarUrl}
+              src={this.props.user.avatarUrl}
               alt="Avatar"
               className={styles['HeaderUserPanelAvatar']}
             />
@@ -77,7 +77,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
 }
 
 const mapStateToProps = createStructuredSelector<RootReducer, HeaderOwnProps>({
-  user: userStateSelector,
+  user: userInfoSelector,
 });
 
 const mapDispatchToProps = {

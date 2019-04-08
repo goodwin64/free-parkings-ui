@@ -27,7 +27,7 @@ export function request(url: string, options: RequestInit = {}, json: boolean = 
 // export async function requestWithAuthInfo(
 //   { url, options = {}, json = true }: { url: string, options?: RequestInit, json: boolean }
 // ): responseWithAuth {
-//   const userAuthInfo: UserAuthInfo = LocalStorageService.getAuthInfo();
+//   const userAuthInfo: UserAuthInfo = LocalStorageService.getUserInfo();
 //   const { accessToken, role } = userAuthInfo;
 //   if (role === USER_ROLE_GUEST || !accessToken) {
 //     // yield put(notAllowedWithGuestPermission());

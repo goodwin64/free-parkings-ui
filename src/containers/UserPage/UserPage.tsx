@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { UserPersonalInfo } from '../../interfaces/UserPersonalInfo';
+import { UserInfo } from '../../interfaces/UserInfo';
 
 
 const UserPropType = PropTypes.shape({
@@ -12,7 +12,7 @@ const UserPropType = PropTypes.shape({
 });
 
 interface UserPageProps {
-  user: UserPersonalInfo,
+  user?: UserInfo,
 }
 
 class UserPage extends React.PureComponent<UserPageProps> {
@@ -21,6 +21,10 @@ class UserPage extends React.PureComponent<UserPageProps> {
   };
 
   render() {
+    if (!this.props.user) {
+      return null;
+    }
+
     return (
       <div>
         Hi, {this.props.user.username}.

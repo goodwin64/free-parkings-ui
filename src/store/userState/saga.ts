@@ -1,57 +1,72 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
-import identity from 'lodash/identity';
 
 import { backendEndpoint } from '../../constants/backend';
-import { signinUserAttemptAction, signinUserError, signinUserSuccess } from './actions';
+import { initUserInfoOnLoad, signinUserAttemptAction, signinUserError, signinUserSuccess } from './actions';
 import LocalStorageService from '../../services/LocalStorage.service';
 import { USER_SIGN_IN_ATTEMPT, USER_SIGN_OUT } from '../../containers/App/constants';
 import UrlService from '../../services/Url.service';
-import { UserAuthInfo } from '../../interfaces/UserAuthInfo';
+import { UserInfo } from '../../interfaces/UserInfo';
 import { request } from '../../services/Authentication.service';
 import { USER_ROLE_ADMIN, USER_ROLE_DRIVER, USER_ROLE_GUEST } from './reducer';
+import { userInfoAdapter } from './adapters';
 
 
-const adapter = identity;
-
-function* redirectToPageByRole(userAuthInfo: UserAuthInfo) {
-  if (!userAuthInfo.role || userAuthInfo.role === USER_ROLE_GUEST) {
+function* redirectToPageByRole(userInfo: UserInfo) {
+  if (!userInfo || !userInfo.role || userInfo.role === USER_ROLE_GUEST) {
     yield put(push(UrlService.loginPageUrl));
-  } else if (userAuthInfo.role === USER_ROLE_ADMIN) {
+  } else if (userInfo.role === USER_ROLE_ADMIN) {
     yield put(push(UrlService.adminDashboardPageUrl));
-  } else if (userAuthInfo.role === USER_ROLE_DRIVER) {
+  } else if (userInfo.role === USER_ROLE_DRIVER) {
     yield put(push(UrlService.driverPageUrl));
   }
 }
 
 function* signinUserAttemptSaga(action: signinUserAttemptAction) {
+  console.log('signinUserAttemptSaga', signinUserAttemptSaga);
   const { username, password } = action.payload;
   const url = `${backendEndpoint}/auth`;
+  console.log('username, password', username, password);
 
   try {
-    const rawUserAuthInfo: UserAuthInfo = yield call(request, url, {
+    const rawUserInfo: UserInfo = yield call(request, url, {
       method: 'POST',
       body: JSON.stringify({ username, password }),
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    const userAuthInfo = adapter(rawUserAuthInfo);
-    yield call(LocalStorageService.setAuthInfo, userAuthInfo);
-    yield put(signinUserSuccess(userAuthInfo));
-    yield call(redirectToPageByRole, userAuthInfo);
+    console.log('rawUserInfo', rawUserInfo);
+    const userInfo = userInfoAdapter(rawUserInfo);
+    console.log('userInfo', userInfo);
+    yield call(LocalStorageService.setUserInfo, userInfo);
+    yield put(signinUserSuccess(userInfo));
+    yield call(redirectToPageByRole, userInfo);
   } catch (e) {
     yield put(signinUserError());
   }
 }
 
 function* signoutUserSaga() {
-  yield call(LocalStorageService.removeAuthInfo);
+  yield call(LocalStorageService.removeUserInfo);
 }
 
-const loginPageSagas = [
-  takeLatest(USER_SIGN_IN_ATTEMPT, signinUserAttemptSaga),
-  takeLatest(USER_SIGN_OUT, signoutUserSaga),
-];
+function* initUserInfoOnLoadSaga() {
+  const userInfo = yield call(LocalStorageService.getUserInfo);
+  console.log('userInfo from lo st', userInfo);
 
-export default loginPageSagas;
+  if (userInfo) {
+    yield put(initUserInfoOnLoad(userInfo));
+  }
+  yield call(redirectToPageByRole, userInfo);
+}
+
+const defaultLoginPageSaga = function*() {
+  yield all([
+    takeLatest(USER_SIGN_IN_ATTEMPT, signinUserAttemptSaga),
+    takeLatest(USER_SIGN_OUT, signoutUserSaga),
+  ]);
+  yield initUserInfoOnLoadSaga();
+};
+
+export default defaultLoginPageSaga;
