@@ -1,19 +1,25 @@
-# Valeo Park4U web interface
+# Free parkings UI
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br>
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.
-
+## Features
+- [ ] Sign up (with / without info)
+- [X] Sign in
+- [ ] Protected route (deny pages if no permissions)
+- [ ] Change username
+- [ ] Change profile pic
+- [ ] Change car model
+- [ ] Change car number
+- [ ] Change car color
+- [ ] Change car size
+- [ ] Change preferred city
+- [ ] Change access type (admin / driver)
+- [ ] Delete account (GDPR compliant)
+- [ ] Search location by POI
+- [ ] Search location by current GPS
+- [ ] Enable/disable parkings auto-check
+- [ ] Enable/disable voice notifications
+- [ ] Map rotate
+- [ ] Map 3D
+- [ ] Admin: create parking
+- [ ] Admin: delete parking
+- [ ] Admin: see users list
+- [ ] Admin: change user role
