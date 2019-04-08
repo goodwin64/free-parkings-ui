@@ -23,3 +23,8 @@
 - [ ] Admin: delete parking
 - [ ] Admin: see users list
 - [ ] Admin: change user role
+
+## Commands
+`npm run start` - starts the project
+`npm run test` - runs unit tests
+`npm run build` - makes a production build
