@@ -23,10 +23,8 @@ function* redirectToPageByRole(userInfo: UserInfo) {
 }
 
 function* signinUserAttemptSaga(action: signinUserAttemptAction) {
-  console.log('signinUserAttemptSaga', signinUserAttemptSaga);
   const { username, password } = action.payload;
   const url = `${backendEndpoint}/auth`;
-  console.log('username, password', username, password);
 
   try {
     const rawUserInfo: UserInfo = yield call(request, url, {
@@ -36,9 +34,7 @@ function* signinUserAttemptSaga(action: signinUserAttemptAction) {
         'Content-Type': 'application/json',
       },
     });
-    console.log('rawUserInfo', rawUserInfo);
     const userInfo = userInfoAdapter(rawUserInfo);
-    console.log('userInfo', userInfo);
     yield call(LocalStorageService.setUserInfo, userInfo);
     yield put(signinUserSuccess(userInfo));
     yield call(redirectToPageByRole, userInfo);
@@ -53,7 +49,6 @@ function* signoutUserSaga() {
 
 function* initUserInfoOnLoadSaga() {
   const userInfo = yield call(LocalStorageService.getUserInfo);
-  console.log('userInfo from lo st', userInfo);
 
   if (userInfo) {
     yield put(initUserInfoOnLoad(userInfo));

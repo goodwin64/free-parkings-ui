@@ -28,15 +28,13 @@ export default function userReducer(
 ) {
   switch (action.type) {
     case INIT_USER_INFO_ON_LOAD: {
-      console.log('action', action);
-      console.log('state', state);
       return {
         ...state,
         ...action.payload,
+        isAuthorized: true,
       };
     }
     case USER_SIGN_IN_ATTEMPT: {
-      console.log('reducer USER_SIGN_IN_ATTEMPT');
       return {
         ...state,
         isLoginInProgress: true,
@@ -51,9 +49,9 @@ export default function userReducer(
         isAuthorized: true,
         accessToken: action.payload.accessToken,
         role: action.payload.role,
-        // avatarUrl: action.payload.avatarUrl ? action.payload.avatarUrl : userInitialState.avatarUrl,
-        // username: action.payload.username ? action.payload.username : userInitialState.username,
-        // gender: action.payload.gender ? action.payload.gender : userInitialState.gender,
+        avatarUrl: action.payload.avatarUrl,
+        username: action.payload.username,
+        gender: action.payload.gender,
       };
     }
     case USER_SIGN_IN_ERROR: {

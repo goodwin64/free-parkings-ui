@@ -2,6 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { UserInfo } from '../../interfaces/UserInfo';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { userInfoSelector } from '../../store/userState/selectors';
+import { RootReducer } from '../../store/rootReducer';
 
 
 const UserPropType = PropTypes.shape({
@@ -11,11 +16,11 @@ const UserPropType = PropTypes.shape({
   gender: PropTypes.oneOf(['male', 'female']),
 });
 
-interface UserPageProps {
-  user?: UserInfo,
+interface UserPageOwnProps {
+  user: UserInfo,
 }
 
-class UserPage extends React.PureComponent<UserPageProps> {
+class UserPage extends React.PureComponent<UserPageOwnProps> {
   static propTypes = {
     user: UserPropType,
   };
@@ -34,4 +39,13 @@ class UserPage extends React.PureComponent<UserPageProps> {
   }
 }
 
-export default UserPage;
+const mapStateToProps = createStructuredSelector<RootReducer, UserPageOwnProps>({
+  user: userInfoSelector,
+});
+
+const withConnect = connect(mapStateToProps);
+
+export default compose(
+  withConnect,
+  // @ts-ignore
+)(UserPage);
