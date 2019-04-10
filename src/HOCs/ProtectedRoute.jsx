@@ -4,11 +4,11 @@ import { Redirect, Route } from 'react-router';
 import UrlService from '../services/Url.service';
 
 
-const ProtectedRoute = ({ component: Component, authorized, redirectPath, ...rest }) => (
+const ProtectedRoute = ({ component: Component, allowed, redirectPath, ...rest }) => (
   <Route
     {...rest}
     render={(props) =>
-      authorized ? (
+      allowed ? (
         <Component {...props} />
       ) : (
         <Redirect
@@ -24,7 +24,7 @@ const ProtectedRoute = ({ component: Component, authorized, redirectPath, ...res
 
 ProtectedRoute.propTypes = {
   component: PropTypes.func.isRequired,
-  authorized: PropTypes.bool.isRequired,
+  allowed: PropTypes.bool.isRequired,
   redirectPath: PropTypes.string,
   location: PropTypes.object,
 };

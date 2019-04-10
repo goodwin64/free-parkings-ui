@@ -8,18 +8,11 @@ import { USER_SIGN_IN_ATTEMPT, USER_SIGN_OUT } from '../../containers/App/consta
 import UrlService from '../../services/Url.service';
 import { UserInfo } from '../../interfaces/UserInfo';
 import { request } from '../../services/Authentication.service';
-import { USER_ROLE_ADMIN, USER_ROLE_DRIVER, USER_ROLE_GUEST } from './reducer';
 import { userInfoAdapter } from './adapters';
 
 
 function* redirectToPageByRole(userInfo: UserInfo) {
-  if (!userInfo || !userInfo.role || userInfo.role === USER_ROLE_GUEST) {
-    yield put(push(UrlService.loginPageUrl));
-  } else if (userInfo.role === USER_ROLE_ADMIN) {
-    yield put(push(UrlService.adminDashboardPageUrl));
-  } else if (userInfo.role === USER_ROLE_DRIVER) {
-    yield put(push(UrlService.driverPageUrl));
-  }
+  yield put(push(UrlService.detectPageByUserInfo(userInfo)));
 }
 
 function* signinUserAttemptSaga(action: signinUserAttemptAction) {
@@ -53,7 +46,6 @@ function* initUserInfoOnLoadSaga() {
   if (userInfo) {
     yield put(initUserInfoOnLoad(userInfo));
   }
-  yield call(redirectToPageByRole, userInfo);
 }
 
 const defaultLoginPageSaga = function*() {

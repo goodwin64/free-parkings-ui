@@ -5,11 +5,12 @@ import * as css from './App.module.css';
 import LoginPage from '../LoginPage/LoginPage';
 import Header from '../../components/Header/Header';
 import UrlService from '../../services/Url.service';
-// import ProtectedRoute from '../../HOCs/ProtectedRoute';
+import ProtectedRoute from '../../HOCs/ProtectedRoute';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { isUserAuthorizedSelector } from '../../store/userState/selectors';
+import { isUserAuthorizedSelector, userInfoSelector } from '../../store/userState/selectors';
 import { RootReducer } from '../../store/rootReducer';
+import { UserInfo } from '../../interfaces/UserInfo';
 
 // @ts-ignore
 const ParkingsPage = React.lazy(() => import('../ParkingsPage/ParkingsPage'));
@@ -20,6 +21,7 @@ const UserPage = React.lazy(() => import('../UserPage/UserPage'));
 
 interface AppProps {
   isUserAuthorized: boolean,
+  userInfo: UserInfo,
 }
 
 export class App extends React.Component<AppProps> {
@@ -29,35 +31,29 @@ export class App extends React.Component<AppProps> {
         <Header/>
         <React.Suspense fallback={<div>Loading...</div>}>
           <Switch>
-            <Route
+            <ProtectedRoute
               path={UrlService.loginPageUrl}
               component={LoginPage}
+              allowed={!this.props.isUserAuthorized}
+              redirectPath={UrlService.detectPageByUserInfo(this.props.userInfo)}
             />
             <Route
               exact
               path="/config"
               component={BaseConfigPage}
             />
-            <Route
+            <ProtectedRoute
               path={UrlService.parkingsPageUrl}
               component={ParkingsPage}
+              allowed={this.props.isUserAuthorized}
+              redirectPath={UrlService.loginPageUrl}
             />
-            <Route
+            <ProtectedRoute
               path={UrlService.driverPageUrl}
               component={UserPage}
+              allowed={this.props.isUserAuthorized}
+              redirectPath={UrlService.loginPageUrl}
             />
-            {/*<ProtectedRoute*/}
-            {/*  path={UrlService.parkingsPageUrl}*/}
-            {/*  component={ParkingsPage}*/}
-            {/*  authorized={this.props.isUserAuthorized}*/}
-            {/*  redirectPath={UrlService.loginPageUrl}*/}
-            {/*/>*/}
-            {/*<ProtectedRoute*/}
-            {/*  path={UrlService.driverPageUrl}*/}
-            {/*  component={UserPage}*/}
-            {/*  authorized={this.props.isUserAuthorized}*/}
-            {/*  redirectPath={UrlService.loginPageUrl}*/}
-            {/*/>*/}
             <Redirect
               exact
               path="/"
@@ -71,6 +67,7 @@ export class App extends React.Component<AppProps> {
 }
 
 const mapStateToProps = createStructuredSelector<RootReducer, AppProps>({
+  userInfo: userInfoSelector,
   isUserAuthorized: isUserAuthorizedSelector,
 });
 
