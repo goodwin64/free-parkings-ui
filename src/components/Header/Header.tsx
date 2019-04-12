@@ -9,7 +9,7 @@ import { RootReducer } from '../../store/rootReducer';
 import * as styles from './Header.module.css';
 import UrlService from '../../services/Url.service';
 import { UserInfo } from '../../interfaces/UserInfo';
-import { userSignOut, userSignOutActionCreator } from '../../store/userState/actions';
+import { userSignOutAttempt, userSignOutAttemptActionCreator } from '../../store/userState/actions';
 
 
 interface HeaderOwnProps {
@@ -17,7 +17,7 @@ interface HeaderOwnProps {
 }
 
 interface HeaderDispatchProps {
-  userSignOut: userSignOutActionCreator,
+  userSignOut: userSignOutAttemptActionCreator,
 }
 
 interface HeaderProps extends HeaderOwnProps, HeaderDispatchProps {}
@@ -81,7 +81,7 @@ const mapStateToProps = createStructuredSelector<RootReducer, HeaderOwnProps>({
 });
 
 const mapDispatchToProps = {
-  userSignOut,
+  userSignOut: userSignOutAttempt,
 };
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

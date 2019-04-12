@@ -6,7 +6,8 @@ import {
   USER_SIGN_IN_ATTEMPT,
   USER_SIGN_IN_ERROR,
   USER_SIGN_IN_SUCCESS,
-  USER_SIGN_OUT,
+  USER_SIGN_OUT_ATTEMPT,
+  USER_SIGN_OUT_SUCCESS,
 } from '../../containers/App/constants';
 import { UserInfo } from '../../interfaces/UserInfo';
 
@@ -27,9 +28,13 @@ export const signinUserError = () => action(USER_SIGN_IN_ERROR);
 export type signinUserErrorAction = ActionType<typeof signinUserError>;
 export type signinUserErrorActionCreator = () => signinUserErrorAction;
 
-export const userSignOut = () => action(USER_SIGN_OUT);
-export type userSignOutAction = ActionType<typeof userSignOut>;
-export type userSignOutActionCreator = () => userSignOutAction;
+export const userSignOutAttempt = () => action(USER_SIGN_OUT_ATTEMPT);
+export type userSignOutAttemptAction = ActionType<typeof userSignOutAttempt>;
+export type userSignOutAttemptActionCreator = () => userSignOutAttemptAction;
+
+export const userSignOutSuccess = () => action(USER_SIGN_OUT_SUCCESS);
+export type userSignOutSuccessAction = ActionType<typeof userSignOutSuccess>;
+export type userSignOutSuccessActionCreator = () => userSignOutSuccessAction;
 
 export const notAllowedWithGuestPermission = () => action(NOT_ALLOWED_WITH_GUEST_PERMISSION);
 export type notAllowedWithGuestPermissionAction = ActionType<typeof notAllowedWithGuestPermission>;
@@ -39,5 +44,6 @@ export type LoginPageAction = initUserInfoOnLoadAction
   | signinUserAttemptAction
   | signinUserSuccessAction
   | signinUserErrorAction
-  | userSignOutAction
+  | userSignOutAttemptAction
+  | userSignOutSuccessAction
 ;

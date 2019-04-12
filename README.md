@@ -3,6 +3,7 @@
 ## Features
 - [ ] Sign up (with / without info)
 - [X] Sign in
+- [X] Sign out
 - [ ] Protected route (deny pages if no permissions)
 - [ ] Change username
 - [ ] Change profile pic

@@ -4,7 +4,7 @@ import {
   USER_SIGN_IN_ATTEMPT,
   USER_SIGN_IN_ERROR,
   USER_SIGN_IN_SUCCESS,
-  USER_SIGN_OUT,
+  USER_SIGN_OUT_SUCCESS,
 } from '../../containers/App/constants';
 import { UserInfo } from '../../interfaces/UserInfo';
 
@@ -65,7 +65,7 @@ export default function userReducer(
         gender: userInitialState.gender,
       };
     }
-    case USER_SIGN_OUT: {
+    case USER_SIGN_OUT_SUCCESS: {
       return userInitialState;
     }
     default: {

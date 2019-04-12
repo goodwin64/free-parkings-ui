@@ -58,7 +58,7 @@ export function request(url: string, options: RequestInit = {}, json: boolean = 
 //       throw e;
 //     }
 //     // Handling for auth related errors
-//     // yield put(userSignOut());
-//     console.error('userSignOut');
+//     // yield put(userSignOutAttempt());
+//     console.error('userSignOutAttempt');
 //   }
 // }

@@ -7,3 +7,8 @@ export const areCredentialsInvalidSelector = (state: RootReducer) => state.user.
 export const isSigninAttemptInProgressSelector = (state: RootReducer) => state.user.isLoginInProgress;
 
 export const isUserAuthorizedSelector = (state: RootReducer) => state.user.isAuthorized;
+
+export const userAccessTokenSelector = (state: RootReducer) => {
+  // debugger;
+  return state.user.accessToken;
+}
