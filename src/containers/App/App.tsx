@@ -43,7 +43,7 @@ export class App extends React.Component<AppProps> {
               component={BaseConfigPage}
             />
             <ProtectedRoute
-              path={UrlService.parkingsPageUrl}
+              path={UrlService.findParkingsPageUrl}
               component={ParkingsPage}
               allowed={this.props.isUserAuthorized}
               redirectPath={UrlService.loginPageUrl}

@@ -19,6 +19,7 @@ import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
 import serialize from '../../utils/serialize';
 import { ResponseParkopediaAvailability } from '../../interfaces/ResponseParkopediaAvailability';
+import UrlService from '../../services/Url.service';
 
 
 async function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
@@ -56,7 +57,7 @@ export function* fetchParkingsSaga() {
 
 export function* updateUrlLatLonSaga(action: ParkingsPageActions.setParkingsPageCenterAction) {
   try {
-    const url = `/parkings?lat=${action.payload.lat}&lon=${action.payload.lon}`;
+    const url = `${UrlService.findParkingsPageUrl}?lat=${action.payload.lat}&lon=${action.payload.lon}`;
     yield put(push(url));
   } catch (err) {
     console.error(err);

@@ -9,11 +9,15 @@ export default class UrlService {
 
   public static readonly loginPageUrl = path.join(UrlService.rootUrl, '/login');
 
-  public static readonly parkingsPageUrl = path.join(UrlService.rootUrl, '/parkings');
-
   public static readonly adminDashboardPageUrl = path.join(UrlService.rootUrl, '/dashboard');
 
   public static readonly driverPageUrl = path.join(UrlService.rootUrl, '/driver');
+
+  public static readonly driverAccountPageUrl = path.join(UrlService.rootUrl, '/my-account');
+
+  public static readonly findParkingsPageUrl = path.join(UrlService.rootUrl, '/find-parkings');
+
+  public static readonly myDrivesPageUrl = path.join(UrlService.rootUrl, '/my-drives');
 
   public static readonly detectPageByUserInfo = function(userInfo: UserInfo): string {
     if (!userInfo || !userInfo.role || userInfo.role === USER_ROLE_GUEST) {

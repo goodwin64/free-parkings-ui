@@ -1,51 +1,67 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { UserInfo } from '../../interfaces/UserInfo';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { userInfoSelector } from '../../store/userState/selectors';
+
 import { RootReducer } from '../../store/rootReducer';
+import { avatarUrlSelector, usernameSelector } from '../../store/userState/selectors';
+import { Link } from 'react-router-dom';
+import UrlService from '../../services/Url.service';
+import ImagesService from '../../services/Images.service';
+import * as styled from './UserPage.styled';
 
-
-const UserPropType = PropTypes.shape({
-  isAuthorized: PropTypes.bool,
-  avatarUrl: PropTypes.string,
-  name: PropTypes.string,
-  gender: PropTypes.oneOf(['male', 'female']),
-});
 
 interface UserPageOwnProps {
-  user: UserInfo,
+  username: string,
+  avatarUrl: string,
 }
 
-class UserPage extends React.PureComponent<UserPageOwnProps> {
+interface UserPageProps extends UserPageOwnProps {}
+
+class DriverPage extends React.PureComponent<UserPageProps> {
   static propTypes = {
-    user: UserPropType,
+    username: PropTypes.string.isRequired,
+    avatarUrl: PropTypes.string.isRequired,
   };
 
   render() {
-    if (!this.props.user) {
-      return null;
-    }
-
     return (
-      <div>
-        Hi, {this.props.user.username}.
-        <img src={this.props.user.avatarUrl} alt="User avatar"/>
-      </div>
+      <styled.Wrapper>
+        <styled.LinksContainer>
+          <styled.NavLinkWrapper>
+            <Link to={UrlService.driverAccountPageUrl}>
+              <img src={ImagesService.driverImages.myAccount} alt="my account"/>
+              <h2>My account</h2>
+            </Link>
+          </styled.NavLinkWrapper>
+
+          <styled.NavLinkWrapper>
+            <Link to={UrlService.findParkingsPageUrl}>
+              <img src={ImagesService.driverImages.findParkings} alt="find parkings"/>
+              <h2>Find the parking</h2>
+            </Link>
+          </styled.NavLinkWrapper>
+
+          <styled.NavLinkWrapper>
+            <Link to={UrlService.myDrivesPageUrl}>
+              <img src={ImagesService.driverImages.myDrives} alt="my drives"/>
+              <h2>Drives</h2>
+            </Link>
+          </styled.NavLinkWrapper>
+        </styled.LinksContainer>
+      </styled.Wrapper>
     );
   }
 }
 
 const mapStateToProps = createStructuredSelector<RootReducer, UserPageOwnProps>({
-  user: userInfoSelector,
+  username: usernameSelector,
+  avatarUrl: avatarUrlSelector,
 });
 
 const withConnect = connect(mapStateToProps);
 
 export default compose(
   withConnect,
-  // @ts-ignore
-)(UserPage);
+)(DriverPage);

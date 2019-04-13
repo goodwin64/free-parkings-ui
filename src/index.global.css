@@ -54,6 +54,10 @@ button {
   cursor: pointer;
 }
 
+a {
+  text-decoration: none;
+}
+
 /* START: Reset Mapbox styles */
 a.mapboxgl-ctrl-logo,
 a[href="https://www.mapbox.com/about/maps/"],

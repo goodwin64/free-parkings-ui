@@ -8,7 +8,8 @@ export const isSigninAttemptInProgressSelector = (state: RootReducer) => state.u
 
 export const isUserAuthorizedSelector = (state: RootReducer) => state.user.isAuthorized;
 
-export const userAccessTokenSelector = (state: RootReducer) => {
-  // debugger;
-  return state.user.accessToken;
-}
+export const userAccessTokenSelector = (state: RootReducer) => state.user.accessToken;
+
+export const usernameSelector = (state: RootReducer) => state.user.username;
+
+export const avatarUrlSelector = (state: RootReducer) => state.user.avatarUrl;
