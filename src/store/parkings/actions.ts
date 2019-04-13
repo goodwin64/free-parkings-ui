@@ -11,7 +11,7 @@ import {
   PARKINGS_FETCH_SUCCESS,
   PARKINGS_REQUEST_FOR_FETCH,
   SYNCHRONIZE_LAT_LON,
-} from './ParkingsPageConstants';
+} from './constants';
 import { PreparedParkings } from '../../interfaces/ResponseParkings';
 import { ParkopediaAvailability } from '../../interfaces/ParkopediaAvailability';
 
@@ -66,7 +66,7 @@ export type clearVisibleFreeSlotsAction = ActionType<typeof clearVisibleFreeSlot
 export type clearVisibleFreeSlotsActionCreator = () => clearVisibleFreeSlotsAction;
 
 
-export type ParkingsPageActions = setParkingsPageCenterAction
+export type Actions = setParkingsPageCenterAction
   | setZoomLevelAction
   | fetchParkingsRequestAction
   | fetchParkingsStartAction

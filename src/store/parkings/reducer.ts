@@ -6,9 +6,9 @@ import {
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
   CLEAR_ALL_FREE_SLOTS,
   CHANGE_ZOOM_LEVEL,
-} from './ParkingsPageConstants';
-import { ParkingsPageActions } from './ParkingsPageActions';
-import { BaseConfigInitialState } from '../BaseConfigPage/BaseConfigReducer';
+} from './constants';
+import { Actions } from './actions';
+import { BaseConfigInitialState } from '../../containers/BaseConfigPage/BaseConfigReducer';
 import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
 import { FreeParking } from '../../interfaces/FreeParking';
 
@@ -38,9 +38,9 @@ export const ParkingsPageInitialState: ParkingsPageState = {
 };
 
 
-export default function parkingsPageReducer(
+export default function reducer(
   state: ParkingsPageState = ParkingsPageInitialState,
-  action: ParkingsPageActions,
+  action: Actions,
 ): ParkingsPageState {
   switch (action.type) {
     case CHANGE_CENTER_LOCATION: {

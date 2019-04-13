@@ -6,7 +6,7 @@ import ReactMapboxGl from 'react-mapbox-gl';
 import Loader from '../Loader/Loader';
 import { MapContext } from './context';
 import * as style from './Map.module.css';
-import * as ParkingsPageActions from '../../containers/ParkingsPage/ParkingsPageActions';
+import * as ParkingsPageActions from '../../store/parkings/actions';
 import { DEFAULT_ZOOM_LEVEL } from '../../containers/BaseConfigPage/BaseConfigConstants';
 
 

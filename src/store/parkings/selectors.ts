@@ -1,8 +1,8 @@
 import { createSelector } from 'reselect';
 import { Search } from 'history';
 
-import { RootReducer } from '../../store/rootReducer';
-import { defaultLatLonSelector } from '../BaseConfigPage/BaseConfigSelectors';
+import { RootReducer } from '../rootReducer';
+import { defaultLatLonSelector } from '../../containers/BaseConfigPage/BaseConfigSelectors';
 
 export const routeLocationSelector = (state: RootReducer) => state.router.location;
 

@@ -3,7 +3,7 @@ import { History, LocationState } from 'history';
 import { connectRouter, RouterState } from 'connected-react-router';
 
 import baseConfigReducer, { BaseConfigState } from '../containers/BaseConfigPage/BaseConfigReducer';
-import parkingsPageReducer, { ParkingsPageState } from '../containers/ParkingsPage/ParkingsPageReducer';
+import parkingsPageReducer, { ParkingsPageState } from './parkings/reducer';
 import userReducer from './userState/reducer';
 import { UserInfo } from '../interfaces/UserInfo';
 

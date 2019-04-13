@@ -5,18 +5,18 @@ import {
   centerCoordinatesSelector,
   geoCoordinatesSelector,
   lastParkingsCheckTimestampSelector,
-} from './ParkingsPageSelectors';
+} from './selectors';
 import { prepareParkings } from './adapters';
-import { searchRadiusSelector, sessionUidSelector } from '../BaseConfigPage/BaseConfigSelectors';
+import { searchRadiusSelector, sessionUidSelector } from '../../containers/BaseConfigPage/BaseConfigSelectors';
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
-import * as ParkingsPageActions from './ParkingsPageActions';
+import * as ParkingsPageActions from './actions';
 import {
   checkParkopediaUpdatesSuccess,
   fetchParkingsRequest,
   setParkingsPageCenter,
-} from './ParkingsPageActions';
+} from './actions';
 import { backendEndpoint } from '../../constants/backend';
-import { MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
+import { MAX_SEARCH_RADIUS_TO_FETCH } from '../../containers/BaseConfigPage/BaseConfigConstants';
 import serialize from '../../utils/serialize';
 import { ResponseParkopediaAvailability } from '../../interfaces/ResponseParkopediaAvailability';
 import UrlService from '../../services/Url.service';

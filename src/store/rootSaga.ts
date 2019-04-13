@@ -7,7 +7,7 @@ import {
   fetchParkingsSaga,
   synchronizeLatLonSaga,
   updateUrlLatLonSaga,
-} from '../containers/ParkingsPage/saga';
+} from './parkings/saga';
 import {
   CHANGE_CENTER_LOCATION,
   CHECK_PARKOPEDIA_UPDATES_REQUEST,
@@ -15,7 +15,7 @@ import {
   CLEAR_VISIBLE_FREE_SLOTS,
   PARKINGS_REQUEST_FOR_FETCH,
   SYNCHRONIZE_LAT_LON,
-} from '../containers/ParkingsPage/ParkingsPageConstants';
+} from './parkings/constants';
 import defaultLoginPageSaga from './userState/saga';
 
 
