@@ -17,6 +17,7 @@ const ParkingsPage = React.lazy(() => import('../ParkingsPage/ParkingsPage'));
 // @ts-ignore
 const BaseConfigPage = React.lazy(() => import('../BaseConfigPage/BaseConfigPage'));
 const UserPage = React.lazy(() => import('../UserPage/UserPage'));
+const AdminPage = React.lazy(() => import('../AdminPage/AdminPage'));
 
 
 interface AppProps {
@@ -51,6 +52,12 @@ export class App extends React.Component<AppProps> {
             <ProtectedRoute
               path={UrlService.driverPageUrl}
               component={UserPage}
+              allowed={this.props.isUserAuthorized}
+              redirectPath={UrlService.loginPageUrl}
+            />
+            <ProtectedRoute
+              path={UrlService.adminDashboardPageUrl}
+              component={AdminPage}
               allowed={this.props.isUserAuthorized}
               redirectPath={UrlService.loginPageUrl}
             />
