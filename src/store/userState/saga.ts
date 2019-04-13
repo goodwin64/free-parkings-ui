@@ -52,6 +52,7 @@ function* signoutUserSaga() {
   const url = `${backendEndpoint}/auth/logout`;
   const accessToken = yield select(userAccessTokenSelector);
   if (!accessToken) {
+    yield put(userSignOutSuccess());
     return;
   }
 
@@ -74,7 +75,7 @@ function* signoutUserSaga() {
 function* initUserInfoOnLoadSaga() {
   const userInfo = yield call(LocalStorageService.getUserInfo);
 
-  if (userInfo) {
+  if (userInfo && userInfo.accessToken) {
     yield put(initUserInfoOnLoad(userInfo));
   }
 }

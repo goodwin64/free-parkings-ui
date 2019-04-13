@@ -39,7 +39,7 @@ export class App extends React.Component<AppProps> {
             />
             <Route
               exact
-              path="/config"
+              path={UrlService.configPageUrl}
               component={BaseConfigPage}
             />
             <ProtectedRoute

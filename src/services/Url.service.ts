@@ -9,6 +9,8 @@ export default class UrlService {
 
   public static readonly loginPageUrl = path.join(UrlService.rootUrl, '/login');
 
+  public static readonly configPageUrl = path.join(UrlService.rootUrl, '/config');
+
   public static readonly adminDashboardPageUrl = path.join(UrlService.rootUrl, '/dashboard');
 
   public static readonly driverPageUrl = path.join(UrlService.rootUrl, '/driver');

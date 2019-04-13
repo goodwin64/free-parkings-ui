@@ -26,13 +26,51 @@
 }
 
 .HeaderUserPanel {
-    display: flex;
-    justify-content: center;
     align-items: center;
+    display: flex;
+    height: 60px;
+    justify-content: center;
+    position: relative;
+    width: 60px;
 }
 
 .HeaderUserPanelAvatar {
-    width: 40px;
-    height: 40px;
     border-radius: 20px;
+    height: 40px;
+    width: 40px;
+}
+
+.HeaderUserActionsDropdownList {
+    background-color: var(--colorAntiMain);
+    border-bottom-left-radius: 10px;
+    border: 1px solid var(--colorGreyPopup);
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 60px;
+    transition: opacity 0.25s ease-in;
+    z-index: 500;
+}
+
+.HeaderUserActionsDropdownListDivider {
+    border-top: 1px solid #e9ecef;
+}
+
+.HeaderUserPanel:hover > .HeaderUserActionsDropdownList,
+.HeaderUserActionsDropdownList:hover {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.HeaderUserActionsDropdownLink {
+    display: block;
+    font-size: 24px;
+    height: 100%;
+    padding: 10px 20px;
+    width: 100%;
+}
+
+.HeaderUserActionsDropdownLink:hover {
+    background-color: var(--colorGreyPopup);
 }

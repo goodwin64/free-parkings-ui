@@ -58,6 +58,15 @@ a {
   text-decoration: none;
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+hr {
+  margin: 0;
+}
+
 /* START: Reset Mapbox styles */
 a.mapboxgl-ctrl-logo,
 a[href="https://www.mapbox.com/about/maps/"],

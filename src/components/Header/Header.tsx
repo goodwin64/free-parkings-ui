@@ -37,6 +37,46 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
     );
   }
 
+  renderUserActionsDropdown() {
+    return (
+      <ul
+        className={styles['HeaderUserActionsDropdownList']}
+      >
+        <li>
+          <Link
+            to={'#'}
+            className={styles['HeaderUserActionsDropdownLink']}
+          >
+            About
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            to={UrlService.configPageUrl}
+            className={styles['HeaderUserActionsDropdownLink']}
+          >
+            Settings
+          </Link>
+        </li>
+
+        <hr className={styles['HeaderUserActionsDropdownListDivider']} />
+
+        <li
+          className={styles['HeaderUserActionsDropdownItem']}
+        >
+          <Link
+            to={UrlService.loginPageUrl}
+            onClick={this.props.userSignOut}
+            className={styles['HeaderUserActionsDropdownLink']}
+          >
+            Logout
+          </Link>
+        </li>
+      </ul>
+    );
+  }
+
   renderUserPanel() {
     if (!this.props.user.isAuthorized) {
       return null;
@@ -44,17 +84,6 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
 
     return (
       <section className={styles['HeaderUserPanel']}>
-        <Link
-          to="/user-dashboard"
-        >
-          {this.props.user.username}
-        </Link>
-        <Link
-          to={UrlService.loginPageUrl}
-          onClick={this.props.userSignOut}
-        >
-          Logout
-        </Link>
         {
           this.props.user.avatarUrl && (
             <img
@@ -64,6 +93,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
             />
           )
         }
+        {this.renderUserActionsDropdown()}
       </section>
     );
   }
