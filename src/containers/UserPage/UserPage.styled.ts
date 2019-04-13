@@ -40,5 +40,9 @@ export const NavLinkWrapper = styled.div`
     text-shadow: 1px 1px 2px rgba(150, 150, 150, 1);
     transform: translateX(-50%);
     width: 100%;
+    
+    @media (max-width: 700px) {
+      font-size: 20px;
+    }
   }
 `;

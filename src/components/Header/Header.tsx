@@ -25,13 +25,15 @@ interface HeaderProps extends HeaderOwnProps, HeaderDispatchProps {}
 interface HeaderLocalState {}
 
 class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
-  static renderLogo() {
+  renderLogo() {
     return (
-      <h1 className={styles['HeaderLogo']}>
-        F<span className={styles['HeaderLogoFull']}>ree</span>
-        {' '}
-        P<span className={styles['HeaderLogoFull']}>arkings</span>
-      </h1>
+      <Link to={UrlService.detectPageByUserInfo(this.props.user)}>
+        <h1 className={styles['HeaderLogo']}>
+          F<span className={styles['HeaderLogoFull']}>ree</span>
+          {' '}
+          P<span className={styles['HeaderLogoFull']}>arkings</span>
+        </h1>
+      </Link>
     );
   }
 
@@ -69,7 +71,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
   render() {
     return (
       <header className={styles['HeaderContainer']}>
-        { Header.renderLogo() }
+        { this.renderLogo() }
         { this.renderUserPanel() }
       </header>
     )

@@ -7,8 +7,13 @@
 
 .HeaderLogo {
     font-size: 36px;
-    cursor: default;
     color: var(--colorAccent1);
+}
+
+@media screen and (max-width: 700px) {
+    .HeaderLogo {
+        font-size: 20px;
+    }
 }
 
 .HeaderLogoFull {
@@ -31,4 +36,3 @@
     height: 40px;
     border-radius: 20px;
 }
-
