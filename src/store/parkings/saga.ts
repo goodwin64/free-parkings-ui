@@ -1,5 +1,5 @@
 import { push } from 'connected-react-router';
-import { call, put, select } from 'redux-saga/effects';
+import { all, call, put, select, takeEvery, takeLatest, throttle } from 'redux-saga/effects';
 
 import {
   centerCoordinatesSelector,
@@ -20,6 +20,7 @@ import { MAX_SEARCH_RADIUS_TO_FETCH } from '../../containers/BaseConfigPage/Base
 import serialize from '../../utils/serialize';
 import { ResponseParkopediaAvailability } from '../../interfaces/ResponseParkopediaAvailability';
 import UrlService from '../../services/Url.service';
+import * as parkingsConstants from './constants';
 
 
 async function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
@@ -125,4 +126,15 @@ export function* clearVisibleFreeSlotsSaga() {
   }
 
   yield put(fetchParkingsRequest());
+}
+
+export default function* defaultParkingsSaga() {
+  yield all([
+    throttle(3000, parkingsConstants.PARKINGS_REQUEST_FOR_FETCH, fetchParkingsSaga),
+    takeEvery(parkingsConstants.CHANGE_CENTER_LOCATION, updateUrlLatLonSaga),
+    takeEvery(parkingsConstants.CHECK_PARKOPEDIA_UPDATES_REQUEST, checkForParkopediaUpdates),
+    takeLatest(parkingsConstants.SYNCHRONIZE_LAT_LON, synchronizeLatLonSaga),
+    takeEvery(parkingsConstants.CLEAR_ALL_FREE_SLOTS, clearAllFreeSlotsSaga),
+    takeEvery(parkingsConstants.CLEAR_VISIBLE_FREE_SLOTS, clearVisibleFreeSlotsSaga),
+  ]);
 }

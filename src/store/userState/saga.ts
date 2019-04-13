@@ -51,7 +51,6 @@ function* signinUserAttemptSaga(action: signinUserAttemptAction) {
 function* signoutUserSaga() {
   const url = `${backendEndpoint}/auth/logout`;
   const accessToken = yield select(userAccessTokenSelector);
-  console.log('accessToken', accessToken);
   if (!accessToken) {
     return;
   }

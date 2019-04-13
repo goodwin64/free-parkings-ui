@@ -13,8 +13,8 @@ export interface BaseConfigState {
 
 export const BaseConfigInitialState: BaseConfigState = {
   parkingSearchRadius: BaseConfigConstants.INITIAL_SEARCH_RADIUS,
-  startPointLat: BaseConfigConstants.STUTTGART_CENTER_LAT,
-  startPointLon: BaseConfigConstants.STUTTGART_CENTER_LON,
+  startPointLat: BaseConfigConstants.KYIV_CENTER_LAT,
+  startPointLon: BaseConfigConstants.KYIV_CENTER_LON,
   defaultZoomLevel: 7,
   sessionUid: String(Math.random()).slice(2),
   isSidebarOpen: false,
