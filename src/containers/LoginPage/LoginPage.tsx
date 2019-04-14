@@ -9,6 +9,7 @@ import { signinUserAttempt, signinUserAttemptActionCreator } from '../../store/u
 import { createStructuredSelector } from 'reselect';
 import { areCredentialsInvalidSelector, isSigninAttemptInProgressSelector } from '../../store/userState/selectors';
 import { RootReducer } from '../../store/rootReducer';
+import UrlService from '../../services/Url.service';
 
 
 interface LoginPageState {
@@ -30,7 +31,8 @@ interface LoginPageDispatchProps {
   signinUser: signinUserAttemptActionCreator,
 }
 
-interface LoginPageProps extends LoginPageOwnProps, LoginPageDispatchProps {}
+interface LoginPageProps extends LoginPageOwnProps, LoginPageDispatchProps {
+}
 
 class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
   static propTypes = {
@@ -48,10 +50,6 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
     passwordTouched: false,
     passwordVisible: false,
   };
-
-  componentWillUnmount() {
-    // this.props.pageReset();
-  }
 
   get isUsernameErrorShown() {
     return !this.state.usernameValid && this.state.usernameTouched;
@@ -119,70 +117,83 @@ class LoginPage extends React.PureComponent<LoginPageProps, LoginPageState> {
     e.preventDefault();
     this.setState((prevState) => ({
       passwordVisible: !prevState.passwordVisible,
-    }))
+    }));
   };
+
+  renderSignupLink() {
+    return (
+      <>
+        <styled.SignupLink to={UrlService.signupPageUrl}>
+          Create new account
+        </styled.SignupLink>
+      </>
+    );
+  }
 
   render() {
     return (
       <styled.PageWrapper>
-        <styled.LoginFormContainer>
+        <styled.LoginFormWrapper>
           <styled.LoginFormHeader>
             Log in
           </styled.LoginFormHeader>
-          <styled.LoginForm
-            onSubmit={this.onSubmit}
-          >
-            <styled.TextFieldLabel>
-              <p>Username</p>
-              <styled.LoginFormInput
-                type="text"
-                autoComplete="username"
-                placeholder="Enter your username"
-                value={this.state.username}
-                onChange={this.onUsernameChange}
-                onBlur={this.onUsernameBlur}
-                error={this.isUsernameErrorShown}
-              />
-            </styled.TextFieldLabel>
-            <styled.ErrorBlock
-              visible={this.isUsernameErrorShown}
+          <styled.LoginFormContainer>
+            <styled.LoginForm
+              onSubmit={this.onSubmit}
             >
-              ● wrong username
-            </styled.ErrorBlock>
-            <styled.TextFieldLabel>
-              <p>Password</p>
-              <styled.LoginFormInput
-                type={this.state.passwordVisible ? 'text' : 'password'}
-                autoComplete="current-password"
-                placeholder="Enter password"
-                value={this.state.password}
-                error={this.isPasswordErrorShown}
-                onChange={this.onPasswordChange}
-                onBlur={this.onPasswordBlur}
-              />
-              <styled.ShowPasswordEyeButton onClick={this.togglePasswordVisibility}>
-                <styled.ShowPasswordEyeIcon/>
-              </styled.ShowPasswordEyeButton>
-            </styled.TextFieldLabel>
-            <styled.ErrorBlock
-              visible={this.isPasswordErrorShown}
-            >
-              ● wrong password
-            </styled.ErrorBlock>
-            <styled.SubmitButtonContainer>
-              <styled.SubmitButton
-                type="submit"
-                disabled={this.isSubmitNotAllowed}
-                value="Log in"
-              />
-            </styled.SubmitButtonContainer>
-            <styled.ErrorBlock
-              visible={this.areCredentialsInvalid}
-            >
-              ● wrong username or password
-            </styled.ErrorBlock>
-          </styled.LoginForm>
-        </styled.LoginFormContainer>
+              <styled.TextFieldLabel>
+                <p>Username</p>
+                <styled.LoginFormInput
+                  type="text"
+                  autoComplete="username"
+                  placeholder="Enter your username"
+                  value={this.state.username}
+                  onChange={this.onUsernameChange}
+                  onBlur={this.onUsernameBlur}
+                  error={this.isUsernameErrorShown}
+                />
+              </styled.TextFieldLabel>
+              <styled.ErrorBlock
+                visible={this.isUsernameErrorShown}
+              >
+                ● wrong username
+              </styled.ErrorBlock>
+              <styled.TextFieldLabel>
+                <p>Password</p>
+                <styled.LoginFormInput
+                  type={this.state.passwordVisible ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  placeholder="Enter password"
+                  value={this.state.password}
+                  error={this.isPasswordErrorShown}
+                  onChange={this.onPasswordChange}
+                  onBlur={this.onPasswordBlur}
+                />
+                <styled.ShowPasswordEyeButton onClick={this.togglePasswordVisibility}>
+                  <styled.ShowPasswordEyeIcon/>
+                </styled.ShowPasswordEyeButton>
+              </styled.TextFieldLabel>
+              <styled.ErrorBlock
+                visible={this.isPasswordErrorShown}
+              >
+                ● wrong password
+              </styled.ErrorBlock>
+              <styled.SubmitButtonContainer>
+                <styled.SubmitButton
+                  type="submit"
+                  disabled={this.isSubmitNotAllowed}
+                  value="Log in"
+                />
+              </styled.SubmitButtonContainer>
+              <styled.ErrorBlock
+                visible={this.areCredentialsInvalid}
+              >
+                ● wrong username or password
+              </styled.ErrorBlock>
+              {this.renderSignupLink()}
+            </styled.LoginForm>
+          </styled.LoginFormContainer>
+        </styled.LoginFormWrapper>
       </styled.PageWrapper>
     );
   }

@@ -1,7 +1,7 @@
 # Free parkings UI
 
 ## Features
-- [ ] Sign up (with / without info)
+- [X] Sign up (with / without info)
 - [X] Sign in
 - [X] Sign out
 - [X] Protected route (deny pages if no permissions)

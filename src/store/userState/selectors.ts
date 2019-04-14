@@ -4,7 +4,11 @@ export const userInfoSelector = (state: RootReducer) => state.user;
 
 export const areCredentialsInvalidSelector = (state: RootReducer) => state.user.isLoginError;
 
+export const signupErrorSelector = (state: RootReducer) => state.user.signupError;
+
 export const isSigninAttemptInProgressSelector = (state: RootReducer) => state.user.isLoginInProgress;
+
+export const isSignupAttemptInProgressSelector = (state: RootReducer) => state.user.isSignupInProgress;
 
 export const isUserAuthorizedSelector = (state: RootReducer) => state.user.isAuthorized;
 

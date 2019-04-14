@@ -5,7 +5,7 @@ function checkStatus(response: Response) {
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
-  throw new Error(`Response with error: ${response.status}`);
+  throw response;
 }
 
 function parseJSON(response: Response) {
@@ -18,6 +18,16 @@ function parseJSON(response: Response) {
 export function request(url: string, options: RequestInit = {}, json: boolean = true) {
   const promise = fetch(url, options).then(checkStatus);
   return json ? promise.then(parseJSON) : promise;
+}
+
+export function requestToFreeParkingsAPI(url: string, options: RequestInit = {}) {
+  const promise = fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then(checkStatus);
+  return promise.then(parseJSON)
 }
 
 // type responseWithAuthSuccess = any;

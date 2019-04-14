@@ -8,6 +8,9 @@ import {
   signinUserAttemptAction,
   signinUserError,
   signinUserSuccess,
+  signupUserAttemptAction,
+  signupUserError,
+  signupUserSuccess,
   userSignOutSuccess,
 } from './actions';
 import LocalStorageService from '../../services/LocalStorage.service';
@@ -15,11 +18,12 @@ import {
   USER_SIGN_IN_ATTEMPT,
   USER_SIGN_OUT_ATTEMPT,
   USER_SIGN_OUT_ERROR,
+  USER_SIGN_UP_ATTEMPT,
 } from '../../containers/App/constants';
 import UrlService from '../../services/Url.service';
 import { UserInfo } from '../../interfaces/UserInfo';
-import { request } from '../../services/Authentication.service';
-import { userInfoAdapter } from './adapters';
+import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
+import { signupErrorAdapter, userInfoAdapter } from './adapters';
 import { userAccessTokenSelector } from './selectors';
 
 
@@ -32,12 +36,9 @@ function* signinUserAttemptSaga(action: signinUserAttemptAction) {
   const url = `${backendEndpoint}/auth/login`;
 
   try {
-    const rawUserInfo: UserInfo = yield call(request, url, {
+    const rawUserInfo: UserInfo = yield call(requestToFreeParkingsAPI, url, {
       method: 'POST',
       body: JSON.stringify({ username, password }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
     const userInfo = userInfoAdapter(rawUserInfo);
     yield call(LocalStorageService.setUserInfo, userInfo);
@@ -57,12 +58,9 @@ function* signoutUserSaga() {
   }
 
   try {
-    yield call(request, url, {
+    yield call(requestToFreeParkingsAPI, url, {
       method: 'POST',
       body: JSON.stringify({ accessToken }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
     });
     yield put(userSignOutSuccess());
   } catch (e) {
@@ -80,10 +78,28 @@ function* initUserInfoOnLoadSaga() {
   }
 }
 
+function* signupUserSaga(action: signupUserAttemptAction) {
+  const { username, password } = action.payload;
+  const url = `${backendEndpoint}/auth/signup`;
+
+  try {
+    yield call(requestToFreeParkingsAPI, url, {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+    });
+    yield put(signupUserSuccess());
+  } catch (e) {
+    const errorData = yield e.json();
+    const errorMessage = signupErrorAdapter(errorData);
+    yield put(signupUserError(errorMessage));
+  }
+}
+
 const defaultLoginPageSaga = function*() {
   yield all([
     takeLatest(USER_SIGN_IN_ATTEMPT, signinUserAttemptSaga),
     takeLatest(USER_SIGN_OUT_ATTEMPT, signoutUserSaga),
+    takeLatest(USER_SIGN_UP_ATTEMPT, signupUserSaga),
   ]);
   yield initUserInfoOnLoadSaga();
 };

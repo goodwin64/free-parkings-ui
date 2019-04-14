@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 
 import * as css from './App.module.css';
-import LoginPage from '../LoginPage/LoginPage';
 import Header from '../../components/Header/Header';
 import UrlService from '../../services/Url.service';
 import ProtectedRoute from '../../HOCs/ProtectedRoute';
@@ -12,6 +11,8 @@ import { isUserAuthorizedSelector, userInfoSelector } from '../../store/userStat
 import { RootReducer } from '../../store/rootReducer';
 import { UserInfo } from '../../interfaces/UserInfo';
 
+const LoginPage = React.lazy(() => import('../LoginPage/LoginPage'));
+const SignupPage = React.lazy(() => import('../SignupPage/SignupPage'));
 // @ts-ignore
 const ParkingsPage = React.lazy(() => import('../ParkingsPage/ParkingsPage'));
 // @ts-ignore
@@ -35,6 +36,12 @@ export class App extends React.Component<AppProps> {
             <ProtectedRoute
               path={UrlService.loginPageUrl}
               component={LoginPage}
+              allowed={!this.props.isUserAuthorized}
+              redirectPath={UrlService.detectPageByUserInfo(this.props.userInfo)}
+            />
+            <ProtectedRoute
+              path={UrlService.signupPageUrl}
+              component={SignupPage}
               allowed={!this.props.isUserAuthorized}
               redirectPath={UrlService.detectPageByUserInfo(this.props.userInfo)}
             />

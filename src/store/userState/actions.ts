@@ -8,6 +8,9 @@ import {
   USER_SIGN_IN_SUCCESS,
   USER_SIGN_OUT_ATTEMPT,
   USER_SIGN_OUT_SUCCESS,
+  USER_SIGN_UP_ATTEMPT,
+  USER_SIGN_UP_ERROR,
+  USER_SIGN_UP_SUCCESS,
 } from '../../containers/App/constants';
 import { UserInfo } from '../../interfaces/UserInfo';
 
@@ -36,14 +39,29 @@ export const userSignOutSuccess = () => action(USER_SIGN_OUT_SUCCESS);
 export type userSignOutSuccessAction = ActionType<typeof userSignOutSuccess>;
 export type userSignOutSuccessActionCreator = () => userSignOutSuccessAction;
 
+export const signupUserAttempt = (username: string, password: string) => action(USER_SIGN_UP_ATTEMPT, { username, password });
+export type signupUserAttemptAction = ActionType<typeof signupUserAttempt>;
+export type signupUserAttemptActionCreator = (username: string, password: string) => signupUserAttemptAction;
+
+export const signupUserSuccess = () => action(USER_SIGN_UP_SUCCESS);
+export type signupUserSuccessAction = ActionType<typeof signupUserSuccess>;
+export type signupUserSuccessActionCreator = () => signupUserSuccessAction;
+
+export const signupUserError = (signupError: string | null) => action(USER_SIGN_UP_ERROR, { signupError });
+export type signupUserErrorAction = ActionType<typeof signupUserError>;
+export type signupUserErrorActionCreator = (signupError: string | null) => signupUserErrorAction;
+
 export const notAllowedWithGuestPermission = () => action(NOT_ALLOWED_WITH_GUEST_PERMISSION);
 export type notAllowedWithGuestPermissionAction = ActionType<typeof notAllowedWithGuestPermission>;
 export type notAllowedWithGuestPermissionActionCreator = () => notAllowedWithGuestPermissionAction;
 
-export type LoginPageAction = initUserInfoOnLoadAction
+export type UserAction = initUserInfoOnLoadAction
   | signinUserAttemptAction
   | signinUserSuccessAction
   | signinUserErrorAction
   | userSignOutAttemptAction
   | userSignOutSuccessAction
+  | signupUserAttemptAction
+  | signupUserSuccessAction
+  | signupUserErrorAction
 ;

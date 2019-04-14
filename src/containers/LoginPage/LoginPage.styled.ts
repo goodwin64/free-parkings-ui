@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import { COLORS } from '../../constants/colors';
 import { PageWrapper as CommonPageWrapper } from '../../components/PageWrapper/PageWrapper.styled';
@@ -14,15 +15,20 @@ export const PageWrapper = styled(CommonPageWrapper)`
   justify-content: flex-start;
 `;
 
-export const LoginFormContainer = styled.div`
+export const LoginFormWrapper = styled.div`
   border-radius: 15px;
   box-shadow: 0 0 10px 0 rgba(90, 103, 121, 0.1);
   overflow: hidden;
 `;
 
-export const LoginForm = styled.form`
-  background-color: ${COLORS.colorAntiMain};
+export const LoginFormContainer = styled.div`
   padding: 30px 75px 15px;
+  background-color: ${COLORS.colorAntiMain};
+`;
+
+export const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
 `;
 
 export const LoginFormHeader = styled.h2`
@@ -49,7 +55,8 @@ export const LoginFormInput = styled(CommonTextFieldInput)`
   font-size: 16px;
   height: 40px;
   padding: 12px 40px 12px 20px;
-  transition: border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  transition: border-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+              box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   width: 100%;
 `;
 
@@ -95,4 +102,8 @@ export const SubmitButton = styled.input`
     background-color: ${COLORS.colorRouteInactive};
     cursor: not-allowed;
   }
+`;
+
+export const SignupLink = styled(Link)`
+  align-self: flex-end;
 `;

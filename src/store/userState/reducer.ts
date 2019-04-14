@@ -1,10 +1,13 @@
-import { LoginPageAction } from './actions';
+import { UserAction } from './actions';
 import {
   INIT_USER_INFO_ON_LOAD,
   USER_SIGN_IN_ATTEMPT,
   USER_SIGN_IN_ERROR,
   USER_SIGN_IN_SUCCESS,
   USER_SIGN_OUT_SUCCESS,
+  USER_SIGN_UP_ATTEMPT,
+  USER_SIGN_UP_ERROR,
+  USER_SIGN_UP_SUCCESS,
 } from '../../containers/App/constants';
 import { UserInfo } from '../../interfaces/UserInfo';
 
@@ -15,7 +18,9 @@ export const USER_ROLE_DRIVER = 'DRIVER';
 
 export const userInitialState: UserInfo = {
   isLoginInProgress: false,
+  isSignupInProgress: false,
   isLoginError: false,
+  signupError: null,
   isAuthorized: false,
   role: USER_ROLE_GUEST,
   avatarUrl: 'https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png',
@@ -24,8 +29,8 @@ export const userInitialState: UserInfo = {
 
 export default function userReducer(
   state: UserInfo = userInitialState,
-  action: LoginPageAction,
-) {
+  action: UserAction,
+): UserInfo {
   switch (action.type) {
     case INIT_USER_INFO_ON_LOAD: {
       return {
@@ -67,6 +72,27 @@ export default function userReducer(
     }
     case USER_SIGN_OUT_SUCCESS: {
       return userInitialState;
+    }
+    case USER_SIGN_UP_ATTEMPT: {
+      return {
+        ...state,
+        isSignupInProgress: true,
+        signupError: null,
+      };
+    }
+    case USER_SIGN_UP_SUCCESS: {
+      return {
+        ...state,
+        isSignupInProgress: false,
+        signupError: null,
+      };
+    }
+    case USER_SIGN_UP_ERROR: {
+      return {
+        ...state,
+        isSignupInProgress: false,
+        signupError: action.payload.signupError,
+      };
     }
     default: {
       return state;

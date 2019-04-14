@@ -9,4 +9,8 @@ export default class FormsValidatorService {
   public static isUsernameValid(username: string): boolean {
     return FormsValidatorService.usernameValidator.test(username);
   }
+
+  public static isPasswordValid(password: string): boolean {
+    return password.length > 0 && password.length < 20;
+  }
 }
