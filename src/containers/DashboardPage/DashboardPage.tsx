@@ -5,21 +5,24 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { RootReducer } from '../../store/rootReducer';
-import { avatarUrlSelector, usernameSelector } from '../../store/userState/selectors';
+import { avatarUrlSelector, userInfoSelector, usernameSelector } from '../../store/userState/selectors';
 import { Link } from 'react-router-dom';
 import UrlService from '../../services/Url.service';
 import ImagesService from '../../services/Images.service';
-import * as styled from './UserPage.styled';
+import * as styled from './DashboardPage.styled';
+import * as commonStyled from '../../components/commonStyled';
+import { UserInfo } from '../../interfaces/UserInfo';
 
 
-interface UserPageOwnProps {
+interface DashboardPageOwnProps {
   username: string,
   avatarUrl: string,
+  user: UserInfo,
 }
 
-interface UserPageProps extends UserPageOwnProps {}
+interface DashboardPageProps extends DashboardPageOwnProps {}
 
-class DriverPage extends React.PureComponent<UserPageProps> {
+class DashboardPage extends React.PureComponent<DashboardPageProps> {
   static propTypes = {
     username: PropTypes.string.isRequired,
     avatarUrl: PropTypes.string.isRequired,
@@ -27,10 +30,10 @@ class DriverPage extends React.PureComponent<UserPageProps> {
 
   render() {
     return (
-      <styled.Wrapper>
+      <commonStyled.PageWrapper>
         <styled.LinksContainer>
           <styled.NavLinkWrapper>
-            <Link to={UrlService.driverAccountPageUrl}>
+            <Link to={UrlService.getMyAccountPageUrl(this.props.user)}>
               <img src={ImagesService.driverImages.myAccount} alt="my account"/>
               <h2>My account</h2>
             </Link>
@@ -50,18 +53,19 @@ class DriverPage extends React.PureComponent<UserPageProps> {
             </Link>
           </styled.NavLinkWrapper>
         </styled.LinksContainer>
-      </styled.Wrapper>
+      </commonStyled.PageWrapper>
     );
   }
 }
 
-const mapStateToProps = createStructuredSelector<RootReducer, UserPageOwnProps>({
+const mapStateToProps = createStructuredSelector<RootReducer, DashboardPageOwnProps>({
   username: usernameSelector,
   avatarUrl: avatarUrlSelector,
+  user: userInfoSelector,
 });
 
 const withConnect = connect(mapStateToProps);
 
 export default compose(
   withConnect,
-)(DriverPage);
+)(DashboardPage);

@@ -2,10 +2,6 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants/colors';
 
 
-export const Wrapper = styled.div`
-  padding: 20px 40px;
-`;
-
 export const LinksContainer = styled.div`
   display: flex;
   justify-content: space-around;

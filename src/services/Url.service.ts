@@ -8,29 +8,64 @@ export default class UrlService {
   private static rootUrl = '/';
 
   public static readonly loginPageUrl = path.join(UrlService.rootUrl, '/login');
+  public static readonly loginPageRolesAllowed = new Set([
+    USER_ROLE_GUEST,
+  ]);
 
   public static readonly signupPageUrl = path.join(UrlService.rootUrl, '/signup');
+  public static readonly signupPageRolesAllowed = new Set([
+    USER_ROLE_GUEST,
+  ]);
 
   public static readonly configPageUrl = path.join(UrlService.rootUrl, '/config');
+  public static readonly configPageRolesAllowed = new Set([
+    USER_ROLE_DRIVER, USER_ROLE_ADMIN,
+  ]);
 
-  public static readonly adminDashboardPageUrl = path.join(UrlService.rootUrl, '/dashboard');
+  public static readonly dashboardPageUrl = path.join(UrlService.rootUrl, '/dashboard');
+  public static readonly dashboardPageRolesAllowed = new Set([
+    USER_ROLE_DRIVER, USER_ROLE_ADMIN,
+  ]);
 
-  public static readonly driverPageUrl = path.join(UrlService.rootUrl, '/driver');
+  public static readonly adminAccountPageUrl = path.join(UrlService.rootUrl, '/admin-account');
+  public static readonly adminAccountPageRolesAllowed = new Set([
+    USER_ROLE_ADMIN,
+  ]);
 
-  public static readonly driverAccountPageUrl = path.join(UrlService.rootUrl, '/my-account');
+  public static readonly driverAccountPageUrl = path.join(UrlService.rootUrl, '/driver-account');
+  public static readonly driverAccountPageRolesAllowed = new Set([
+    USER_ROLE_DRIVER,
+  ]);
 
   public static readonly findParkingsPageUrl = path.join(UrlService.rootUrl, '/find-parkings');
+  public static readonly findParkingsPageRolesAllowed = new Set([
+    USER_ROLE_DRIVER, USER_ROLE_ADMIN,
+  ]);
 
   public static readonly myDrivesPageUrl = path.join(UrlService.rootUrl, '/my-drives');
+  public static readonly myDrivesPageRolesAllowed = new Set([
+    USER_ROLE_DRIVER, USER_ROLE_ADMIN,
+  ]);
 
   public static readonly detectPageByUserInfo = function(userInfo: UserInfo): string {
     if (!userInfo || !userInfo.role || userInfo.role === USER_ROLE_GUEST) {
       return UrlService.loginPageUrl;
-    } else if (userInfo.role === USER_ROLE_ADMIN) {
-      return UrlService.adminDashboardPageUrl;
-    } else if (userInfo.role === USER_ROLE_DRIVER) {
-      return UrlService.driverPageUrl;
+    } else if (userInfo.role === USER_ROLE_ADMIN || userInfo.role === USER_ROLE_DRIVER) {
+      return UrlService.dashboardPageUrl;
     }
     return UrlService.rootUrl;
   };
+
+  public static readonly getMyAccountPageUrl = function(userInfo: UserInfo): string {
+    if (userInfo.role === USER_ROLE_ADMIN) {
+      return UrlService.adminAccountPageUrl;
+    } else if (userInfo.role === USER_ROLE_DRIVER) {
+      return UrlService.driverAccountPageUrl;
+    }
+    return UrlService.rootUrl;
+  };
+
+  public static readonly isRouteAllowed = function(userInfo: UserInfo, routeRolesAllowed: Set<string>): boolean {
+    return routeRolesAllowed.has(userInfo.role);
+  }
 }

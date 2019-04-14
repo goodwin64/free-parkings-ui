@@ -17,8 +17,9 @@ const SignupPage = React.lazy(() => import('../SignupPage/SignupPage'));
 const ParkingsPage = React.lazy(() => import('../ParkingsPage/ParkingsPage'));
 // @ts-ignore
 const BaseConfigPage = React.lazy(() => import('../BaseConfigPage/BaseConfigPage'));
-const UserPage = React.lazy(() => import('../UserPage/UserPage'));
-const AdminPage = React.lazy(() => import('../AdminPage/AdminPage'));
+const DashboardPage = React.lazy(() => import('../DashboardPage/DashboardPage'));
+const AdminAccountPage = React.lazy(() => import('../AdminAccountPage/AdminAccountPage'));
+const DriverAccountPage = React.lazy(() => import('../DriverAccountPage/DriverAccountPage'));
 
 
 interface AppProps {
@@ -36,13 +37,13 @@ export class App extends React.Component<AppProps> {
             <ProtectedRoute
               path={UrlService.loginPageUrl}
               component={LoginPage}
-              allowed={!this.props.isUserAuthorized}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.loginPageRolesAllowed)}
               redirectPath={UrlService.detectPageByUserInfo(this.props.userInfo)}
             />
             <ProtectedRoute
               path={UrlService.signupPageUrl}
               component={SignupPage}
-              allowed={!this.props.isUserAuthorized}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.signupPageRolesAllowed)}
               redirectPath={UrlService.detectPageByUserInfo(this.props.userInfo)}
             />
             <Route
@@ -53,19 +54,31 @@ export class App extends React.Component<AppProps> {
             <ProtectedRoute
               path={UrlService.findParkingsPageUrl}
               component={ParkingsPage}
-              allowed={this.props.isUserAuthorized}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.findParkingsPageRolesAllowed)}
               redirectPath={UrlService.loginPageUrl}
             />
             <ProtectedRoute
-              path={UrlService.driverPageUrl}
-              component={UserPage}
-              allowed={this.props.isUserAuthorized}
+              path={UrlService.dashboardPageUrl}
+              component={DashboardPage}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.dashboardPageRolesAllowed)}
               redirectPath={UrlService.loginPageUrl}
             />
             <ProtectedRoute
-              path={UrlService.adminDashboardPageUrl}
-              component={AdminPage}
-              allowed={this.props.isUserAuthorized}
+              path={UrlService.driverAccountPageUrl}
+              component={DriverAccountPage}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.driverAccountPageRolesAllowed)}
+              redirectPath={UrlService.loginPageUrl}
+            />
+            <ProtectedRoute
+              path={UrlService.adminAccountPageUrl}
+              component={AdminAccountPage}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.adminAccountPageRolesAllowed)}
+              redirectPath={UrlService.loginPageUrl}
+            />
+            <ProtectedRoute
+              path={UrlService.myDrivesPageUrl}
+              component={() => <div>my drives</div>}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.myDrivesPageRolesAllowed)}
               redirectPath={UrlService.loginPageUrl}
             />
             <Redirect

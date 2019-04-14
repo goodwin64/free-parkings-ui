@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import { RootReducer } from '../../store/rootReducer';
-import * as styled from './AdminPage.styled';
+import * as styled from './AdminAccountPage.styled';
 
 
-interface AdminPageOwnProps {}
+interface AdminAccountPageOwnProps {}
 
-interface AdminPageProps extends AdminPageOwnProps {}
+interface AdminAccountPageProps extends AdminAccountPageOwnProps {}
 
-class DriverPage extends React.PureComponent<AdminPageProps> {
+class AdminAccountPage extends React.PureComponent<AdminAccountPageProps> {
   static propTypes = {};
 
   render() {
@@ -23,10 +23,10 @@ class DriverPage extends React.PureComponent<AdminPageProps> {
   }
 }
 
-const mapStateToProps = createStructuredSelector<RootReducer, AdminPageOwnProps>({});
+const mapStateToProps = createStructuredSelector<RootReducer, AdminAccountPageOwnProps>({});
 
 const withConnect = connect(mapStateToProps);
 
 export default compose(
   withConnect,
-)(DriverPage);
+)(AdminAccountPage);
