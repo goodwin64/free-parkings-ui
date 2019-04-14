@@ -27,14 +27,9 @@ export default class UrlService {
     USER_ROLE_DRIVER, USER_ROLE_ADMIN,
   ]);
 
-  public static readonly adminAccountPageUrl = path.join(UrlService.rootUrl, '/admin-account');
-  public static readonly adminAccountPageRolesAllowed = new Set([
-    USER_ROLE_ADMIN,
-  ]);
-
-  public static readonly driverAccountPageUrl = path.join(UrlService.rootUrl, '/driver-account');
-  public static readonly driverAccountPageRolesAllowed = new Set([
-    USER_ROLE_DRIVER,
+  public static readonly settingsPageUrl = path.join(UrlService.rootUrl, '/driver-account');
+  public static readonly settingsPageRolesAllowed = new Set([
+    USER_ROLE_DRIVER, USER_ROLE_ADMIN,
   ]);
 
   public static readonly findParkingsPageUrl = path.join(UrlService.rootUrl, '/find-parkings');
@@ -52,15 +47,6 @@ export default class UrlService {
       return UrlService.loginPageUrl;
     } else if (userInfo.role === USER_ROLE_ADMIN || userInfo.role === USER_ROLE_DRIVER) {
       return UrlService.dashboardPageUrl;
-    }
-    return UrlService.rootUrl;
-  };
-
-  public static readonly getMyAccountPageUrl = function(userInfo: UserInfo): string {
-    if (userInfo.role === USER_ROLE_ADMIN) {
-      return UrlService.adminAccountPageUrl;
-    } else if (userInfo.role === USER_ROLE_DRIVER) {
-      return UrlService.driverAccountPageUrl;
     }
     return UrlService.rootUrl;
   };

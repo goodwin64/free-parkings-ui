@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router';
+import { Redirect, Switch } from 'react-router';
 
 import * as css from './App.module.css';
 import Header from '../../components/Header/Header';
@@ -15,11 +15,8 @@ const LoginPage = React.lazy(() => import('../LoginPage/LoginPage'));
 const SignupPage = React.lazy(() => import('../SignupPage/SignupPage'));
 // @ts-ignore
 const ParkingsPage = React.lazy(() => import('../ParkingsPage/ParkingsPage'));
-// @ts-ignore
-const BaseConfigPage = React.lazy(() => import('../BaseConfigPage/BaseConfigPage'));
 const DashboardPage = React.lazy(() => import('../DashboardPage/DashboardPage'));
-const AdminAccountPage = React.lazy(() => import('../AdminAccountPage/AdminAccountPage'));
-const DriverAccountPage = React.lazy(() => import('../DriverAccountPage/DriverAccountPage'));
+const UserSettingsPage = React.lazy(() => import('../UserSettingsPage/UserSettingsPage'));
 
 
 interface AppProps {
@@ -46,11 +43,6 @@ export class App extends React.Component<AppProps> {
               allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.signupPageRolesAllowed)}
               redirectPath={UrlService.detectPageByUserInfo(this.props.userInfo)}
             />
-            <Route
-              exact
-              path={UrlService.configPageUrl}
-              component={BaseConfigPage}
-            />
             <ProtectedRoute
               path={UrlService.findParkingsPageUrl}
               component={ParkingsPage}
@@ -64,15 +56,9 @@ export class App extends React.Component<AppProps> {
               redirectPath={UrlService.loginPageUrl}
             />
             <ProtectedRoute
-              path={UrlService.driverAccountPageUrl}
-              component={DriverAccountPage}
-              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.driverAccountPageRolesAllowed)}
-              redirectPath={UrlService.loginPageUrl}
-            />
-            <ProtectedRoute
-              path={UrlService.adminAccountPageUrl}
-              component={AdminAccountPage}
-              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.adminAccountPageRolesAllowed)}
+              path={UrlService.settingsPageUrl}
+              component={UserSettingsPage}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.settingsPageRolesAllowed)}
               redirectPath={UrlService.loginPageUrl}
             />
             <ProtectedRoute

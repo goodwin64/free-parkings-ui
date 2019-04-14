@@ -5,14 +5,16 @@
 - [X] Sign in
 - [X] Sign out
 - [X] Protected route (deny pages if no permissions)
-- [ ] Driver: Account page (personal info, car parameters, parkings preferences)
+- [ ] Driver: Account page (personal info)
+- [ ] Driver: Account page (car parameters)
+- [ ] Driver: Account page (parkings preferences)
 - [ ] Driver: Change car model
 - [ ] Driver: Change car number
 - [ ] Driver: Change car color
 - [ ] Driver: Change car size
-- [ ] Driver: Change preferred city
 - [ ] Driver: Change profile pic
 - [ ] Driver: Change username
+- [ ] Driver: Change preferred city
 - [ ] Driver: Search location by POI
 - [ ] Driver: Search location by current GPS
 - [ ] Driver: Enable/disable parkings auto-check

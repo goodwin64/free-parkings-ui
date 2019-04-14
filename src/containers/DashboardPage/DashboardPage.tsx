@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import UrlService from '../../services/Url.service';
 import ImagesService from '../../services/Images.service';
 import * as styled from './DashboardPage.styled';
-import * as commonStyled from '../../components/commonStyled';
+import * as commonStyled from '../../components/CommonStyled/commonStyled';
 import { UserInfo } from '../../interfaces/UserInfo';
 
 
@@ -33,7 +33,7 @@ class DashboardPage extends React.PureComponent<DashboardPageProps> {
       <commonStyled.PageWrapper>
         <styled.LinksContainer>
           <styled.NavLinkWrapper>
-            <Link to={UrlService.getMyAccountPageUrl(this.props.user)}>
+            <Link to={UrlService.settingsPageUrl}>
               <img src={ImagesService.driverImages.myAccount} alt="my account"/>
               <h2>My account</h2>
             </Link>

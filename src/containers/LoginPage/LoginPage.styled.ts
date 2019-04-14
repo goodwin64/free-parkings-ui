@@ -2,22 +2,20 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 import { COLORS } from '../../constants/colors';
-import { PageWrapper as CommonPageWrapper } from '../../components/PageWrapper/PageWrapper.styled';
+import { PageWrapper as CommonPageWrapper } from '../../components/CommonStyled/PageWrapper.styled';
 import { TextFieldInput as CommonTextFieldInput } from '../../components/TextFieldInput/TextFieldInput.styled';
 import { default as CommonShowPasswordEyeIcon } from '../../assets/icons/ShowPasswordEyeIcon';
+import { Tile } from '../../components/CommonStyled/Tile.styled';
 
 
 export const PageWrapper = styled(CommonPageWrapper)`
   align-items: center;
-  background-color: ${COLORS.pageBackground};
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 `;
 
-export const LoginFormWrapper = styled.div`
-  border-radius: 15px;
-  box-shadow: 0 0 10px 0 rgba(90, 103, 121, 0.1);
+export const LoginFormWrapper = styled(Tile)`
   overflow: hidden;
 `;
 
