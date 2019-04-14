@@ -10,6 +10,7 @@ import * as styles from './Header.module.css';
 import UrlService from '../../services/Url.service';
 import { UserInfo } from '../../interfaces/UserInfo';
 import { userSignOutAttempt, userSignOutAttemptActionCreator } from '../../store/userState/actions';
+import ImagesService from '../../services/Images.service';
 
 
 interface HeaderOwnProps {
@@ -84,15 +85,11 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
 
     return (
       <section className={styles['HeaderUserPanel']}>
-        {
-          this.props.user.avatarUrl && (
-            <img
-              src={this.props.user.avatarUrl}
-              alt="Avatar"
-              className={styles['HeaderUserPanelAvatar']}
-            />
-          )
-        }
+        <img
+          src={this.props.user.avatarUrl || ImagesService.commonImages.defaultUserIcon}
+          alt="Avatar"
+          className={styles['HeaderUserPanelAvatar']}
+        />
         {this.renderUserActionsDropdown()}
       </section>
     );

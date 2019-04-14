@@ -219,7 +219,7 @@ class SignupPage extends React.PureComponent<SignupPageProps, SignupPageState> {
         <loginPageStyled.TextFieldLabel>
           <p>Repeat password</p>
           <loginPageStyled.LoginFormInput
-            type={this.state.password1Visible ? 'text' : 'password'}
+            type={this.state.password2Visible ? 'text' : 'password'}
             autoComplete="repeat-password"
             placeholder="Repeat password"
             value={this.state.password2}
