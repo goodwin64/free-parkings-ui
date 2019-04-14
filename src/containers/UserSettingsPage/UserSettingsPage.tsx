@@ -16,7 +16,7 @@ interface UserAccountPageOwnProps {
   user: UserInfo,
 }
 
-interface UserAccountPageProps extends UserAccountPageOwnProps {}
+export interface UserAccountPageProps extends UserAccountPageOwnProps {}
 
 interface UserAccountPageState {
   avatarUrl: string,
