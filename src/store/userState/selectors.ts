@@ -16,4 +16,6 @@ export const userAccessTokenSelector = (state: RootReducer) => state.user.access
 
 export const usernameSelector = (state: RootReducer) => state.user.username;
 
+export const userIdSelector = (state: RootReducer) => state.user.id;
+
 export const avatarUrlSelector = (state: RootReducer) => state.user.avatarUrl;

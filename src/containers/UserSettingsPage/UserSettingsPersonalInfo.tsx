@@ -1,88 +1,101 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import { UserAccountPageProps } from './UserSettingsPage';
-
-const style = {
-  aaa: styled.div`
-    display: grid;
-    grid: 20px auto / 1fr 2fr;
-    grid-template:
-      "header header"
-      "image params"
-    ;
-    
-    & > h3 {
-      grid-area: header;
-    }
-    
-    & > img {
-      grid-area: image;
-    }
-    
-    & > div {
-      grid-area: params;
-    }
-`
-};
+import * as styled from './UserSettingsPersonalInfo.styled';
+import ImagesService from '../../services/Images.service';
+import Button from '../../components/Button/Button';
+import './UserSettingsPersonalInfo.global.css';
 
 
 export default function UserSettingsPersonalInfo(props: UserAccountPageProps) {
-  const [draftAvatarUrl, setDraftAvatarUrl] = React.useState(props.user.avatarUrl);
-  const [savedAvatarUrl, setSavedAvatarUrl] = React.useState(props.user.avatarUrl);
+  const [draftAvatarUrlImage, setDraftAvatarUrlImage] = React.useState(props.user.avatarUrl);
+  const [draftAvatarUrlInput, setDraftAvatarUrlInput] = React.useState('');
   const [username, setUsername] = React.useState(props.user.username);
-  const [errorWithAvatar, setErrorWithAvatar] = React.useState('');
+  const [errorWithAvatar] = React.useState('');
 
-  const imgAvatarRef = React.useRef(null);
-  // const inputAvatarRef = React.useRef(null);
+  // const imgAvatarRef = React.useRef(null);
 
   const onAvatarUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDraftAvatarUrl(e.target.value);
+    const url = e.target.value;
+    if (url) {
+      setDraftAvatarUrlImage(url);
+    }
+    setDraftAvatarUrlInput(url);
+  };
+
+  const onAvatarFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      return;
+    }
+
+    const imageBase64 = await ImagesService.getBase64(e.target.files[0]);
+    console.log('imageBase64', imageBase64);
+    if (imageBase64) {
+      // @ts-ignore
+      setDraftAvatarUrlImage(imageBase64);
+    }
+  };
+
+  const onAvatarSave = () => {
+    console.log('onAvatarSave');
+    props.updateAvatar(draftAvatarUrlImage);
   };
 
   const onUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
   };
 
-  const onNewAvatarUrlCheck = () => {
-    fetch(draftAvatarUrl)
-      .then((r) => r && r.url && setSavedAvatarUrl(r.url))
-      .catch(() => setErrorWithAvatar('Invalid URL'))
-  };
-
   return (
-    <style.aaa>
-      <h3>Profile picture</h3>
-      <img
-        src={savedAvatarUrl}
-        alt=""
-        ref={imgAvatarRef.current}
-        width={240}
-      />
+    <styled.Container>
+      <styled.MenuHeader>Profile picture</styled.MenuHeader>
 
-      <div>
-        <div>
-          <label>
-            <p>profile image</p>
-            <input
-              type="text"
-              value={draftAvatarUrl}
-              onChange={onAvatarUrlChange}
-              onPaste={onNewAvatarUrlCheck}
-              onBlur={onNewAvatarUrlCheck}
-            />
-          </label>
-        </div>
-        <button>update profile picture</button>
+      <styled.ChangeAvatarInputFile
+        type="file"
+        id="avatar-file"
+        onChange={onAvatarFileUpload}
+        accept="image/*"
+      />
+      <styled.UserCurrentAvatarContainer
+        htmlFor="avatar-file"
+      >
+        <styled.UserCurrentAvatar
+          src={draftAvatarUrlImage}
+          alt="draft avatar is broken"
+          // ref={imgAvatarRef.current}
+        />
+        <styled.UploadFileTooltip>upload</styled.UploadFileTooltip>
+      </styled.UserCurrentAvatarContainer>
+
+      <styled.AvatarParametersContainer>
+        <styled.InputContainer>
+          <styled.ChangeAvatarInputUrl
+            type="text"
+            value={draftAvatarUrlInput.slice(0, 100)}
+            onChange={onAvatarUrlChange}
+            className="effect-20"
+            required
+          />
+          <styled.ChangeAvatarInputPlaceholder>
+            By existing URL
+          </styled.ChangeAvatarInputPlaceholder>
+          <span className="focus-border"><i/></span>
+        </styled.InputContainer>
         <p>{errorWithAvatar}</p>
 
-        <div>
-          <label>
-            <p>username:</p>
-            <input type="text" value={username} onChange={onUsernameChange}/>
-          </label>
-        </div>
-      </div>
-    </style.aaa>
+        <styled.InputContainer>
+          <p>username:</p>
+          <input type="text" value={username} onChange={onUsernameChange}/>
+        </styled.InputContainer>
+
+        <styled.InputContainer>
+          <Button
+            onClick={onAvatarSave}
+            disabled={props.user.avatarUrl === draftAvatarUrlImage}
+          >
+            Save
+          </Button>
+        </styled.InputContainer>
+      </styled.AvatarParametersContainer>
+    </styled.Container>
   );
 }

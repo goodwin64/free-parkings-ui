@@ -10,13 +10,18 @@ import { RootReducer } from '../../store/rootReducer';
 import { UserInfo } from '../../interfaces/UserInfo';
 import { userInfoSelector } from '../../store/userState/selectors';
 import UserSettingsPersonalInfo from './UserSettingsPersonalInfo';
+import { updateAvatar, updateAvatarActionCreator } from '../../store/userState/actions';
 
 
 interface UserAccountPageOwnProps {
   user: UserInfo,
 }
 
-export interface UserAccountPageProps extends UserAccountPageOwnProps {}
+interface UserAccountPageDispatchProps {
+  updateAvatar: updateAvatarActionCreator,
+}
+
+export interface UserAccountPageProps extends UserAccountPageOwnProps, UserAccountPageDispatchProps {}
 
 interface UserAccountPageState {
   avatarUrl: string,
@@ -29,6 +34,7 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
       role: PropTypes.oneOf([USER_ROLE_DRIVER, USER_ROLE_ADMIN]).isRequired,
       username: PropTypes.string.isRequired,
     }).isRequired,
+    updateAvatar: PropTypes.func.isRequired,
   };
 
   constructor(props: UserAccountPageProps) {
@@ -87,7 +93,11 @@ const mapStateToProps = createStructuredSelector<RootReducer, UserAccountPageOwn
   user: userInfoSelector,
 });
 
-const withConnect = connect(mapStateToProps);
+const mapDispatchToProps = {
+  updateAvatar,
+};
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(
   withConnect,

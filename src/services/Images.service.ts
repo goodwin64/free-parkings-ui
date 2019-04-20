@@ -14,4 +14,18 @@ export default class ImagesService {
     myAccount,
     myDrives,
   };
+
+  public static getBase64 = function(file?: File) {
+    if (!file) {
+      return;
+    }
+
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      // @ts-ignore
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
 }

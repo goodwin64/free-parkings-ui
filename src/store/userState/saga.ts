@@ -11,25 +11,26 @@ import {
   signupUserAttemptAction,
   signupUserError,
   signupUserSuccess,
+  updateAvatarAction,
   userSignOutSuccess,
 } from './actions';
-import LocalStorageService from '../../services/LocalStorage.service';
+import LocalStorageService, { updateUserInfoLocallySaga } from '../../services/LocalStorage.service';
 import {
-  USER_SIGN_IN_ATTEMPT,
+  USER_SIGN_IN_ATTEMPT, USER_SIGN_IN_SUCCESS,
   USER_SIGN_OUT_ATTEMPT,
   USER_SIGN_OUT_ERROR,
   USER_SIGN_UP_ATTEMPT,
-  USER_SIGN_UP_SUCCESS,
+  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR,
 } from '../../containers/App/constants';
 import UrlService from '../../services/Url.service';
-import { UserInfo } from '../../interfaces/UserInfo';
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
 import { signupErrorAdapter, userInfoAdapter } from './adapters';
-import { userAccessTokenSelector } from './selectors';
+import { userAccessTokenSelector, userIdSelector, userInfoSelector } from './selectors';
 import { ResponseLoginInfo } from '../../interfaces/ResponseLoginInfo';
 
 
-function* redirectToPageByRole(userInfo: UserInfo) {
+function* redirectToPageByRole() {
+  const userInfo = yield select(userInfoSelector);
   yield put(push(UrlService.detectPageByUserInfo(userInfo)));
 }
 
@@ -43,12 +44,15 @@ function* signinUserAttemptSaga(action: signinUserAttemptAction) {
       body: JSON.stringify({ username, password }),
     });
     const userInfo = userInfoAdapter(loginInfo);
-    yield call(LocalStorageService.setUserInfo, userInfo);
     yield put(signinUserSuccess(userInfo));
-    yield call(redirectToPageByRole, userInfo);
   } catch (e) {
     yield put(signinUserError());
   }
+}
+
+function* signinUserSuccessSaga() {
+  yield call(updateUserInfoLocallySaga);
+  yield call(redirectToPageByRole);
 }
 
 function* signoutUserAttemptSaga() {
@@ -101,14 +105,32 @@ function* signupUserSuccessSaga() {
   yield put(push(UrlService.loginPageUrl));
 }
 
+function* updateAvatarSaga(action: updateAvatarAction) {
+  const newAvatarUrl = action.payload;
+  const userId = yield select(userIdSelector);
+  const url = `${backendEndpoint}/users/${userId}/avatar`;
+
+  try {
+    yield call(requestToFreeParkingsAPI, url, {
+      method: 'POST',
+      body: JSON.stringify({ imageUrl: newAvatarUrl }),
+    });
+    yield call(updateUserInfoLocallySaga);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 const defaultLoginPageSaga = function*() {
   yield all([
     takeLatest(USER_SIGN_IN_ATTEMPT, signinUserAttemptSaga),
+    takeLatest(USER_SIGN_IN_SUCCESS, signinUserSuccessSaga),
     takeLatest(USER_SIGN_OUT_ATTEMPT, signoutUserAttemptSaga),
     takeLatest(USER_SIGN_UP_ATTEMPT, signupUserAttemptSaga),
     takeLatest(USER_SIGN_UP_SUCCESS, signupUserSuccessSaga),
+    takeLatest(USER_UPDATE_AVATAR, updateAvatarSaga),
+    initUserInfoOnLoadSaga(),
   ]);
-  yield initUserInfoOnLoadSaga();
 };
 
 export default defaultLoginPageSaga;

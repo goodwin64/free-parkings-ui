@@ -23,7 +23,7 @@ export const UserCurrentAvatarContainer = styled.label`
 `;
 
 export const UserCurrentAvatar = styled.img`
-  max-width: 100%;
+  width: 100%;
 `;
 
 export const UploadFileTooltip = styled.p`
@@ -49,12 +49,19 @@ export const UploadFileTooltip = styled.p`
 export const AvatarParametersContainer = styled.div`
 `;
 
-export const InputContainer = styled.label`
-  
+export const InputContainer = styled.div`
+  position: relative;
+  width: 200px;
 `;
 
 export const ChangeAvatarInputUrl = styled.input`
-  
+  text-overflow: ellipsis;
+`;
+
+export const ChangeAvatarInputPlaceholder = styled.label`
+  ${ChangeAvatarInputUrl}:valid:not(:focus) ~ & {
+    opacity: 0;
+  }
 `;
 
 export const ChangeAvatarInputFile = styled.input`

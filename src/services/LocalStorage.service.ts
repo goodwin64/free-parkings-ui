@@ -1,4 +1,6 @@
 import { UserInfo } from '../interfaces/UserInfo';
+import { userInfoSelector } from '../store/userState/selectors';
+import { call, select } from 'redux-saga/effects';
 
 
 export default class LocalStorageService {
@@ -29,4 +31,9 @@ export default class LocalStorageService {
   public static removeUserInfo() {
     localStorage.removeItem('userInfo');
   }
+}
+
+export function* updateUserInfoLocallySaga() {
+  const userInfo = yield select(userInfoSelector);
+  yield call(LocalStorageService.setUserInfo, userInfo);
 }

@@ -7,7 +7,7 @@ import {
   USER_SIGN_OUT_SUCCESS,
   USER_SIGN_UP_ATTEMPT,
   USER_SIGN_UP_ERROR,
-  USER_SIGN_UP_SUCCESS,
+  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR,
 } from '../../containers/App/constants';
 import { UserInfo } from '../../interfaces/UserInfo';
 
@@ -50,14 +50,10 @@ export default function userReducer(
     case USER_SIGN_IN_SUCCESS: {
       return {
         ...state,
+        ...action.payload,
         isLoginInProgress: false,
         isLoginError: false,
         isAuthorized: true,
-        accessToken: action.payload.accessToken,
-        role: action.payload.role,
-        avatarUrl: action.payload.avatarUrl,
-        username: action.payload.username,
-        gender: action.payload.gender,
       };
     }
     case USER_SIGN_IN_ERROR: {
@@ -93,6 +89,12 @@ export default function userReducer(
         ...state,
         isSignupInProgress: false,
         signupError: action.payload.signupError,
+      };
+    }
+    case USER_UPDATE_AVATAR: {
+      return {
+        ...state,
+        avatarUrl: action.payload,
       };
     }
     default: {

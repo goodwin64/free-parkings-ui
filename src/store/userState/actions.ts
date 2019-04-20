@@ -10,7 +10,7 @@ import {
   USER_SIGN_OUT_SUCCESS,
   USER_SIGN_UP_ATTEMPT,
   USER_SIGN_UP_ERROR,
-  USER_SIGN_UP_SUCCESS,
+  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR,
 } from '../../containers/App/constants';
 import { UserInfo } from '../../interfaces/UserInfo';
 
@@ -55,6 +55,10 @@ export const notAllowedWithGuestPermission = () => action(NOT_ALLOWED_WITH_GUEST
 export type notAllowedWithGuestPermissionAction = ActionType<typeof notAllowedWithGuestPermission>;
 export type notAllowedWithGuestPermissionActionCreator = () => notAllowedWithGuestPermissionAction;
 
+export const updateAvatar = (avatarUrl: string) => action(USER_UPDATE_AVATAR, avatarUrl);
+export type updateAvatarAction = ActionType<typeof updateAvatar>;
+export type updateAvatarActionCreator = (avatarUrl: string) => updateAvatarAction;
+
 export type UserAction = initUserInfoOnLoadAction
   | signinUserAttemptAction
   | signinUserSuccessAction
@@ -64,4 +68,5 @@ export type UserAction = initUserInfoOnLoadAction
   | signupUserAttemptAction
   | signupUserSuccessAction
   | signupUserErrorAction
+  | updateAvatarAction
 ;
