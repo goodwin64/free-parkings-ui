@@ -19,12 +19,14 @@ import {
   USER_SIGN_OUT_ATTEMPT,
   USER_SIGN_OUT_ERROR,
   USER_SIGN_UP_ATTEMPT,
+  USER_SIGN_UP_SUCCESS,
 } from '../../containers/App/constants';
 import UrlService from '../../services/Url.service';
 import { UserInfo } from '../../interfaces/UserInfo';
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
 import { signupErrorAdapter, userInfoAdapter } from './adapters';
 import { userAccessTokenSelector } from './selectors';
+import { ResponseLoginInfo } from '../../interfaces/ResponseLoginInfo';
 
 
 function* redirectToPageByRole(userInfo: UserInfo) {
@@ -36,11 +38,11 @@ function* signinUserAttemptSaga(action: signinUserAttemptAction) {
   const url = `${backendEndpoint}/auth/login`;
 
   try {
-    const rawUserInfo: UserInfo = yield call(requestToFreeParkingsAPI, url, {
+    const loginInfo: ResponseLoginInfo = yield call(requestToFreeParkingsAPI, url, {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     });
-    const userInfo = userInfoAdapter(rawUserInfo);
+    const userInfo = userInfoAdapter(loginInfo);
     yield call(LocalStorageService.setUserInfo, userInfo);
     yield put(signinUserSuccess(userInfo));
     yield call(redirectToPageByRole, userInfo);
@@ -49,7 +51,7 @@ function* signinUserAttemptSaga(action: signinUserAttemptAction) {
   }
 }
 
-function* signoutUserSaga() {
+function* signoutUserAttemptSaga() {
   const url = `${backendEndpoint}/auth/logout`;
   const accessToken = yield select(userAccessTokenSelector);
   if (!accessToken) {
@@ -60,7 +62,6 @@ function* signoutUserSaga() {
   try {
     yield call(requestToFreeParkingsAPI, url, {
       method: 'POST',
-      body: JSON.stringify({ accessToken }),
     });
     yield put(userSignOutSuccess());
   } catch (e) {
@@ -78,7 +79,7 @@ function* initUserInfoOnLoadSaga() {
   }
 }
 
-function* signupUserSaga(action: signupUserAttemptAction) {
+function* signupUserAttemptSaga(action: signupUserAttemptAction) {
   const { username, password } = action.payload;
   const url = `${backendEndpoint}/auth/signup`;
 
@@ -95,11 +96,17 @@ function* signupUserSaga(action: signupUserAttemptAction) {
   }
 }
 
+function* signupUserSuccessSaga() {
+  alert('signed up successfully');
+  yield put(push(UrlService.loginPageUrl));
+}
+
 const defaultLoginPageSaga = function*() {
   yield all([
     takeLatest(USER_SIGN_IN_ATTEMPT, signinUserAttemptSaga),
-    takeLatest(USER_SIGN_OUT_ATTEMPT, signoutUserSaga),
-    takeLatest(USER_SIGN_UP_ATTEMPT, signupUserSaga),
+    takeLatest(USER_SIGN_OUT_ATTEMPT, signoutUserAttemptSaga),
+    takeLatest(USER_SIGN_UP_ATTEMPT, signupUserAttemptSaga),
+    takeLatest(USER_SIGN_UP_SUCCESS, signupUserSuccessSaga),
   ]);
   yield initUserInfoOnLoadSaga();
 };

@@ -4,6 +4,7 @@ export type UserGenderType = 'male' | 'female';
 export type UserRole = USER_ROLE_GUEST | USER_ROLE_ADMIN | USER_ROLE_DRIVER;
 
 export interface UserInfo {
+  readonly id: number,
   readonly isLoginInProgress: boolean,
   readonly isSignupInProgress: boolean,
   readonly isLoginError: boolean,

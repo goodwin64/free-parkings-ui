@@ -1,4 +1,6 @@
-// import LocalStorageService from './LocalStorage.service';
+import { select } from 'redux-saga/effects';
+
+import { userAccessTokenSelector } from '../store/userState/selectors';
 
 
 function checkStatus(response: Response) {
@@ -20,55 +22,18 @@ export function request(url: string, options: RequestInit = {}, json: boolean = 
   return json ? promise.then(parseJSON) : promise;
 }
 
-export function requestToFreeParkingsAPI(url: string, options: RequestInit = {}) {
-  const promise = fetch(url, {
+export function* requestToFreeParkingsAPI(url: string, options: RequestInit = {}) {
+  const accessToken = yield select(userAccessTokenSelector);
+
+  const response = yield fetch(url, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
+      ...accessToken ? {'access_token': accessToken} : {},
     },
-  }).then(checkStatus);
-  return promise.then(parseJSON)
+  })
+    .then(checkStatus)
+    .then(parseJSON)
+  ;
+  return response;
 }
-
-// type responseWithAuthSuccess = any;
-// type responseWithAuthFailure = { error: any };
-// type responseWithAuth = responseWithAuthSuccess | responseWithAuthFailure;
-//
-// export async function requestWithAuthInfo(
-//   { url, options = {}, json = true }: { url: string, options?: RequestInit, json: boolean }
-// ): responseWithAuth {
-//   const userAuthInfo: UserAuthInfo = LocalStorageService.getUserInfo();
-//   const { accessToken, role } = userAuthInfo;
-//   if (role === USER_ROLE_GUEST || !accessToken) {
-//     // yield put(notAllowedWithGuestPermission());
-//     return {
-//       error: 'not allowed, guest permission'
-//     }
-//   }
-//
-//   try {
-//     const authOptionsHeaders = {
-//       Authorization: `Bearer ${accessToken}`,
-//     };
-//     const optionsCombined = {
-//       ...options,
-//       headers: {
-//         ...authOptionsHeaders,
-//         ...options.headers,
-//       },
-//     };
-//     return await request({
-//       url,
-//       options: optionsCombined,
-//       json,
-//     });
-//   } catch (e) {
-//     // Throw for errors that are not linked with auth
-//     if (e.message !== '401' && e.message !== '403') {
-//       throw e;
-//     }
-//     // Handling for auth related errors
-//     // yield put(userSignOutAttempt());
-//     console.error('userSignOutAttempt');
-//   }
-// }

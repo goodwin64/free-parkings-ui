@@ -17,6 +17,7 @@ export const USER_ROLE_ADMIN = 'ADMIN';
 export const USER_ROLE_DRIVER = 'DRIVER';
 
 export const userInitialState: UserInfo = {
+  id: -1,
   isLoginInProgress: false,
   isSignupInProgress: false,
   isLoginError: false,

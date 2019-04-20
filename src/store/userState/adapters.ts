@@ -2,16 +2,18 @@ import isString from 'lodash/isString';
 
 import { UserInfo } from '../../interfaces/UserInfo';
 import { userInitialState } from './reducer';
+import { ResponseLoginInfo } from '../../interfaces/ResponseLoginInfo';
 
 
-export function userInfoAdapter (userInfoResponse: any): UserInfo {
-  if (!userInfoResponse) {
+export function userInfoAdapter (loginInfo: ResponseLoginInfo): UserInfo {
+  if (!loginInfo) {
     return userInitialState;
   }
 
   return {
-    ...userInfoResponse.authInfo,
-    ...userInfoResponse.personalInfo,
+    ...userInitialState,
+    accessToken: loginInfo.accessToken,
+    ...loginInfo.personalInfo,
   }
 }
 
