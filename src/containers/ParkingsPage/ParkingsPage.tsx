@@ -194,6 +194,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
           onClick={this.props.fetchParkings}
           disabled={this.props.isParkingFetchInProgress || this.props.isSearchRadiusTooBig}
           className={styles['LoadParkingsButton']}
+          withRoundedCorners
         >
           Load parkings
         </Button>

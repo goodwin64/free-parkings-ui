@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { UserAccountPageProps } from './UserSettingsPage';
-import './UserSettingsPersonalInfo.global.css';
 import UserSettingsPersonalInfoAvatar from './UserSettingsPersonalInfoAvatar';
 import UserSettingsPersonalInfoNameUsernameGender from './UserSettingsPersonalInfoNameUsernameGender';
 

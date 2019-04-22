@@ -13,6 +13,6 @@ export const Input = styled.input`
 
 export const InputPlaceholder = styled.label`
   ${Input}:valid:not(:focus) ~ & {
-    opacity: 0;
+    //opacity: 0;
   }
 `;

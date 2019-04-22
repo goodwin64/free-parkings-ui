@@ -173,15 +173,11 @@ input[type="text"]{font: 15px/24px "Lato", Arial, sans-serif; color: #333; width
 .effect-20 ~ .focus-border i:after{content: ""; position: absolute; top: 0; left: 0; width: 2px; height: 0; background-color: #4caf50; transition: 0.4s;}
 .effect-20 ~ .focus-border i:after{left: auto; right: 0; top: auto; bottom: 0;}
 .effect-20:focus ~ .focus-border:before,
-.effect-20:focus ~ .focus-border:after,
-.has-content.effect-20 ~ .focus-border:before,
-.has-content.effect-20 ~ .focus-border:after{width: 100%; transition: 0.3s;}
+.effect-20:focus ~ .focus-border:after{width: 100%; transition: 0.3s;}
 .effect-20:focus ~ .focus-border i:before,
-.effect-20:focus ~ .focus-border i:after,
-.has-content.effect-20 ~ .focus-border i:before,
-.has-content.effect-20 ~ .focus-border i:after{height: 100%; transition: 0.4s;}
+.effect-20:focus ~ .focus-border i:after{height: 100%; transition: 0.4s;}
 .effect-20 ~ label{position: absolute; left: 14px; width: 100%; top: 10px; color: #aaa; transition: 0.3s; pointer-events: none; letter-spacing: 0.5px;}
-.effect-20:focus ~ label, .has-content.effect-20 ~ label{top: -18px; left: 0; font-size: 12px; color: #4caf50; transition: 0.3s;}
+.effect-20:focus ~ label, .effect-20:valid ~ label{top: -18px; left: 0; font-size: 12px; color: #4caf50; transition: 0.3s;}
 
 /*.effect-21 ~ .focus-border:before,*/
 /*.effect-21 ~ .focus-border:after{content: ""; position: absolute; top: 0; right: 0; width: 0; height: 2px; background-color: #4caf50; transition: 0.2s; transition-delay: 0.2s;}*/

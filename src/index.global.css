@@ -9,7 +9,7 @@
   --colorAccent3: #f1970f;
   --colorAccent4: #2962ff;
   --colorAntiMain: #ffffff;
-  --colorRouteInactive: #b6b6b6;
+  --colorInactive: #b6b6b6;
 
   --zIndexCenterMarker: 2;
   --zIndexSearchContainer: 4;
@@ -52,6 +52,11 @@ button {
   padding: 0;
   background-color: initial;
   cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  background-color: var(--colorInactive);
 }
 
 a {

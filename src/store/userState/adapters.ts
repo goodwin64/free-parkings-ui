@@ -10,10 +10,15 @@ export function userInfoAdapter (loginInfo: ResponseLoginInfo): UserInfo {
     return userInitialState;
   }
 
+  const name = loginInfo.personalInfo.name || '';
+  const surname = loginInfo.personalInfo.surname || '';
+  const fullname = `${name} ${surname}`;
+
   return {
     ...userInitialState,
     accessToken: loginInfo.accessToken,
     ...loginInfo.personalInfo,
+    fullname,
   }
 }
 

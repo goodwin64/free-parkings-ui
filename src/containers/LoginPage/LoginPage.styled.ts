@@ -97,7 +97,7 @@ export const SubmitButton = styled.input`
   width: 100%;
   
   &[disabled] {
-    background-color: ${COLORS.colorRouteInactive};
+    background-color: ${COLORS.colorInactive};
     cursor: not-allowed;
   }
 `;

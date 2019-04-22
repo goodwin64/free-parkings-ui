@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as styled from './Input.styled';
+import './Input.global.css';
 
 
 interface InputProps {

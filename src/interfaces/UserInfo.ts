@@ -1,6 +1,6 @@
 import { USER_ROLE_ADMIN, USER_ROLE_DRIVER, USER_ROLE_GUEST } from './UserAuthInfo';
 
-export type UserGenderType = 'male' | 'female';
+export type UserGenderType = 'male' | 'female' | 'n/a';
 export type UserRole = USER_ROLE_GUEST | USER_ROLE_ADMIN | USER_ROLE_DRIVER;
 
 export interface UserInfo {
@@ -14,5 +14,6 @@ export interface UserInfo {
   readonly role: UserRole,
   readonly avatarUrl: string,
   readonly username: string,
+  readonly fullname: string,
   readonly gender?: UserGenderType,
 }

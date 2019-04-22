@@ -10,7 +10,12 @@ import { RootReducer } from '../../store/rootReducer';
 import { UserInfo } from '../../interfaces/UserInfo';
 import { userInfoSelector } from '../../store/userState/selectors';
 import UserSettingsPersonalInfo from './UserSettingsPersonalInfo';
-import { updateAvatar, updateAvatarActionCreator } from '../../store/userState/actions';
+import {
+  updateAvatar,
+  updateAvatarActionCreator, updateFullname,
+  updateFullnameActionCreator, updateUsername,
+  updateUsernameActionCreator,
+} from '../../store/userState/actions';
 import * as styled from './UserSettingsPage.styled';
 
 
@@ -20,6 +25,8 @@ interface UserAccountPageOwnProps {
 
 interface UserAccountPageDispatchProps {
   updateAvatar: updateAvatarActionCreator,
+  updateUsername: updateUsernameActionCreator,
+  updateFullname: updateFullnameActionCreator,
 }
 
 export interface UserAccountPageProps extends UserAccountPageOwnProps, UserAccountPageDispatchProps {}
@@ -113,7 +120,6 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
           </commonStyled.TileHeader>
           <commonStyled.TileBody>
             {this.renderSelectedTabBody()}
-            {/*{this.props.user.role === USER_ROLE_ADMIN && this.renderAdminSettings()}*/}
           </commonStyled.TileBody>
         </commonStyled.Tile>
       </commonStyled.PageWrapper>
@@ -127,6 +133,8 @@ const mapStateToProps = createStructuredSelector<RootReducer, UserAccountPageOwn
 
 const mapDispatchToProps = {
   updateAvatar,
+  updateUsername,
+  updateFullname,
 };
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

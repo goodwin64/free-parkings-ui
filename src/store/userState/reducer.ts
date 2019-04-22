@@ -7,7 +7,7 @@ import {
   USER_SIGN_OUT_SUCCESS,
   USER_SIGN_UP_ATTEMPT,
   USER_SIGN_UP_ERROR,
-  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR,
+  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR, USER_UPDATE_FULLNAME, USER_UPDATE_GENDER, USER_UPDATE_USERNAME,
 } from '../../containers/App/constants';
 import { UserInfo } from '../../interfaces/UserInfo';
 
@@ -26,6 +26,7 @@ export const userInitialState: UserInfo = {
   role: USER_ROLE_GUEST,
   avatarUrl: 'https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png',
   username: 'default username',
+  fullname: '',
 };
 
 export default function userReducer(
@@ -95,6 +96,24 @@ export default function userReducer(
       return {
         ...state,
         avatarUrl: action.payload,
+      };
+    }
+    case USER_UPDATE_USERNAME: {
+      return {
+        ...state,
+        username: action.payload,
+      };
+    }
+    case USER_UPDATE_FULLNAME: {
+      return {
+        ...state,
+        fullname: action.payload,
+      };
+    }
+    case USER_UPDATE_GENDER: {
+      return {
+        ...state,
+        gender: action.payload,
       };
     }
     default: {

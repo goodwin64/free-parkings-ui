@@ -9,7 +9,7 @@ export interface ResponseLoginInfo {
     username: string,
     avatarUrl: string,
     gender: UserGenderType,
-    name: string,
-    surname: string,
+    name?: string,
+    surname?: string,
   },
 }

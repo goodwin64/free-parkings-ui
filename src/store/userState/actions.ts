@@ -10,9 +10,9 @@ import {
   USER_SIGN_OUT_SUCCESS,
   USER_SIGN_UP_ATTEMPT,
   USER_SIGN_UP_ERROR,
-  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR,
+  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR, USER_UPDATE_FULLNAME, USER_UPDATE_GENDER, USER_UPDATE_USERNAME,
 } from '../../containers/App/constants';
-import { UserInfo } from '../../interfaces/UserInfo';
+import { UserGenderType, UserInfo } from '../../interfaces/UserInfo';
 
 
 export const initUserInfoOnLoad = (userInfo: UserInfo) => action(INIT_USER_INFO_ON_LOAD, userInfo);
@@ -59,6 +59,18 @@ export const updateAvatar = (avatarUrl: string) => action(USER_UPDATE_AVATAR, av
 export type updateAvatarAction = ActionType<typeof updateAvatar>;
 export type updateAvatarActionCreator = (avatarUrl: string) => updateAvatarAction;
 
+export const updateUsername = (username: string) => action(USER_UPDATE_USERNAME, username);
+export type updateUsernameAction = ActionType<typeof updateUsername>;
+export type updateUsernameActionCreator = (username: string) => updateUsernameAction;
+
+export const updateFullname = (fullname: string) => action(USER_UPDATE_FULLNAME, fullname);
+export type updateFullnameAction = ActionType<typeof updateFullname>;
+export type updateFullnameActionCreator = (fullname: string) => updateFullnameAction;
+
+export const updateGender = (gender: UserGenderType) => action(USER_UPDATE_GENDER, gender);
+export type updateGenderAction = ActionType<typeof updateGender>;
+export type updateGenderActionCreator = (gender: UserGenderType) => updateGenderAction;
+
 export type UserAction = initUserInfoOnLoadAction
   | signinUserAttemptAction
   | signinUserSuccessAction
@@ -69,4 +81,7 @@ export type UserAction = initUserInfoOnLoadAction
   | signupUserSuccessAction
   | signupUserErrorAction
   | updateAvatarAction
+  | updateUsernameAction
+  | updateFullnameAction
+  | updateGenderAction
 ;
