@@ -11,6 +11,7 @@ import { UserInfo } from '../../interfaces/UserInfo';
 import { userInfoSelector } from '../../store/userState/selectors';
 import UserSettingsPersonalInfo from './UserSettingsPersonalInfo';
 import { updateAvatar, updateAvatarActionCreator } from '../../store/userState/actions';
+import * as styled from './UserSettingsPage.styled';
 
 
 interface UserAccountPageOwnProps {
@@ -24,7 +25,7 @@ interface UserAccountPageDispatchProps {
 export interface UserAccountPageProps extends UserAccountPageOwnProps, UserAccountPageDispatchProps {}
 
 interface UserAccountPageState {
-  avatarUrl: string,
+  selectedTabIndex: number,
 }
 
 class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAccountPageState> {
@@ -40,10 +41,9 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
   constructor(props: UserAccountPageProps) {
     super(props);
     this.state = {
-      avatarUrl: props.user.avatarUrl,
+      selectedTabIndex: 0,
     };
   }
-
 
   renderPersonalInfo() {
     return (
@@ -51,22 +51,57 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
     );
   }
 
-  renderCarInfo() {
+  private renderTabHeaders() {
     return (
-      <h2>Car parameters</h2>
-    );
+      <div>
+        <styled.TabHeader
+          active={this.state.selectedTabIndex === 0}
+          onClick={() => this.setState({ selectedTabIndex: 0 })}
+        >
+          Personal info
+        </styled.TabHeader>
+        <styled.TabHeader
+          active={this.state.selectedTabIndex === 1}
+          onClick={() => this.setState({ selectedTabIndex: 1 })}
+        >
+          Car parameters
+        </styled.TabHeader>
+        <styled.TabHeader
+          active={this.state.selectedTabIndex === 2}
+          onClick={() => this.setState({ selectedTabIndex: 2 })}
+        >
+          Parkings preferences
+        </styled.TabHeader>
+        {
+          this.props.user.role === USER_ROLE_ADMIN && (
+            <styled.TabHeader
+              active={this.state.selectedTabIndex === 3}
+              onClick={() => this.setState({ selectedTabIndex: 3 })}
+            >
+              Admin settings
+            </styled.TabHeader>
+          )
+        }
+      </div>
+    )
   }
 
-  renderParkingsPreferences() {
-    return (
-      <h2>Parkings preferences</h2>
-    );
+  private renderSelectedTabBody() {
+    switch (this.state.selectedTabIndex) {
+      case 0: {
+        return this.renderPersonalInfo();
+      }
+      case 1: {
+        return this.renderCarInfo();
+      }
+      default: {
+        return null;
+      }
+    }
   }
 
-  renderAdminSettings() {
-    return (
-      <h2>Admin settings</h2>
-    );
+  private renderCarInfo() {
+    return <div>car info</div>;
   }
 
   render() {
@@ -74,16 +109,13 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
       <commonStyled.PageWrapper>
         <commonStyled.Tile>
           <commonStyled.TileHeader>
-            <h2>Personal info</h2>
+            {this.renderTabHeaders()}
           </commonStyled.TileHeader>
           <commonStyled.TileBody>
-            {this.renderPersonalInfo()}
-            {this.renderCarInfo()}
-            {this.renderParkingsPreferences()}
-            {this.props.user.role === USER_ROLE_ADMIN && this.renderAdminSettings()}
+            {this.renderSelectedTabBody()}
+            {/*{this.props.user.role === USER_ROLE_ADMIN && this.renderAdminSettings()}*/}
           </commonStyled.TileBody>
         </commonStyled.Tile>
-        <img src="https://cdn.dribbble.com/users/1183973/screenshots/3305551/dribbble.jpg" alt=""/>
       </commonStyled.PageWrapper>
     );
   }

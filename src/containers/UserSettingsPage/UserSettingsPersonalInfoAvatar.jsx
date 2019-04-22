@@ -2,7 +2,9 @@ import React from 'react';
 
 import ImagesService from '../../services/Images.service';
 import * as styled from './UserSettingsPersonalInfoAvatar.styled';
+import * as settingsStyled from './UserSettingsPage.styled';
 import Button from '../../components/Button/Button';
+import Input from '../../components/TextFieldInput/Input';
 
 
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
@@ -45,6 +47,8 @@ function UserSettingsPersonalInfoAvatar(props) {
 
   return (
     <styled.Container>
+      <settingsStyled.SettingsHeader>Avatar</settingsStyled.SettingsHeader>
+      <settingsStyled.SettingsDescription>Here you can change you profile picture</settingsStyled.SettingsDescription>
       <styled.UserAvatarInputContainer>
         <styled.ChangeAvatarInputFile
           type="file"
@@ -65,19 +69,11 @@ function UserSettingsPersonalInfoAvatar(props) {
       </styled.UserAvatarInputContainer>
 
       <styled.UserAvatarInputContainer>
-        <styled.InputContainer>
-          <styled.ChangeAvatarInputUrl
-            type="text"
-            value={draftAvatarUrlInput.slice(0, 100)}
-            onChange={onAvatarUrlChange}
-            className="effect-20"
-            required
-          />
-          <styled.ChangeAvatarInputPlaceholder>
-            By existing URL
-          </styled.ChangeAvatarInputPlaceholder>
-          <span className="focus-border"><i/></span>
-        </styled.InputContainer>
+        <Input
+          value={draftAvatarUrlInput}
+          onChange={onAvatarUrlChange}
+          placeholder="By existing URL"
+        />
 
         <styled.InputContainer>
           <Button

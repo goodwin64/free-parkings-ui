@@ -11,12 +11,12 @@ export const Tile = styled.section<{
 `;
 
 export const TileHeader = styled.header`
-  padding: 15px 20px;
+  padding: 0 40px;
   border-bottom: 1px solid ${COLORS.colorBorder};
 `;
 
 export const TileBody = styled.main`
-  padding: 15px 20px;
+  padding: 20px 40px;
 `;
 
 // @ts-ignore

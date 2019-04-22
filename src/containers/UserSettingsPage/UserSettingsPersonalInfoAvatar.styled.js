@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 
 import { COLORS } from '../../constants/colors';
+import { SettingsSection } from './UserSettingsPage.styled';
 
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+export const Container = styled(SettingsSection)`
+  grid: auto auto 1fr / 1fr 1fr;
 `;
 
 export const UserAvatarInputContainer = styled.div`
@@ -16,6 +15,7 @@ export const UserAvatarInputContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border: 1px solid ${COLORS.colorBorder};
 `;
 
 export const UserCurrentAvatarLabel = styled.label`
@@ -58,16 +58,6 @@ export const InputContainer = styled.div`
   position: relative;
   width: 200px;
   margin: 20px 0;
-`;
-
-export const ChangeAvatarInputUrl = styled.input`
-  text-overflow: ellipsis;
-`;
-
-export const ChangeAvatarInputPlaceholder = styled.label`
-  ${ChangeAvatarInputUrl}:valid:not(:focus) ~ & {
-    opacity: 0;
-  }
 `;
 
 export const ChangeAvatarInputFile = styled.input`
