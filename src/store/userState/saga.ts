@@ -16,11 +16,14 @@ import {
 } from './actions';
 import LocalStorageService, { updateUserInfoLocallySaga } from '../../services/LocalStorage.service';
 import {
-  USER_SIGN_IN_ATTEMPT, USER_SIGN_IN_SUCCESS,
+  USER_SIGN_IN_ATTEMPT,
+  USER_SIGN_IN_SUCCESS,
   USER_SIGN_OUT_ATTEMPT,
   USER_SIGN_OUT_ERROR,
+  USER_SIGN_OUT_SUCCESS,
   USER_SIGN_UP_ATTEMPT,
-  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR,
+  USER_SIGN_UP_SUCCESS,
+  USER_UPDATE_AVATAR,
 } from '../../containers/App/constants';
 import UrlService from '../../services/Url.service';
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
@@ -55,6 +58,11 @@ function* signinUserSuccessSaga() {
   yield call(redirectToPageByRole);
 }
 
+function* signoutUserSuccessSaga() {
+  yield call(LocalStorageService.removeUserInfo);
+  yield call(redirectToPageByRole);
+}
+
 function* signoutUserAttemptSaga() {
   const url = `${backendEndpoint}/auth/logout`;
   const accessToken = yield select(userAccessTokenSelector);
@@ -75,11 +83,24 @@ function* signoutUserAttemptSaga() {
   yield call(LocalStorageService.removeUserInfo);
 }
 
+function* checkAccessToken() {
+  console.log('checkAccessToken');
+  try {
+    yield call(requestToFreeParkingsAPI, `${backendEndpoint}/auth/isAccessTokenValid`, {
+      method: 'POST',
+    });
+    console.log('valid');
+  } catch (e) {
+    yield put(userSignOutSuccess());
+  }
+}
+
 function* initUserInfoOnLoadSaga() {
   const userInfo = yield call(LocalStorageService.getUserInfo);
 
   if (userInfo && userInfo.accessToken) {
     yield put(initUserInfoOnLoad(userInfo));
+    yield call(checkAccessToken);
   }
 }
 
@@ -126,6 +147,7 @@ const defaultLoginPageSaga = function*() {
     takeLatest(USER_SIGN_IN_ATTEMPT, signinUserAttemptSaga),
     takeLatest(USER_SIGN_IN_SUCCESS, signinUserSuccessSaga),
     takeLatest(USER_SIGN_OUT_ATTEMPT, signoutUserAttemptSaga),
+    takeLatest(USER_SIGN_OUT_SUCCESS, signoutUserSuccessSaga),
     takeLatest(USER_SIGN_UP_ATTEMPT, signupUserAttemptSaga),
     takeLatest(USER_SIGN_UP_SUCCESS, signupUserSuccessSaga),
     takeLatest(USER_UPDATE_AVATAR, updateAvatarSaga),

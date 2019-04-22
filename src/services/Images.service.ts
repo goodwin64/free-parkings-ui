@@ -15,9 +15,9 @@ export default class ImagesService {
     myDrives,
   };
 
-  public static getBase64 = function(file?: File) {
+  public static getBase64(file?: File): Promise<string> {
     if (!file) {
-      return;
+      return Promise.resolve('');
     }
 
     return new Promise((resolve, reject) => {
@@ -26,6 +26,8 @@ export default class ImagesService {
       // @ts-ignore
       reader.onload = () => resolve(reader.result);
       reader.onerror = error => reject(error);
-    });
-  }
+    })
+      .then(value => value ? String(value) : '')
+      .catch(err => String(err));
+  };
 }
