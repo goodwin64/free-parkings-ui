@@ -7,7 +7,12 @@ import {
   USER_SIGN_OUT_SUCCESS,
   USER_SIGN_UP_ATTEMPT,
   USER_SIGN_UP_ERROR,
-  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR, USER_UPDATE_FULLNAME, USER_UPDATE_GENDER, USER_UPDATE_USERNAME,
+  USER_SIGN_UP_SUCCESS,
+  USER_UPDATE_AVATAR,
+  USER_UPDATE_DEFAULT_COUNTRY,
+  USER_UPDATE_FULLNAME,
+  USER_UPDATE_GENDER,
+  USER_UPDATE_USERNAME,
 } from '../../containers/App/constants';
 import { UserInfo } from '../../interfaces/UserInfo';
 
@@ -15,6 +20,16 @@ import { UserInfo } from '../../interfaces/UserInfo';
 export const USER_ROLE_GUEST = 'GUEST';
 export const USER_ROLE_ADMIN = 'ADMIN';
 export const USER_ROLE_DRIVER = 'DRIVER';
+
+export const USER_GENDER_MALE = 'male';
+export const USER_GENDER_FEMALE = 'female';
+export const USER_GENDER_NOT_APPLIED = 'n/a';
+
+export const POSSIBLE_GENDER_LIST = [
+  USER_GENDER_MALE,
+  USER_GENDER_FEMALE,
+  USER_GENDER_NOT_APPLIED,
+];
 
 export const userInitialState: UserInfo = {
   id: -1,
@@ -27,6 +42,7 @@ export const userInitialState: UserInfo = {
   avatarUrl: 'https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png',
   username: 'default username',
   fullname: '',
+  defaultCountry: '',
 };
 
 export default function userReducer(
@@ -115,6 +131,12 @@ export default function userReducer(
         ...state,
         gender: action.payload,
       };
+    }
+    case USER_UPDATE_DEFAULT_COUNTRY: {
+      return {
+        ...state,
+        defaultCountry: action.payload,
+      }
     }
     default: {
       return state;

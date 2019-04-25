@@ -12,8 +12,14 @@ import { userInfoSelector } from '../../store/userState/selectors';
 import UserSettingsPersonalInfo from './UserSettingsPersonalInfo';
 import {
   updateAvatar,
-  updateAvatarActionCreator, updateFullname,
-  updateFullnameActionCreator, updateUsername,
+  updateAvatarActionCreator,
+  updateDefaultCountry,
+  updateDefaultCountryActionCreator,
+  updateFullname,
+  updateFullnameActionCreator,
+  updateGender,
+  updateGenderActionCreator,
+  updateUsername,
   updateUsernameActionCreator,
 } from '../../store/userState/actions';
 import * as styled from './UserSettingsPage.styled';
@@ -27,6 +33,8 @@ interface UserAccountPageDispatchProps {
   updateAvatar: updateAvatarActionCreator,
   updateUsername: updateUsernameActionCreator,
   updateFullname: updateFullnameActionCreator,
+  updateGender: updateGenderActionCreator,
+  updateDefaultCountry: updateDefaultCountryActionCreator,
 }
 
 export interface UserAccountPageProps extends UserAccountPageOwnProps, UserAccountPageDispatchProps {}
@@ -43,6 +51,10 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
       username: PropTypes.string.isRequired,
     }).isRequired,
     updateAvatar: PropTypes.func.isRequired,
+    updateUsername: PropTypes.func.isRequired,
+    updateFullname: PropTypes.func.isRequired,
+    updateGender: PropTypes.func.isRequired,
+    updateDefaultCountry: PropTypes.func.isRequired,
   };
 
   constructor(props: UserAccountPageProps) {
@@ -135,6 +147,8 @@ const mapDispatchToProps = {
   updateAvatar,
   updateUsername,
   updateFullname,
+  updateGender,
+  updateDefaultCountry,
 };
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

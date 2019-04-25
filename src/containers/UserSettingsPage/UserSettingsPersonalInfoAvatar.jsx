@@ -47,8 +47,8 @@ function UserSettingsPersonalInfoAvatar(props) {
 
   return (
     <styled.Container>
-      <settingsStyled.SettingsHeader>Avatar</settingsStyled.SettingsHeader>
-      <settingsStyled.SettingsDescription>Here you can change you profile picture</settingsStyled.SettingsDescription>
+      <settingsStyled.AllSettingsHeader>Avatar</settingsStyled.AllSettingsHeader>
+      <settingsStyled.AllSettingsDescription>Here you can change you profile picture</settingsStyled.AllSettingsDescription>
       <styled.UserAvatarInputContainer>
         <styled.ChangeAvatarInputFile
           type="file"

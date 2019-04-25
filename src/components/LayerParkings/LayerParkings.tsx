@@ -51,7 +51,7 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
       isClickableArea
         ? 'transparent'
         : isFreeParking
-          ? COLORS.greenParking
+          ? COLORS.colorAccent1
           : COLORS.colorAccent4
     );
 

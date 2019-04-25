@@ -13,7 +13,7 @@ const monitorReducerEnhancer = createStore => (
     const end = performance.now();
     const diff = round(end - start);
 
-    console.log('reducer process time:', diff);
+    console.info('reducer process time:', diff);
 
     return newState;
   };

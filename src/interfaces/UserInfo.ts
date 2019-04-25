@@ -16,4 +16,5 @@ export interface UserInfo {
   readonly username: string,
   readonly fullname: string,
   readonly gender?: UserGenderType,
+  readonly defaultCountry: string,
 }

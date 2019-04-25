@@ -1,6 +1,5 @@
 interface colorsPalette {
   readonly colorMainText: string,
-  readonly greenParking: string,
   readonly colorGreyPopup: string,
   readonly colorAntiMain: string,
   readonly colorExtraText: string,
@@ -16,7 +15,6 @@ interface colorsPalette {
 
 export const COLORS: colorsPalette = {
   colorMainText: '#333333',
-  greenParking: '#68ce55',
   colorGreyPopup: '#d2d2d2',
   colorAntiMain: '#ffffff',
   colorExtraText: '#757575',
@@ -24,7 +22,7 @@ export const COLORS: colorsPalette = {
   colorAccent2: '#ff4a4a',
   colorAccent3: '#f1970f',
   colorAccent4: '#29a1fb',
-  colorInactive: '#b6b6b6',
+  colorInactive: '#c9c9c9',
   colorBorder: '#dee1e4',
   colorBorderError: '#df4930',
   pageBackground: '#f5f6fa',

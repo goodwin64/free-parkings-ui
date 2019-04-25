@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { UserAccountPageProps } from './UserSettingsPage';
-import * as styled from './UserSettingsPersonalInfoNameUsernameGender.styled';
+import * as styled from './UserSettingsPersonalInfoNameUsername.styled';
 import Input from '../../components/TextFieldInput/Input';
 import * as settingsStyled from './UserSettingsPage.styled';
 
 
-function UserSettingsPersonalInfoNameUsernameGender(props: UserAccountPageProps) {
+function UserSettingsPersonalInfoNameUsername(props: UserAccountPageProps) {
   const [username, setUsername] = React.useState(props.user.username);
   const [fullname, setFullname] = React.useState(props.user.fullname);
 
@@ -28,8 +28,8 @@ function UserSettingsPersonalInfoNameUsernameGender(props: UserAccountPageProps)
 
   return (
     <styled.Container>
-      <settingsStyled.SettingsHeader>Your name</settingsStyled.SettingsHeader>
-      <settingsStyled.SettingsDescription>How do you like people to call you</settingsStyled.SettingsDescription>
+      <settingsStyled.AllSettingsHeader>Your name</settingsStyled.AllSettingsHeader>
+      <settingsStyled.AllSettingsDescription>How do you like people to call you</settingsStyled.AllSettingsDescription>
 
       <styled.SettingContainer>
         <Input
@@ -62,4 +62,4 @@ function UserSettingsPersonalInfoNameUsernameGender(props: UserAccountPageProps)
   )
 }
 
-export default UserSettingsPersonalInfoNameUsernameGender;
+export default UserSettingsPersonalInfoNameUsername;

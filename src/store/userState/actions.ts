@@ -10,7 +10,12 @@ import {
   USER_SIGN_OUT_SUCCESS,
   USER_SIGN_UP_ATTEMPT,
   USER_SIGN_UP_ERROR,
-  USER_SIGN_UP_SUCCESS, USER_UPDATE_AVATAR, USER_UPDATE_FULLNAME, USER_UPDATE_GENDER, USER_UPDATE_USERNAME,
+  USER_SIGN_UP_SUCCESS,
+  USER_UPDATE_AVATAR,
+  USER_UPDATE_DEFAULT_COUNTRY,
+  USER_UPDATE_FULLNAME,
+  USER_UPDATE_GENDER,
+  USER_UPDATE_USERNAME,
 } from '../../containers/App/constants';
 import { UserGenderType, UserInfo } from '../../interfaces/UserInfo';
 
@@ -71,6 +76,10 @@ export const updateGender = (gender: UserGenderType) => action(USER_UPDATE_GENDE
 export type updateGenderAction = ActionType<typeof updateGender>;
 export type updateGenderActionCreator = (gender: UserGenderType) => updateGenderAction;
 
+export const updateDefaultCountry = (country: string) => action(USER_UPDATE_DEFAULT_COUNTRY, country);
+export type updateDefaultCountryAction = ActionType<typeof updateDefaultCountry>;
+export type updateDefaultCountryActionCreator = (country: string) => updateDefaultCountryAction;
+
 export type UserAction = initUserInfoOnLoadAction
   | signinUserAttemptAction
   | signinUserSuccessAction
@@ -84,4 +93,5 @@ export type UserAction = initUserInfoOnLoadAction
   | updateUsernameAction
   | updateFullnameAction
   | updateGenderAction
+  | updateDefaultCountryAction
 ;
