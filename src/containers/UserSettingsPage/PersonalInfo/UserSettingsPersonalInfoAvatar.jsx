@@ -1,10 +1,10 @@
 import React from 'react';
 
-import ImagesService from '../../services/Images.service';
+import ImagesService from '../../../services/Images.service';
 import * as styled from './UserSettingsPersonalInfoAvatar.styled';
-import * as settingsStyled from './UserSettingsPage.styled';
-import Button from '../../components/Button/Button';
-import Input from '../../components/TextFieldInput/Input';
+import * as settingsStyled from '../UserSettingsPage.styled';
+import Button from '../../../components/Button/Button';
+import Input from '../../../components/TextFieldInput/Input';
 
 
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
@@ -46,7 +46,7 @@ function UserSettingsPersonalInfoAvatar(props) {
   };
 
   return (
-    <styled.Container>
+    <settingsStyled.AllSettingsContainer>
       <settingsStyled.AllSettingsHeader>Avatar</settingsStyled.AllSettingsHeader>
       <settingsStyled.AllSettingsDescription>Here you can change you profile picture</settingsStyled.AllSettingsDescription>
       <styled.UserAvatarInputContainer>
@@ -84,7 +84,7 @@ function UserSettingsPersonalInfoAvatar(props) {
           </Button>
         </styled.InputContainer>
       </styled.UserAvatarInputContainer>
-    </styled.Container>
+    </settingsStyled.AllSettingsContainer>
   );
 }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { UserAccountPageProps } from './UserSettingsPage';
-import * as styled from './UserSettingsPersonalInfoNameUsername.styled';
-import Input from '../../components/TextFieldInput/Input';
-import * as settingsStyled from './UserSettingsPage.styled';
+import { UserAccountPageProps } from '../UserSettingsPage';
+import Input from '../../../components/TextFieldInput/Input';
+import * as settingsStyled from '../UserSettingsPage.styled';
+import { AllSettingsContainer, SettingButton, SettingContainer } from '../UserSettingsPage.styled';
 
 
 function UserSettingsPersonalInfoNameUsername(props: UserAccountPageProps) {
@@ -27,38 +27,38 @@ function UserSettingsPersonalInfoNameUsername(props: UserAccountPageProps) {
   };
 
   return (
-    <styled.Container>
+    <AllSettingsContainer>
       <settingsStyled.AllSettingsHeader>Your name</settingsStyled.AllSettingsHeader>
       <settingsStyled.AllSettingsDescription>How do you like people to call you</settingsStyled.AllSettingsDescription>
 
-      <styled.SettingContainer>
+      <SettingContainer>
         <Input
           value={username}
           onChange={onUsernameChange}
           placeholder="Enter your username"
         />
-        <styled.SettingButton
+        <SettingButton
           onClick={onUsernameSave}
           disabled={username === props.user.username}
         >
           Save
-        </styled.SettingButton>
-      </styled.SettingContainer>
+        </SettingButton>
+      </SettingContainer>
 
-      <styled.SettingContainer>
+      <SettingContainer>
         <Input
           value={fullname}
           onChange={onFullnameChange}
           placeholder="Enter your full name"
         />
-        <styled.SettingButton
+        <SettingButton
           onClick={onFullnameSave}
           disabled={fullname === props.user.fullname}
         >
           Save
-        </styled.SettingButton>
-      </styled.SettingContainer>
-    </styled.Container>
+        </SettingButton>
+      </SettingContainer>
+    </AllSettingsContainer>
   )
 }
 

@@ -9,7 +9,7 @@ import * as commonStyled from '../../components/CommonStyled/commonStyled';
 import { RootReducer } from '../../store/rootReducer';
 import { UserInfo } from '../../interfaces/UserInfo';
 import { userInfoSelector } from '../../store/userState/selectors';
-import UserSettingsPersonalInfo from './UserSettingsPersonalInfo';
+import UserSettingsPersonalInfo from './PersonalInfo/UserSettingsPersonalInfo';
 import {
   updateAvatar,
   updateAvatarActionCreator,
@@ -23,10 +23,14 @@ import {
   updateUsernameActionCreator,
 } from '../../store/userState/actions';
 import * as styled from './UserSettingsPage.styled';
+import UserSettingsCarInfo from './CarInfo/UserSettingsCarInfo';
+import { CarInfo } from '../../interfaces/CarInfo';
+import { carInfoSelector } from '../../store/car/selectors';
 
 
 interface UserAccountPageOwnProps {
   user: UserInfo,
+  carInfo: CarInfo,
 }
 
 interface UserAccountPageDispatchProps {
@@ -62,12 +66,6 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
     this.state = {
       selectedTabIndex: 0,
     };
-  }
-
-  renderPersonalInfo() {
-    return (
-      <UserSettingsPersonalInfo {...this.props}/>
-    );
   }
 
   private renderTabHeaders() {
@@ -108,19 +106,15 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
   private renderSelectedTabBody() {
     switch (this.state.selectedTabIndex) {
       case 0: {
-        return this.renderPersonalInfo();
+        return <UserSettingsPersonalInfo {...this.props} />
       }
       case 1: {
-        return this.renderCarInfo();
+        return <UserSettingsCarInfo/>;
       }
       default: {
         return null;
       }
     }
-  }
-
-  private renderCarInfo() {
-    return <div>car info</div>;
   }
 
   render() {
@@ -141,6 +135,7 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
 
 const mapStateToProps = createStructuredSelector<RootReducer, UserAccountPageOwnProps>({
   user: userInfoSelector,
+  carInfo: carInfoSelector,
 });
 
 const mapDispatchToProps = {

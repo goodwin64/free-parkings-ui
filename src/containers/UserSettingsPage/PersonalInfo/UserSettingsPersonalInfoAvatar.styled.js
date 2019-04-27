@@ -1,12 +1,7 @@
 import styled from 'styled-components';
 
-import { COLORS } from '../../constants/colors';
-import { SettingsSection } from './UserSettingsPage.styled';
+import { COLORS } from '../../../constants/colors';
 
-
-export const Container = styled(SettingsSection)`
-  grid: auto auto 1fr / 1fr 1fr;
-`;
 
 export const UserAvatarInputContainer = styled.div`
   flex-grow: 1;

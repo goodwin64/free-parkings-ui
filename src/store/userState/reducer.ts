@@ -8,12 +8,14 @@ import {
   USER_SIGN_UP_ATTEMPT,
   USER_SIGN_UP_ERROR,
   USER_SIGN_UP_SUCCESS,
+} from '../../containers/App/constants';
+import {
   USER_UPDATE_AVATAR,
   USER_UPDATE_DEFAULT_COUNTRY,
   USER_UPDATE_FULLNAME,
   USER_UPDATE_GENDER,
   USER_UPDATE_USERNAME,
-} from '../../containers/App/constants';
+} from './constants';
 import { UserInfo } from '../../interfaces/UserInfo';
 
 

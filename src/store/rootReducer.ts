@@ -6,6 +6,7 @@ import baseConfigReducer, { BaseConfigState } from '../containers/BaseConfigPage
 import parkingsPageReducer, { ParkingsPageState } from './parkings/reducer';
 import userReducer from './userState/reducer';
 import { UserInfo } from '../interfaces/UserInfo';
+import carPageReducer, { CarPageOwnProps } from './car/reducer';
 
 
 export interface RootReducer {
@@ -13,6 +14,7 @@ export interface RootReducer {
   config: BaseConfigState,
   parkingsPage: ParkingsPageState,
   user: UserInfo,
+  car: CarPageOwnProps,
 }
 
 function createRootReducer(history: History<LocationState>) {
@@ -21,6 +23,7 @@ function createRootReducer(history: History<LocationState>) {
     config: baseConfigReducer,
     parkingsPage: parkingsPageReducer,
     user: userReducer,
+    car: carPageReducer,
   });
 }
 

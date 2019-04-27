@@ -27,16 +27,20 @@ import {
   USER_SIGN_OUT_SUCCESS,
   USER_SIGN_UP_ATTEMPT,
   USER_SIGN_UP_SUCCESS,
-  USER_UPDATE_AVATAR,
-  USER_UPDATE_DEFAULT_COUNTRY,
-  USER_UPDATE_FULLNAME,
-  USER_UPDATE_GENDER, USER_UPDATE_USERNAME,
 } from '../../containers/App/constants';
 import UrlService from '../../services/Url.service';
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
 import { signupErrorAdapter, userInfoAdapter } from './adapters';
 import { userAccessTokenSelector, userIdSelector, userInfoSelector } from './selectors';
 import { ResponseLoginInfo } from '../../interfaces/ResponseLoginInfo';
+import {
+  USER_UPDATE_AVATAR,
+  USER_UPDATE_DEFAULT_COUNTRY,
+  USER_UPDATE_FULLNAME,
+  USER_UPDATE_GENDER,
+  USER_UPDATE_USERNAME,
+} from './constants';
+import { loadCarParametersReset } from '../car/actions';
 
 
 function* redirectToPageByRole() {
@@ -66,6 +70,7 @@ function* signinUserSuccessSaga() {
 }
 
 function* signoutUserSuccessSaga() {
+  yield put(loadCarParametersReset());
   yield call(LocalStorageService.removeUserInfo);
   yield call(redirectToPageByRole);
 }
