@@ -13,7 +13,7 @@ import Search from '../../components/Search/Search';
 import Loader from '../../components/Loader/Loader';
 import Button from '../../components/Button/Button';
 import { RootReducer } from '../../store/rootReducer';
-import Sidebar from '../../components/Sidebar/Sidebar';
+import ParkingsSidebar from './ParkingsSidebar';
 import { MapboxPlace } from '../../interfaces/MapboxPlace';
 import { RouterProps } from '../../interfaces/RouterProps';
 import { FreeParking } from '../../interfaces/FreeParking';
@@ -55,19 +55,14 @@ interface ParkingsPageOwnProps {
   isParkingFetchInProgress: boolean,
   isSearchRadiusTooBig: boolean,
   wasFetchPerformedOnce: boolean,
-  isSidebarOpen: boolean,
   zoomLevel: number,
 }
 
 interface ParkingsPageDispatchProps {
-  openSidebar: BaseConfigActions.openSidebarActionCreator,
-  closeSidebar: BaseConfigActions.closeSidebarActionCreator,
   setZoomLevel: ParkingsPageActions.setZoomLevelActionCreator,
   fetchParkings: ParkingsPageActions.fetchParkingsRequestActionCreator,
   setSearchRadius: BaseConfigActions.setSearchRadiusActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
-  clearAllFreeSlots: ParkingsPageActions.clearAllFreeSlotsActionCreator,
-  clearVisibleFreeSlots: ParkingsPageActions.clearVisibleFreeSlotsActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
   checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequestActionCreator,
   askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocationActionCreator,
@@ -240,25 +235,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
           selectedParking={this.state.selectedParking}
           closePopup={this.closePopup}
         />
-        <Sidebar
-          isOpen={this.props.isSidebarOpen}
-          openSidebar={this.props.openSidebar}
-          closeSidebar={this.props.closeSidebar}
-        >
-          <Button
-            onClick={this.props.clearAllFreeSlots}
-            className={styles['ClearAllFreeSlotsButton']}
-          >
-            Clear All Free Slots
-          </Button>
-
-          <Button
-            onClick={this.props.clearVisibleFreeSlots}
-            className={styles['ClearVisibleFreeSlotsButton']}
-          >
-            Clear Visible Free Slots
-          </Button>
-        </Sidebar>
+        <ParkingsSidebar/>
         <ZoomControl
           position="bottom-right"
         />
@@ -270,7 +247,6 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 const mapStateToProps = createStructuredSelector<RootReducer, ParkingsPageOwnProps>({
   radius: BaseConfigSelectors.searchRadiusSelector,
   zoomLevel: ParkingsPageSelectors.zoomLevelSelector,
-  isSidebarOpen: BaseConfigSelectors.isSidebarOpenSelector,
   allParkingsList: ParkingsPageSelectors.allParkingsSelector,
   freeParkingsList: ParkingsPageSelectors.freeParkingsSelector,
   centerLat: ParkingsPageSelectors.centerCoordinatesLatitudeSelector,
@@ -281,14 +257,10 @@ const mapStateToProps = createStructuredSelector<RootReducer, ParkingsPageOwnPro
 });
 
 const withConnect = connect(mapStateToProps, {
-  openSidebar: BaseConfigActions.openSidebar,
-  closeSidebar: BaseConfigActions.closeSidebar,
   setZoomLevel: ParkingsPageActions.setZoomLevel,
   setSearchRadius: BaseConfigActions.setSearchRadius,
   fetchParkings: ParkingsPageActions.fetchParkingsRequest,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,
-  clearAllFreeSlots: ParkingsPageActions.clearAllFreeSlots,
-  clearVisibleFreeSlots: ParkingsPageActions.clearVisibleFreeSlots,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,
   checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequest,
   askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocation,
