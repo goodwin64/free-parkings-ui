@@ -5,7 +5,7 @@ import './Input.global.css';
 
 
 interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-  value?: number,
+  value: number | '',
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
   placeholder: string,
 }
@@ -17,7 +17,7 @@ export default function InputNumber(props: InputProps) {
     <styled.InputContainer>
       <input
         type="number"
-        value={props.value || ''}
+        value={props.value}
         onChange={props.onChange}
         className="effect-20"
         required

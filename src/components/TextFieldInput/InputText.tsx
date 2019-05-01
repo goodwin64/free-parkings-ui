@@ -5,7 +5,7 @@ import './Input.global.css';
 
 
 interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-  value?: string,
+  value: string,
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
   placeholder: string,
 }
@@ -17,7 +17,7 @@ export default function InputText(props: InputProps) {
     <styled.InputContainer>
       <input
         type="text"
-        value={(props.value || '').slice(0, 100)}
+        value={props.value.slice(0, 100)}
         onChange={props.onChange}
         className="effect-20"
         required

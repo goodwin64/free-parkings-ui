@@ -20,7 +20,6 @@ import Dropdown from '../../../components/Dropdown/Dropdown';
 import InputText from '../../../components/TextFieldInput/InputText';
 import { SettingButton } from '../UserSettingsPage.styled';
 import InputNumber from '../../../components/TextFieldInput/InputNumber';
-import { CarInfo } from '../../../interfaces/CarInfo';
 
 
 interface CarPageDispatchProps {
@@ -31,19 +30,27 @@ interface CarPageDispatchProps {
 interface UserSettingsCarInfoProps extends CarPageOwnProps, CarPageDispatchProps {
 }
 
-interface UserSettingsCarInfoState extends CarInfo {
+interface UserSettingsCarInfoState {
+  readonly manufacturer: string,
+  readonly model: string,
+  readonly number: string,
+  readonly year: number | '',
+  readonly color: string,
+  readonly length: number | '',
+  readonly width: number | '',
+  readonly height: number | '',
 }
 
 class UserSettingsCarInfo extends React.PureComponent<UserSettingsCarInfoProps, UserSettingsCarInfoState> {
   state: UserSettingsCarInfoState = {
-    manufacturer: this.props.carInfo.manufacturer,
-    model: this.props.carInfo.model,
-    number: this.props.carInfo.number,
-    year: this.props.carInfo.year,
-    color: this.props.carInfo.color,
-    length: this.props.carInfo.length,
-    width: this.props.carInfo.width,
-    height: this.props.carInfo.height,
+    manufacturer: this.props.carInfo.manufacturer || '',
+    model: this.props.carInfo.model || '',
+    number: this.props.carInfo.number || '',
+    year: this.props.carInfo.year || '',
+    color: this.props.carInfo.color || '',
+    length: this.props.carInfo.length || '',
+    width: this.props.carInfo.width || '',
+    height: this.props.carInfo.height || '',
   };
 
   componentDidMount() {
