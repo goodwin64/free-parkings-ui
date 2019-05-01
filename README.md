@@ -17,7 +17,7 @@
 - [X] Driver: Change username
 - [X] Driver: Change preferred country
 - [ ] Driver: Search location by POI
-- [ ] Driver: Search location by current GPS
+- [X] Driver: Search location by current GPS
 - [ ] Driver: Enable/disable parkings auto-check
 - [ ] Driver: Enable/disable voice notifications
 - [ ] Driver: Delete account (GDPR compliant)

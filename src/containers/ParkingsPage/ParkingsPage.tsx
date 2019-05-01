@@ -70,6 +70,7 @@ interface ParkingsPageDispatchProps {
   clearVisibleFreeSlots: ParkingsPageActions.clearVisibleFreeSlotsActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
   checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequestActionCreator,
+  askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocationActionCreator,
 }
 
 interface ParkingsPageProps extends ParkingsPageOwnProps, ParkingsPageDispatchProps, RouterProps, MapContextProps {
@@ -98,6 +99,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
   componentDidMount(): void {
     this.props.synchronizeLatLon();
     this.props.fetchParkings();
+    this.props.askPermissionForGeoLocation();
     // setInterval(() => {
     //   this.props.checkParkopediaUpdates();
     // }, 5000);
@@ -289,6 +291,7 @@ const withConnect = connect(mapStateToProps, {
   clearVisibleFreeSlots: ParkingsPageActions.clearVisibleFreeSlots,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,
   checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequest,
+  askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocation,
 });
 
 export default compose(

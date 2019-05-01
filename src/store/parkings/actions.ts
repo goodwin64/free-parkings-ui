@@ -7,6 +7,7 @@ import {
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
   CLEAR_ALL_FREE_SLOTS,
   CLEAR_VISIBLE_FREE_SLOTS,
+  ASK_PERMISSION_FOR_GEO_LOCATION,
   PARKINGS_FETCH_START,
   PARKINGS_FETCH_SUCCESS,
   PARKINGS_REQUEST_FOR_FETCH,
@@ -66,6 +67,11 @@ export type clearVisibleFreeSlotsAction = ActionType<typeof clearVisibleFreeSlot
 export type clearVisibleFreeSlotsActionCreator = () => clearVisibleFreeSlotsAction;
 
 
+export const askPermissionForGeoLocation = () => action(ASK_PERMISSION_FOR_GEO_LOCATION);
+export type askPermissionForGeoLocationAction = ActionType<typeof askPermissionForGeoLocation>;
+export type askPermissionForGeoLocationActionCreator = () => askPermissionForGeoLocationAction;
+
+
 export type Actions = setParkingsPageCenterAction
   | setZoomLevelAction
   | fetchParkingsRequestAction
@@ -75,4 +81,5 @@ export type Actions = setParkingsPageCenterAction
   | checkParkopediaUpdatesSuccessAction
   | clearAllFreeSlotsAction
   | clearVisibleFreeSlotsAction
-;
+  | askPermissionForGeoLocationAction
+  ;

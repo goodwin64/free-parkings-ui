@@ -21,9 +21,10 @@ import serialize from '../../utils/serialize';
 import { ResponseParkopediaAvailability } from '../../interfaces/ResponseParkopediaAvailability';
 import UrlService from '../../services/Url.service';
 import * as parkingsConstants from './constants';
+import { default as GeoLocationService } from '../../services/GeoLocation.service';
 
 
-async function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
+function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
   return fetch(`${backendEndpoint}/parkings`)
     .then((response) => response.json());
 }
@@ -128,6 +129,20 @@ export function* clearVisibleFreeSlotsSaga() {
   yield put(fetchParkingsRequest());
 }
 
+function* detectGeoLocationSaga() {
+  if ('geolocation' in navigator) {
+    try {
+      const location = yield call(GeoLocationService.getUserLocation);
+      const { lat, lon } = yield call(GeoLocationService.getUserLatLon, location);
+      yield put(setParkingsPageCenter(lat, lon));
+    } catch (e) {
+      console.error(e);
+    }
+  } else {
+    /* geolocation IS NOT available */
+  }
+}
+
 export default function* defaultParkingsSaga() {
   yield all([
     throttle(3000, parkingsConstants.PARKINGS_REQUEST_FOR_FETCH, fetchParkingsSaga),
@@ -136,5 +151,6 @@ export default function* defaultParkingsSaga() {
     takeLatest(parkingsConstants.SYNCHRONIZE_LAT_LON, synchronizeLatLonSaga),
     takeEvery(parkingsConstants.CLEAR_ALL_FREE_SLOTS, clearAllFreeSlotsSaga),
     takeEvery(parkingsConstants.CLEAR_VISIBLE_FREE_SLOTS, clearVisibleFreeSlotsSaga),
+    takeEvery(parkingsConstants.ASK_PERMISSION_FOR_GEO_LOCATION, detectGeoLocationSaga),
   ]);
 }
