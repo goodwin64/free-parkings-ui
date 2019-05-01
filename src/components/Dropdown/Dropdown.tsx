@@ -5,17 +5,17 @@ import * as styled from './Dropdown.styled';
 
 
 interface DropdownProps {
-  value: string,
+  value?: string,
   options: string[],
   onChange: (option: string) => void,
 }
 
 function Dropdown(props: DropdownProps) {
-  const [searchInputValue, setSearchInputValue] = React.useState(props.value);
+  const [searchInputValue, setSearchInputValue] = React.useState(props.value || '');
   const [isOpen, setIsOpen] = React.useState(false);
 
   React.useEffect(() => {
-    setSearchInputValue(props.value);
+    setSearchInputValue(props.value || '');
   }, [props.value]);
 
   const renderOption = (option: string) => {
@@ -26,7 +26,7 @@ function Dropdown(props: DropdownProps) {
     return (
       <li
         key={option}
-        onClick={() => props.onChange(option)}
+        onMouseDown={() => { props.onChange(option); }}
         className={isShown ? '' : 'closed'}
       >
         {option}
@@ -66,11 +66,12 @@ function Dropdown(props: DropdownProps) {
 Dropdown.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string),
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };
 
 Dropdown.defaultProps = {
   options: [],
+  value: '',
 };
 
 export default Dropdown;

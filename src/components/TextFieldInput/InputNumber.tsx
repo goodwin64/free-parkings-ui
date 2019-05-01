@@ -4,21 +4,24 @@ import * as styled from './Input.styled';
 import './Input.global.css';
 
 
-interface InputProps {
-  value: string,
+interface InputProps extends React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+  value?: number,
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
   placeholder: string,
 }
 
-export default function Input(props: InputProps) {
+export default function InputNumber(props: InputProps) {
+  const { placeholder, ...restProps } = props;
+
   return (
     <styled.InputContainer>
-      <styled.Input
-        type="text"
-        value={props.value.slice(0, 100)}
+      <input
+        type="number"
+        value={props.value || ''}
         onChange={props.onChange}
         className="effect-20"
         required
+        {...restProps}
       />
       <styled.InputPlaceholder>
         {props.placeholder}

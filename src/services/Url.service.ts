@@ -42,7 +42,7 @@ export default class UrlService {
     USER_ROLE_DRIVER, USER_ROLE_ADMIN,
   ]);
 
-  public static readonly detectPageByUserInfo = function(userInfo: UserInfo): string {
+  public static readonly detectPageByUserInfo = function(userInfo?: UserInfo): string {
     if (!userInfo || !userInfo.role || userInfo.role === USER_ROLE_GUEST) {
       return UrlService.loginPageUrl;
     } else if (userInfo.role === USER_ROLE_ADMIN || userInfo.role === USER_ROLE_DRIVER) {

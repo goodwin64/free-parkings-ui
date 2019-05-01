@@ -4,7 +4,7 @@ import ImagesService from '../../../services/Images.service';
 import * as styled from './UserSettingsPersonalInfoAvatar.styled';
 import * as settingsStyled from '../UserSettingsPage.styled';
 import Button from '../../../components/Button/Button';
-import Input from '../../../components/TextFieldInput/Input';
+import InputText from '../../../components/TextFieldInput/InputText';
 
 
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
@@ -69,7 +69,7 @@ function UserSettingsPersonalInfoAvatar(props) {
       </styled.UserAvatarInputContainer>
 
       <styled.UserAvatarInputContainer>
-        <Input
+        <InputText
           value={draftAvatarUrlInput}
           onChange={onAvatarUrlChange}
           placeholder="By existing URL"

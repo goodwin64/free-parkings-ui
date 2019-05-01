@@ -5,6 +5,7 @@ import { requestToFreeParkingsAPI } from '../../services/Authentication.service'
 import { backendEndpoint } from '../../constants/backend';
 import { userIdSelector } from '../userState/selectors';
 import {
+  loadCarManufacturersAttempt, loadCarManufacturersError, loadCarManufacturersSuccess,
   loadCarParametersError,
   loadCarParametersSuccess,
   updateCarParameterValueAttemptAction,
@@ -18,8 +19,6 @@ import { LOAD_CAR_PARAMETERS_ATTEMPT, UPDATE_CAR_PARAMETER_VALUE_ATTEMPT } from 
 function* loadCarDataIfAbsent() {
   const carPageIsCached = yield select(carPageIsCachedSelector);
   const userId = yield select(userIdSelector);
-  console.log('carPageIsCached', carPageIsCached);
-  console.log('userId', userId);
   if (carPageIsCached) {
     return;
   }
@@ -42,17 +41,27 @@ function* updateCarParameterValueSaga(action: updateCarParameterValueAttemptActi
         [action.payload.paramKey]: action.payload.paramValue,
       }),
     });
-    yield put(updateCarParameterValueSuccess());
+    yield put(updateCarParameterValueSuccess(action.payload));
   } catch(err) {
     yield put(updateCarParameterValueError());
   }
 }
 
+function* loadCarManufacturers() {
+  try {
+    yield put(loadCarManufacturersAttempt());
+    const manufacturersList: string[] = yield call(requestToFreeParkingsAPI, `${backendEndpoint}/cars/manufacturers`);
+    yield put(loadCarManufacturersSuccess(manufacturersList));
+  } catch(err) {
+    yield put(loadCarManufacturersError());
+  }
+}
+
 
 export default function* defaultCarPageSaga() {
-  console.log('defaultCarPageSaga');
   yield all([
     yield takeLatest(LOAD_CAR_PARAMETERS_ATTEMPT, loadCarDataIfAbsent),
-    yield takeLatest(UPDATE_CAR_PARAMETER_VALUE_ATTEMPT, updateCarParameterValueSaga)
+    yield takeLatest(UPDATE_CAR_PARAMETER_VALUE_ATTEMPT, updateCarParameterValueSaga),
+    yield call(loadCarManufacturers),
   ]);
 };

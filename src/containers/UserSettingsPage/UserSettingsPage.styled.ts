@@ -35,16 +35,19 @@ export const AllSettingsContainer = styled(SettingsSection)`
   grid: auto / 1fr 1fr;
 `;
 
-export const SettingDescription = styled.p`
-  margin-right: 20px;
-`;
-
 export const SettingContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
   border: 1px solid ${COLORS.colorBorder};
   padding: 20px;
+`;
+
+export const SettingDescription = styled.p<{
+  withGrow?: boolean,
+}>`
+  margin-right: 20px;
+  ${({ withGrow }) => withGrow && 'flex-grow: 1;'}
 `;
 
 export const SettingButton = styled(Button)`

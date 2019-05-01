@@ -1,5 +1,6 @@
 import { UserAction } from './actions';
 import {
+  INIT_USER_AUTH_INFO_ON_LOAD,
   INIT_USER_INFO_ON_LOAD,
   USER_SIGN_IN_ATTEMPT,
   USER_SIGN_IN_ERROR,
@@ -52,6 +53,13 @@ export default function userReducer(
   action: UserAction,
 ): UserInfo {
   switch (action.type) {
+    case INIT_USER_AUTH_INFO_ON_LOAD: {
+      return {
+        ...state,
+        ...action.payload,
+        isAuthorized: true,
+      };
+    }
     case INIT_USER_INFO_ON_LOAD: {
       return {
         ...state,

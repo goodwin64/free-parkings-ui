@@ -4,6 +4,7 @@ import { action } from 'typesafe-actions';
 
 import { backendEndpoint } from '../../constants/backend';
 import {
+  initUserAuthInfoOnLoad,
   initUserInfoOnLoad,
   signinUserAttemptAction,
   signinUserError,
@@ -41,6 +42,7 @@ import {
   USER_UPDATE_USERNAME,
 } from './constants';
 import { loadCarParametersReset } from '../car/actions';
+import { UserInfo, UserInfoRequiredForAuth } from '../../interfaces/UserInfo';
 
 
 function* redirectToPageByRole() {
@@ -95,22 +97,25 @@ function* signoutUserAttemptSaga() {
   yield call(LocalStorageService.removeUserInfo);
 }
 
-function* checkAccessToken() {
+function* loadUserInfoByAccessToken() {
+  const userId = yield select(userIdSelector);
+
   try {
-    yield call(requestToFreeParkingsAPI, `${backendEndpoint}/auth/isAccessTokenValid`, {
-      method: 'POST',
-    });
+    const userInfo: UserInfo = yield call(requestToFreeParkingsAPI, `${backendEndpoint}/users/${userId}`);
+    yield put(initUserInfoOnLoad(userInfo));
   } catch (e) {
     yield put(userSignOutSuccess());
   }
 }
 
 function* initUserInfoOnLoadSaga() {
-  const userInfo = yield call(LocalStorageService.getUserInfo);
+  const userInfoRequiredForAuth: UserInfoRequiredForAuth | null = yield call(LocalStorageService.getUserInfoRequiredForAuth);
 
-  if (userInfo && userInfo.accessToken) {
-    yield put(initUserInfoOnLoad(userInfo));
-    yield call(checkAccessToken);
+  if (userInfoRequiredForAuth && userInfoRequiredForAuth.accessToken) {
+    yield put(initUserAuthInfoOnLoad(userInfoRequiredForAuth));
+    yield call(loadUserInfoByAccessToken);
+  } else {
+    yield call(signoutUserSuccessSaga);
   }
 }
 
@@ -171,7 +176,7 @@ function* updateDefaultCountrySaga(action: updateDefaultCountryAction) {
   yield call(updatePersonalInfoField, 'defaultCountry', action.payload);
 }
 
-const defaultLoginPageSaga = function*() {
+const defaultLoginPageSaga = function* () {
   yield all([
     takeLatest(USER_SIGN_IN_ATTEMPT, signinUserAttemptSaga),
     takeLatest(USER_SIGN_IN_SUCCESS, signinUserSuccessSaga),

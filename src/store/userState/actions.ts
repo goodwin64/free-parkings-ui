@@ -1,6 +1,7 @@
 import { action, ActionType } from 'typesafe-actions';
 
 import {
+  INIT_USER_AUTH_INFO_ON_LOAD,
   INIT_USER_INFO_ON_LOAD,
   NOT_ALLOWED_WITH_GUEST_PERMISSION,
   USER_SIGN_IN_ATTEMPT,
@@ -19,8 +20,12 @@ import {
   USER_UPDATE_GENDER,
   USER_UPDATE_USERNAME,
 } from './constants';
-import { UserGenderType, UserInfo } from '../../interfaces/UserInfo';
+import { UserGenderType, UserInfo, UserInfoRequiredForAuth } from '../../interfaces/UserInfo';
 
+
+export const initUserAuthInfoOnLoad = (userAuthInfo: UserInfoRequiredForAuth) => action(INIT_USER_AUTH_INFO_ON_LOAD, userAuthInfo);
+export type initUserAuthInfoOnLoadAction = ActionType<typeof initUserAuthInfoOnLoad>;
+export type initUserAuthInfoOnLoadActionCreator = (userAuthInfo: UserInfoRequiredForAuth) => initUserAuthInfoOnLoadAction;
 
 export const initUserInfoOnLoad = (userInfo: UserInfo) => action(INIT_USER_INFO_ON_LOAD, userInfo);
 export type initUserInfoOnLoadAction = ActionType<typeof initUserInfoOnLoad>;
@@ -82,7 +87,8 @@ export const updateDefaultCountry = (country: string) => action(USER_UPDATE_DEFA
 export type updateDefaultCountryAction = ActionType<typeof updateDefaultCountry>;
 export type updateDefaultCountryActionCreator = (country: string) => updateDefaultCountryAction;
 
-export type UserAction = initUserInfoOnLoadAction
+export type UserAction = initUserAuthInfoOnLoadAction
+  | initUserInfoOnLoadAction
   | signinUserAttemptAction
   | signinUserSuccessAction
   | signinUserErrorAction

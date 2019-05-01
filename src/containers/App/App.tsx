@@ -41,31 +41,31 @@ export class App extends React.Component<AppProps> {
               path={UrlService.signupPageUrl}
               component={SignupPage}
               allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.signupPageRolesAllowed)}
-              redirectPath={UrlService.detectPageByUserInfo(this.props.userInfo)}
+              RedirectComponent={LoginPage}
             />
             <ProtectedRoute
               path={UrlService.findParkingsPageUrl}
               component={ParkingsPage}
               allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.findParkingsPageRolesAllowed)}
-              redirectPath={UrlService.loginPageUrl}
+              RedirectComponent={LoginPage}
             />
             <ProtectedRoute
               path={UrlService.dashboardPageUrl}
               component={DashboardPage}
               allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.dashboardPageRolesAllowed)}
-              redirectPath={UrlService.loginPageUrl}
+              RedirectComponent={LoginPage}
             />
             <ProtectedRoute
               path={UrlService.settingsPageUrl}
               component={UserSettingsPage}
               allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.settingsPageRolesAllowed)}
-              redirectPath={UrlService.loginPageUrl}
+              RedirectComponent={LoginPage}
             />
             <ProtectedRoute
               path={UrlService.myDrivesPageUrl}
               component={() => <div>my drives</div>}
               allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.myDrivesPageRolesAllowed)}
-              redirectPath={UrlService.loginPageUrl}
+              RedirectComponent={LoginPage}
             />
             <Redirect
               exact

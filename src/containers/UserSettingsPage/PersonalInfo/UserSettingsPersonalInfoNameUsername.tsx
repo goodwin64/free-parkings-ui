@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { UserAccountPageProps } from '../UserSettingsPage';
-import Input from '../../../components/TextFieldInput/Input';
+import InputText from '../../../components/TextFieldInput/InputText';
 import * as settingsStyled from '../UserSettingsPage.styled';
 import { AllSettingsContainer, SettingButton, SettingContainer } from '../UserSettingsPage.styled';
 
@@ -32,7 +32,7 @@ function UserSettingsPersonalInfoNameUsername(props: UserAccountPageProps) {
       <settingsStyled.AllSettingsDescription>How do you like people to call you</settingsStyled.AllSettingsDescription>
 
       <SettingContainer>
-        <Input
+        <InputText
           value={username}
           onChange={onUsernameChange}
           placeholder="Enter your username"
@@ -46,7 +46,7 @@ function UserSettingsPersonalInfoNameUsername(props: UserAccountPageProps) {
       </SettingContainer>
 
       <SettingContainer>
-        <Input
+        <InputText
           value={fullname}
           onChange={onFullnameChange}
           placeholder="Enter your full name"

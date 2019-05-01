@@ -1,4 +1,4 @@
-import { UserInfo } from '../interfaces/UserInfo';
+import { UserInfo, UserInfoRequiredForAuth } from '../interfaces/UserInfo';
 import { userInfoSelector } from '../store/userState/selectors';
 import { call, select } from 'redux-saga/effects';
 
@@ -24,8 +24,16 @@ export default class LocalStorageService {
     return userInfo.accessToken;
   }
 
-  public static setUserInfo(info: UserInfo) {
-    localStorage.setItem('userInfo', JSON.stringify(info));
+  public static getUserInfoRequiredForAuth(): UserInfoRequiredForAuth | null {
+    const userAuthInfoJSON: string | null = localStorage.getItem('userInfoAuth');
+    if (!userAuthInfoJSON) {
+      return null;
+    }
+    return JSON.parse(userAuthInfoJSON);
+  }
+
+  public static saveUserInfoRequiredForAuth(info: UserInfoRequiredForAuth) {
+    localStorage.setItem('userInfoAuth', JSON.stringify(info));
   }
 
   public static removeUserInfo() {
@@ -35,5 +43,8 @@ export default class LocalStorageService {
 
 export function* updateUserInfoLocallySaga() {
   const userInfo = yield select(userInfoSelector);
-  yield call(LocalStorageService.setUserInfo, userInfo);
+  yield call(LocalStorageService.saveUserInfoRequiredForAuth, {
+    id: userInfo.id,
+    accessToken: userInfo.accessToken,
+  });
 }

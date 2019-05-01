@@ -3,14 +3,17 @@ import { USER_ROLE_ADMIN, USER_ROLE_DRIVER, USER_ROLE_GUEST } from './UserAuthIn
 export type UserGenderType = 'male' | 'female' | 'n/a';
 export type UserRole = USER_ROLE_GUEST | USER_ROLE_ADMIN | USER_ROLE_DRIVER;
 
-export interface UserInfo {
+export interface UserInfoRequiredForAuth {
   readonly id: number,
+  readonly accessToken?: string,
+}
+
+export interface UserInfo extends UserInfoRequiredForAuth {
   readonly isLoginInProgress: boolean,
   readonly isSignupInProgress: boolean,
   readonly isLoginError: boolean,
   readonly signupError: string | null,
   readonly isAuthorized: boolean,
-  readonly accessToken?: string,
   readonly role: UserRole,
   readonly avatarUrl: string,
   readonly username: string,
