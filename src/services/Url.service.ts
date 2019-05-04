@@ -32,9 +32,19 @@ export default class UrlService {
     USER_ROLE_DRIVER, USER_ROLE_ADMIN,
   ]);
 
-  public static readonly findParkingsPageUrl = path.join(UrlService.rootUrl, '/find-parkings');
+  public static readonly parkingsPageUrl = path.join(UrlService.rootUrl, '/parkings');
+  public static readonly parkingsPageRolesAllowed = new Set([
+    USER_ROLE_DRIVER, USER_ROLE_ADMIN,
+  ]);
+
+  public static readonly findParkingsPageUrl = path.join(UrlService.parkingsPageUrl, '/find-parking');
   public static readonly findParkingsPageRolesAllowed = new Set([
     USER_ROLE_DRIVER, USER_ROLE_ADMIN,
+  ]);
+
+  public static readonly createParkingPageUrl = path.join(UrlService.parkingsPageUrl, '/create-parking');
+  public static readonly createParkingPageRolesAllowed = new Set([
+    USER_ROLE_ADMIN,
   ]);
 
   public static readonly myDrivesPageUrl = path.join(UrlService.rootUrl, '/my-drives');

@@ -1,5 +1,3 @@
-// import { COLORS } from './constants/colors';
-
 interface GlobalStyledTheme {
   readonly borderColor: string,
 }

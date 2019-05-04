@@ -32,7 +32,7 @@ function paramsFromLocation({ search }: { search: Search }) {
   return params;
 }
 
-export const geoCoordinatesSelector = createSelector(
+export const latLonSelector = createSelector(
   [routeParamsSelector, defaultLatLonSelector],
   ({ lat: latFromUrl, lon: lonFromUrl }: { lat?: number, lon?: number }, defaultLatLon) => {
     return ({

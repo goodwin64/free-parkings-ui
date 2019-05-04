@@ -12,9 +12,11 @@ import {
   PARKINGS_FETCH_SUCCESS,
   PARKINGS_REQUEST_FOR_FETCH,
   SYNCHRONIZE_LAT_LON,
+  CREATE_PARKING,
 } from './constants';
 import { PreparedParkings } from '../../interfaces/ResponseParkings';
 import { ParkopediaAvailability } from '../../interfaces/ParkopediaAvailability';
+import { CreatedParkingParameters } from '../../interfaces/Parking';
 
 
 export const setParkingsPageCenter = (lat: number, lon: number) => action(CHANGE_CENTER_LOCATION, { lat, lon });
@@ -55,6 +57,11 @@ export type checkParkopediaUpdatesRequestActionCreator = () => checkParkopediaUp
 export const checkParkopediaUpdatesSuccess = (parkopediaAvailability: ParkopediaAvailability) => action(CHECK_PARKOPEDIA_UPDATES_SUCCESS, parkopediaAvailability);
 export type checkParkopediaUpdatesSuccessAction = ActionType<typeof checkParkopediaUpdatesSuccess>;
 export type checkParkopediaUpdatesSuccessActionCreator = (parkopediaAvailability: ParkopediaAvailability) => checkParkopediaUpdatesSuccessAction;
+
+
+export const createParking = (parkingParameters: CreatedParkingParameters) => action(CREATE_PARKING, parkingParameters);
+export type createParkingAction = ActionType<typeof createParking>;
+export type createParkingActionCreator = (parkingParameters: CreatedParkingParameters) => createParkingAction;
 
 
 export const clearAllFreeSlots = () => action(CLEAR_ALL_FREE_SLOTS);

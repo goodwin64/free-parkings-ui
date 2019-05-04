@@ -44,9 +44,9 @@ export class App extends React.Component<AppProps> {
               RedirectComponent={LoginPage}
             />
             <ProtectedRoute
-              path={UrlService.findParkingsPageUrl}
+              path={UrlService.parkingsPageUrl}
               component={ParkingsPage}
-              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.findParkingsPageRolesAllowed)}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.parkingsPageRolesAllowed)}
               RedirectComponent={LoginPage}
             />
             <ProtectedRoute

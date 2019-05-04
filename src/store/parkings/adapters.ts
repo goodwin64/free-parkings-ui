@@ -43,7 +43,7 @@ function prepareParkopediaParkingSlot(parkingSlot: ResponseParkopediaParking): P
   let preparedParking: ParkopediaParking = {
     id: '-1',
     parkingGeometry: [],
-    costPerHour: '',
+    costPerHour: 0,
     maxStayDuration: 0,
     restrictions: [],
     features: [],
@@ -61,8 +61,8 @@ function prepareParkopediaParkingSlot(parkingSlot: ResponseParkopediaParking): P
     preparedParking.id = parkingSlot.id;
   }
 
-  if (parkingSlot.cost) {
-    preparedParking.costPerHour = parkingSlot.cost;
+  if (parkingSlot.costPerHour) {
+    preparedParking.costPerHour = parkingSlot.costPerHour;
   }
 
   if (parkingSlot.maxStayDuration) {
@@ -133,4 +133,29 @@ function preparePoint(geometryPoint: PointGeometry) {
   preparedPoint = [lon, lat];
 
   return preparedPoint;
+}
+
+export function prepareUserInputParkingGeometry(rawParkingGeometry: string, isLatLon: boolean) {
+  const parkingPoints = rawParkingGeometry
+    .split('\n')
+    .map(p => prepareUserInputParkingPoint(p, isLatLon))
+    .filter(isValidPoint)
+  ;
+
+  if (parkingPoints.length < 2) {
+    return null;
+  }
+  return parkingPoints;
+}
+
+function prepareUserInputParkingPoint(rawParkingPoint: string, isLatLon: boolean): PointGeometry {
+  const [lat, lon] = rawParkingPoint
+    .split(',')
+    .map(s => parseFloat(s.trim()))
+  ;
+  return isLatLon ? [lat, lon] : [lon, lat];
+}
+
+function isValidPoint(pointGeometry: PointGeometry) {
+  return Array.isArray(pointGeometry) && pointGeometry.length === 2 && pointGeometry.every(isFinite);
 }

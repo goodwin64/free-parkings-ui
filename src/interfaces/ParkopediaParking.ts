@@ -4,7 +4,7 @@ export type PARKOPEDIA_PARKING_TYPE = 'Parkopedia parking';
 export const PARKOPEDIA_PARKING_TYPE = 'Parkopedia parking';
 
 export interface ParkopediaParking extends Parking {
-  costPerHour: string,
+  costPerHour: number,
   maxStayDuration: number,
   restrictions: string[],
   features: string[],
@@ -12,7 +12,7 @@ export interface ParkopediaParking extends Parking {
 }
 
 export interface ResponseParkopediaParking extends Parking {
-  cost: string | null,
+  costPerHour: number | null,
   maxStayDuration: number,
   maxHeight: string | null,
   restrictions: string[],

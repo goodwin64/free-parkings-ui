@@ -67,5 +67,3 @@ export default compose(
   withRouter,
   withMap,
 )(BaseConfigPage);
-
-// export default withConnect(withRouter<BaseConfigPageProps>(BaseConfigPage));

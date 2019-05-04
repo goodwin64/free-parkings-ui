@@ -21,13 +21,34 @@
     margin-right: 20px;
 }
 
+.CreateNewParkingButton,
+.ClearAllFreeSlotsButton,
+.ClearVisibleFreeSlotsButton {
+    text-shadow: 1px 1px 2px #000;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 20px;
+    width: 100%;
+}
+
+.CreateNewParkingButton {
+    background-color: var(--colorAccent4);
+    margin-bottom: 20px;
+}
+
+.CreateNewParkingButton > a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
 .ClearAllFreeSlotsButton {
     background-color: var(--colorAccent2);
+    margin-bottom: 20px;
 }
 
 .ClearVisibleFreeSlotsButton {
     background-color: var(--colorAccent3);
-    margin-top: 20px;
 }
 
 .NoParkingsWarning {

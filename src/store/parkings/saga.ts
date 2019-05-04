@@ -3,15 +3,16 @@ import { all, call, put, select, takeEvery, takeLatest, throttle } from 'redux-s
 
 import {
   centerCoordinatesSelector,
-  geoCoordinatesSelector,
+  latLonSelector,
   lastParkingsCheckTimestampSelector,
 } from './selectors';
-import { prepareParkings } from './adapters';
+import { prepareParkings, prepareUserInputParkingGeometry } from './adapters';
 import { searchRadiusSelector, sessionUidSelector } from '../../containers/BaseConfigPage/BaseConfigSelectors';
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './actions';
 import {
   checkParkopediaUpdatesSuccess,
+  createParkingAction,
   fetchParkingsRequest,
   setParkingsPageCenter,
 } from './actions';
@@ -19,7 +20,6 @@ import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../../containers/BaseConfigPage/BaseConfigConstants';
 import serialize from '../../utils/serialize';
 import { ResponseParkopediaAvailability } from '../../interfaces/ResponseParkopediaAvailability';
-import UrlService from '../../services/Url.service';
 import * as parkingsConstants from './constants';
 import { default as GeoLocationService } from '../../services/GeoLocation.service';
 
@@ -59,15 +59,16 @@ export function* fetchParkingsSaga() {
 
 export function* updateUrlLatLonSaga(action: ParkingsPageActions.setParkingsPageCenterAction) {
   try {
-    const url = `${UrlService.findParkingsPageUrl}?lat=${action.payload.lat}&lon=${action.payload.lon}`;
-    yield put(push(url));
+    yield put(push({
+      search: `?lat=${action.payload.lat}&lon=${action.payload.lon}`,
+    }));
   } catch (err) {
     console.error(err);
   }
 }
 
 export function* synchronizeLatLonSaga() {
-  const { lat: latFromUrl, lon: lonFromUrl } = yield select(geoCoordinatesSelector);
+  const { lat: latFromUrl, lon: lonFromUrl } = yield select(latLonSelector);
   yield put(setParkingsPageCenter(latFromUrl, lonFromUrl));
 }
 
@@ -143,6 +144,13 @@ function* detectGeoLocationSaga() {
   }
 }
 
+function* createParkingSaga(action: createParkingAction) {
+  const { parkingsGeoJsonSource: rawParkingGeometry, isLatLon } = action.payload;
+  const preparedParkingGeometry = prepareUserInputParkingGeometry(rawParkingGeometry, isLatLon);
+  console.log('action.payload', action.payload, preparedParkingGeometry);
+  return 1;
+}
+
 export default function* defaultParkingsSaga() {
   yield all([
     throttle(3000, parkingsConstants.PARKINGS_REQUEST_FOR_FETCH, fetchParkingsSaga),
@@ -152,5 +160,6 @@ export default function* defaultParkingsSaga() {
     takeEvery(parkingsConstants.CLEAR_ALL_FREE_SLOTS, clearAllFreeSlotsSaga),
     takeEvery(parkingsConstants.CLEAR_VISIBLE_FREE_SLOTS, clearVisibleFreeSlotsSaga),
     takeEvery(parkingsConstants.ASK_PERMISSION_FOR_GEO_LOCATION, detectGeoLocationSaga),
+    takeEvery(parkingsConstants.CREATE_PARKING, createParkingSaga),
   ]);
 }
