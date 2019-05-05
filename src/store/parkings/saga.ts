@@ -6,13 +6,15 @@ import {
   latLonSelector,
   lastParkingsCheckTimestampSelector,
 } from './selectors';
-import { prepareParkings, prepareUserInputParkingGeometry } from './adapters';
+import { prepareParkingParametersFromClientToServer, prepareParkings } from './adapters';
 import { searchRadiusSelector, sessionUidSelector } from '../../containers/BaseConfigPage/BaseConfigSelectors';
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './actions';
 import {
   checkParkopediaUpdatesSuccess,
-  createParkingAction,
+  createParkingAttemptAction,
+  createParkingError,
+  createParkingSuccess,
   fetchParkingsRequest,
   setParkingsPageCenter,
 } from './actions';
@@ -22,12 +24,8 @@ import serialize from '../../utils/serialize';
 import { ResponseParkopediaAvailability } from '../../interfaces/ResponseParkopediaAvailability';
 import * as parkingsConstants from './constants';
 import { default as GeoLocationService } from '../../services/GeoLocation.service';
+import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
 
-
-function fetchParkings(lat: number, lon: number, radius: number, uid: string) {
-  return fetch(`${backendEndpoint}/parkings`)
-    .then((response) => response.json());
-}
 
 async function fetchParkopediaParkingsAvailability(url: string) {
   return fetch(url)
@@ -37,24 +35,19 @@ async function fetchParkopediaParkingsAvailability(url: string) {
 export function* fetchParkingsSaga() {
   const { lat, lon } = yield select(centerCoordinatesSelector);
   const searchRadius = yield select(searchRadiusSelector);
-  const uid = yield select(sessionUidSelector);
 
-  let preparedResponseParkings: PreparedParkings;
   const canFetchParkings = searchRadius < MAX_SEARCH_RADIUS_TO_FETCH;
   try {
     if (canFetchParkings) {
-      const rawResponseParkings: ResponseParkings = yield call(fetchParkings, lat, lon, searchRadius, uid);
-      preparedResponseParkings = prepareParkings(rawResponseParkings);
       yield put(ParkingsPageActions.fetchParkingsStart());
-    } else {
-      preparedResponseParkings = prepareParkings();
+      const searchQuery = serialize({ lat, lon, radius: searchRadius });
+      const rawResponseParkings: ResponseParkings = yield call(requestToFreeParkingsAPI, `${backendEndpoint}/parkings?${searchQuery}`);
+      const preparedResponseParkings: PreparedParkings = prepareParkings(rawResponseParkings);
+      yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
     }
   } catch (e) {
     console.error('fetch parkings:', e);
-    preparedResponseParkings = prepareParkings();
   }
-
-  yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
 }
 
 export function* updateUrlLatLonSaga(action: ParkingsPageActions.setParkingsPageCenterAction) {
@@ -144,11 +137,17 @@ function* detectGeoLocationSaga() {
   }
 }
 
-function* createParkingSaga(action: createParkingAction) {
-  const { parkingsGeoJsonSource: rawParkingGeometry, isLatLon } = action.payload;
-  const preparedParkingGeometry = prepareUserInputParkingGeometry(rawParkingGeometry, isLatLon);
-  console.log('action.payload', action.payload, preparedParkingGeometry);
-  return 1;
+function* createParkingSaga(action: createParkingAttemptAction) {
+  const preparedParkingParameters = prepareParkingParametersFromClientToServer(action.payload);
+  try {
+    const createdParking = yield call(requestToFreeParkingsAPI, `${backendEndpoint}/parkings`, {
+      method: 'PUT',
+      body: JSON.stringify(preparedParkingParameters),
+    });
+    yield put(createParkingSuccess(createdParking));
+  } catch (e) {
+    yield put(createParkingError());
+  }
 }
 
 export default function* defaultParkingsSaga() {
@@ -160,6 +159,6 @@ export default function* defaultParkingsSaga() {
     takeEvery(parkingsConstants.CLEAR_ALL_FREE_SLOTS, clearAllFreeSlotsSaga),
     takeEvery(parkingsConstants.CLEAR_VISIBLE_FREE_SLOTS, clearVisibleFreeSlotsSaga),
     takeEvery(parkingsConstants.ASK_PERMISSION_FOR_GEO_LOCATION, detectGeoLocationSaga),
-    takeEvery(parkingsConstants.CREATE_PARKING, createParkingSaga),
+    takeEvery(parkingsConstants.CREATE_PARKING_ATTEMPT, createParkingSaga),
   ]);
 }

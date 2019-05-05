@@ -7,7 +7,7 @@ export const CreateParkingForm = styled.form`
   color: #ffffff;
   display: grid;
   grid-gap: 10px;
-  grid: 2fr 1fr 2fr 1fr 5fr 2fr / 1fr 1fr;
+  grid: 2fr 1fr 2fr 1fr 2fr 1fr 5fr 2fr / 1fr 1fr;
   left: 10%;
   padding: 50px;
   position: absolute;
@@ -38,7 +38,7 @@ export const CreateParkingSectionDescription = styled.p`
   font-size: 1.5rem;
 `;
 
-export const CreateParkingSizeContainer = styled.section`
+export const CreateParkingParameterContainer = styled.section`
   display: flex;
   grid-column: 1 / -1;
   justify-content: space-between;

@@ -3,14 +3,14 @@ import { Feature, Layer } from 'react-mapbox-gl';
 
 import { COLORS } from '../../constants/colors';
 import withMap, { MapContextProps } from '../Map/context';
-import { FreeParking } from '../../interfaces/FreeParking';
 import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { geometryLatLonToLonLat } from '../../utils/geometry';
 
 
-export type openPopup = (p: ParkopediaParking | FreeParking) => void;
+export type openPopup = (p: ParkopediaParking) => void;
 interface ParkingsLayerProps extends MapContextProps {
   parkings: ParkopediaParking[],
-  freeParkings: FreeParking[],
+  freeParkings: ParkopediaParking[],
   zoomLevel: number,
   openPopup: openPopup,
   closePopup: () => void,
@@ -85,7 +85,7 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
           this.props.parkings.map((parking) => (
             <Feature
               key={parking.id}
-              coordinates={parking.parkingGeometry}
+              coordinates={geometryLatLonToLonLat(parking.geometry)}
             />
           ))
         }
@@ -105,7 +105,7 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
           this.props.parkings.map((parking) => (
             <Feature
               key={parking.id}
-              coordinates={parking.parkingGeometry}
+              coordinates={geometryLatLonToLonLat(parking.geometry)}
               onMouseEnter={() => this.onMouseOver(parking)}
               onMouseLeave={this.onMouseOut}
             />
@@ -127,7 +127,7 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
           this.props.freeParkings.map((freeParking) => (
             <Feature
               key={freeParking.id}
-              coordinates={freeParking.parkingGeometry}
+              coordinates={geometryLatLonToLonLat(freeParking.geometry)}
             />
           ))
         }
@@ -147,7 +147,7 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
           this.props.freeParkings.map((parking) => (
             <Feature
               key={parking.id}
-              coordinates={parking.parkingGeometry}
+              coordinates={geometryLatLonToLonLat(parking.geometry)}
               onMouseEnter={() => this.onMouseOver(parking)}
               onMouseLeave={this.onMouseOut}
             />

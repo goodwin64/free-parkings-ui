@@ -13,7 +13,6 @@ import { RootReducer } from '../../store/rootReducer';
 import ParkingsSidebar from './ParkingsSidebar';
 import { MapboxPlace } from '../../interfaces/MapboxPlace';
 import { RouterProps } from '../../interfaces/RouterProps';
-import { FreeParking } from '../../interfaces/FreeParking';
 import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
 import * as ParkingsPageActions from '../../store/parkings/actions';
 import * as ParkingsPageSelectors from '../../store/parkings/selectors';
@@ -45,7 +44,7 @@ const mapboxGeocoding = (query: string) =>
 interface ParkingsPageOwnProps {
   radius: number,
   allParkingsList: ParkopediaParking[],
-  freeParkingsList: FreeParking[],
+  freeParkingsList: ParkopediaParking[],
   isParkingFetchInProgress: boolean,
   isSearchRadiusTooBig: boolean,
   wasFetchPerformedOnce: boolean,
@@ -70,7 +69,7 @@ interface ParkingsPageState {
   query: string;
   options: Place[];
   selected?: Place;
-  selectedParking: ParkopediaParking | FreeParking | null,
+  selectedParking: ParkopediaParking | null,
 }
 
 class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState> {
@@ -86,18 +85,15 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     };
   }
 
-  componentWillUnmount(): void {
-    console.log('componentWillUnmount 1');
-  }
-
   componentDidMount(): void {
-    console.log('componentDidMount 1');
     this.props.synchronizeLatLon();
-    this.props.fetchParkings();
-    this.props.askPermissionForGeoLocation();
-    // setInterval(() => {
-    //   this.props.checkParkopediaUpdates();
-    // }, 5000);
+    setInterval(() => {
+      this.props.checkParkopediaUpdates();
+    }, 5000);
+    setTimeout(() => {
+      this.props.fetchParkings();
+    }, 100);
+    // this.props.askPermissionForGeoLocation();
   }
 
   private fetchPlaces = (query: string) => {
@@ -137,7 +133,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     this.props.setZoomLevel(DEFAULT_ZOOM_LEVEL);
   };
 
-  openPopup: openPopup = (parking: ParkopediaParking | FreeParking) => {
+  openPopup: openPopup = (parking: ParkopediaParking) => {
     this.setState({ selectedParking: parking });
   };
 

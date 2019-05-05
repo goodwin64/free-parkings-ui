@@ -2,41 +2,29 @@ import React from 'react';
 import * as turf from '@turf/turf';
 import { Popup } from 'react-mapbox-gl';
 
-import { FreeParking, isFreeParking } from '../../interfaces/FreeParking';
-import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
-
-import * as styles from './SelectedParkingPopup.module.css';
 import './SelectedParkingPopup.global.css';
+import * as styles from './SelectedParkingPopup.module.css';
+import { geometryLatLonToLonLat } from '../../utils/geometry';
+import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
 
 
 interface SelectedParkingPopupProps {
-  selectedParking: ParkopediaParking | FreeParking | null,
+  selectedParking: ParkopediaParking | null,
   closePopup: () => void,
 }
 
 class SelectedParkingPopup extends React.PureComponent<SelectedParkingPopupProps> {
-  static renderFreeParkingPopup(parking: FreeParking): React.ReactNode {
-    return (
-      <React.Fragment>
-        <p>Length (m):</p>
-        <p>{parking.slotLength}</p>
-
-        <p>Slot orientation:</p>
-        <p>{parking.slotOrientation}</p>
-      </React.Fragment>
-    )
-  }
 
   static renderParkopediaParkingPopup(parking: ParkopediaParking): React.ReactNode {
     return (
       <React.Fragment>
         <p>Cost:</p>
-        <p>{parking.costPerHour || 'N/A'}</p>
+        <p>{parking.costPerHour ? `$${parking.costPerHour} per hour` : 'N/A'}</p>
 
         <p>Max stay duration:</p>
         <p>
           {parking.maxStayDuration
-            ? parking.maxStayDuration + 'min'
+            ? parking.maxStayDuration + ' min'
             : 'N/A'
           }
         </p>
@@ -65,7 +53,7 @@ class SelectedParkingPopup extends React.PureComponent<SelectedParkingPopupProps
       return null;
     }
 
-    const parkingPolyline = turf.lineString(this.props.selectedParking.parkingGeometry);
+    const parkingPolyline = turf.lineString(geometryLatLonToLonLat(this.props.selectedParking.geometry));
     const parkingPolylineCenter = turf.center(parkingPolyline);
 
     if (!parkingPolylineCenter.geometry) {
@@ -77,10 +65,7 @@ class SelectedParkingPopup extends React.PureComponent<SelectedParkingPopupProps
         coordinates={parkingPolylineCenter.geometry.coordinates}
         className={styles['PopupContainer']}
       >
-        { isFreeParking(this.props.selectedParking)
-          ? SelectedParkingPopup.renderFreeParkingPopup(this.props.selectedParking)
-          : SelectedParkingPopup.renderParkopediaParkingPopup(this.props.selectedParking)
-        }
+        {SelectedParkingPopup.renderParkopediaParkingPopup(this.props.selectedParking)}
       </Popup>
     );
   }

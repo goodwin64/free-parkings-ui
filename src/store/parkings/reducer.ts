@@ -1,3 +1,5 @@
+import uniqBy from 'lodash/uniqBy';
+
 import {
   CHANGE_CENTER_LOCATION,
   PARKINGS_REQUEST_FOR_FETCH,
@@ -6,11 +8,12 @@ import {
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
   CLEAR_ALL_FREE_SLOTS,
   CHANGE_ZOOM_LEVEL,
+  CREATE_PARKING_SUCCESS,
+  CREATE_PARKING_ATTEMPT,
 } from './constants';
 import { Actions } from './actions';
 import { BaseConfigInitialState } from '../../containers/BaseConfigPage/BaseConfigReducer';
 import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
-import { FreeParking } from '../../interfaces/FreeParking';
 
 
 export interface ParkingsPageState {
@@ -22,7 +25,7 @@ export interface ParkingsPageState {
   readonly isFetchInProgress: boolean,
   readonly wasFetchPerformed: boolean,
   readonly allParkings: ParkopediaParking[],
-  readonly freeParkings: FreeParking[],
+  readonly freeParkings: ParkopediaParking[],
 }
 
 export const ParkingsPageInitialState: ParkingsPageState = {
@@ -73,8 +76,26 @@ export default function reducer(
     case PARKINGS_FETCH_SUCCESS: {
       return {
         ...state,
-        allParkings: action.payload.parkings.allParkings,
-        freeParkings: action.payload.parkings.freeParkings,
+        allParkings: uniqBy([
+          ...state.allParkings,
+          ...action.payload,
+        ], 'id'),
+        isFetchInProgress: false,
+      };
+    }
+    case CREATE_PARKING_ATTEMPT: {
+      return {
+        ...state,
+        isFetchInProgress: true,
+      };
+    }
+    case CREATE_PARKING_SUCCESS: {
+      return {
+        ...state,
+        allParkings: [
+          ...state.allParkings,
+          action.payload,
+        ],
         isFetchInProgress: false,
       };
     }

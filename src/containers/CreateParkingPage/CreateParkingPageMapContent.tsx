@@ -21,7 +21,7 @@ interface CreateParkingPageOwnProps {
 }
 
 interface CreateParkingPageDispatchProps {
-  createParking: ParkingsPageActions.createParkingActionCreator,
+  createParking: ParkingsPageActions.createParkingAttemptActionCreator,
   setZoomLevel: ParkingsPageActions.setZoomLevelActionCreator,
   setSearchRadius: BaseConfigActions.setSearchRadiusActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
@@ -48,19 +48,36 @@ function CreateParkingPageMapContent(props: CreateParkingPageProps) {
   const [parkingLength, setParkingLength] = React.useState(0);
   const [parkingWidth, setParkingWidth] = React.useState(0);
   const [parkingHeight, setParkingHeight] = React.useState(0);
+  const [costPerHour, setCostPerHour] = React.useState(0);
+  const [maxStayDuration, setMaxStayDuration] = React.useState(0);
+
+  const areAllParametersValid = Boolean(
+    parkingsGeoJsonSource
+    && parkingLength
+    && parkingWidth
+    && parkingHeight
+    && costPerHour
+    && maxStayDuration
+  );
 
   const onParkingsChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setParkingsGeoJsonSource(e.target.value);
   };
 
   const onParkingsAdd = () => {
-    props.createParking({
-      parkingsGeoJsonSource,
-      isLatLon,
-      parkingLength,
-      parkingWidth,
-      parkingHeight,
-    });
+    if (areAllParametersValid) {
+      props.createParking({
+        parkingsGeoJsonSource,
+        isLatLon,
+        parkingLength,
+        parkingWidth,
+        parkingHeight,
+        costPerHour,
+        maxStayDuration,
+        features: [],
+        restrictions: [],
+      });
+    }
   };
 
   const toggleIsLatLon = () => setIsLatLon(!isLatLon);
@@ -72,6 +89,8 @@ function CreateParkingPageMapContent(props: CreateParkingPageProps) {
   const onParkingLengthChange = (e: React.ChangeEvent<HTMLInputElement>) => setParkingLength(e.target.valueAsNumber);
   const onParkingWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => setParkingWidth(e.target.valueAsNumber);
   const onParkingHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => setParkingHeight(e.target.valueAsNumber);
+  const onCostPerHourChange = (e: React.ChangeEvent<HTMLInputElement>) => setCostPerHour(e.target.valueAsNumber);
+  const onMaxStayDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxStayDuration(e.target.valueAsNumber);
 
   return (
     <React.Fragment>
@@ -84,7 +103,7 @@ function CreateParkingPageMapContent(props: CreateParkingPageProps) {
           Parking size
         </styled.CreateParkingSectionDescription>
 
-        <styled.CreateParkingSizeContainer>
+        <styled.CreateParkingParameterContainer>
           <InputNumber
             value={parkingLength}
             onChange={onParkingLengthChange}
@@ -103,7 +122,28 @@ function CreateParkingPageMapContent(props: CreateParkingPageProps) {
             placeholder="Enter parking height (mm)"
             min={0}
           />
-        </styled.CreateParkingSizeContainer>
+        </styled.CreateParkingParameterContainer>
+
+        <styled.CreateParkingSectionDescription>
+          Cost and stay duration
+        </styled.CreateParkingSectionDescription>
+
+        <styled.CreateParkingParameterContainer>
+          <InputNumber
+            value={costPerHour}
+            onChange={onCostPerHourChange}
+            placeholder="Enter cost per hour ($)"
+            min={0}
+            step={0.5}
+          />
+          <InputNumber
+            value={maxStayDuration}
+            onChange={onMaxStayDurationChange}
+            placeholder="Enter maximum stay duration (min)"
+            min={0}
+            step={5}
+          />
+        </styled.CreateParkingParameterContainer>
 
         <styled.CreateParkingSectionDescription>
           Parking location
@@ -122,7 +162,9 @@ function CreateParkingPageMapContent(props: CreateParkingPageProps) {
             onChange={toggleIsLatLon}
             colorScheme={ToggleSwitchColorScheme3}
           />
-          <Button onClick={onParkingsAdd} withRoundedCorners>ADD</Button>
+          <Button onClick={onParkingsAdd} withRoundedCorners disabled={!areAllParametersValid}>
+            ADD
+          </Button>
         </styled.CreateParkingControlsContainer>
 
       </styled.CreateParkingForm>
@@ -137,7 +179,7 @@ const mapStateToProps = createStructuredSelector<RootReducer, CreateParkingPageO
 });
 
 const mapDispatchToProps: CreateParkingPageDispatchProps = {
-  createParking: ParkingsPageActions.createParking,
+  createParking: ParkingsPageActions.createParkingAttempt,
   setZoomLevel: ParkingsPageActions.setZoomLevel,
   setSearchRadius: BaseConfigActions.setSearchRadius,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,
