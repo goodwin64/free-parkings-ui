@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import { createStructuredSelector } from 'reselect';
 
 import { Place } from '../../interfaces/Place';
+import { LatLon } from '../../interfaces/LatLon';
 import Park4uMap from '../../components/Map/Map';
 import Search from '../../components/Search/Search';
 import Loader from '../../components/Loader/Loader';
@@ -63,13 +64,15 @@ interface ParkingsPageDispatchProps {
 
 interface ParkingsPageProps extends ParkingsPageOwnProps,
   ParkingsPageDispatchProps,
-  RouterProps {}
+  RouterProps {
+}
 
 interface ParkingsPageState {
   query: string;
   options: Place[];
   selected?: Place;
   selectedParking: ParkopediaParking | null,
+  popupCoordinates: LatLon | null,
 }
 
 class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState> {
@@ -82,6 +85,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
       options: [],
       selected: undefined,
       selectedParking: null,
+      popupCoordinates: null,
     };
   }
 
@@ -135,12 +139,12 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     this.props.setZoomLevel(DEFAULT_ZOOM_LEVEL);
   };
 
-  openPopup: openPopup = (parking: ParkopediaParking) => {
-    this.setState({ selectedParking: parking });
+  openPopup: openPopup = (parking: ParkopediaParking, lat: number, lon: number) => {
+    this.setState({ selectedParking: parking, popupCoordinates: { lat, lon } });
   };
 
   closePopup = () => {
-    this.setState({ selectedParking: null });
+    this.setState({ selectedParking: null, popupCoordinates: null });
   };
 
   renderNoParkingsWarning() {
@@ -177,7 +181,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 
   renderSidebar() {
     // @ts-ignore
-    return <ParkingsSidebar/>
+    return <ParkingsSidebar/>;
   }
 
   render() {
@@ -207,6 +211,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
         />
         <SelectedParkingPopup
           selectedParking={this.state.selectedParking}
+          popupCoordinates={this.state.popupCoordinates}
           closePopup={this.closePopup}
         />
         {this.renderSidebar()}

@@ -7,7 +7,7 @@ import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
 import { geometryLatLonToLonLat } from '../../utils/geometry';
 
 
-export type openPopup = (p: ParkopediaParking) => void;
+export type openPopup = (p: ParkopediaParking, lat: number, lon: number) => void;
 interface ParkingsLayerProps extends MapContextProps {
   parkings: ParkopediaParking[],
   freeParkings: ParkopediaParking[],
@@ -61,14 +61,20 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
     };
   }
 
-  onMouseOver: openPopup = (parking) => {
-    this.props.openPopup(parking);
+  onParkingClick = (parking: ParkopediaParking) => (e: React.MouseEvent) => {
+    // @ts-ignore
+    const {lat, lng} = e.lngLat;
+    this.props.openPopup(parking, lat, lng);
+    const canvasContainer = this.props.MapboxMap.getCanvasContainer();
+    canvasContainer.style.cursor = 'pointer';
+  };
+
+  onMouseEnter = () => {
     const canvasContainer = this.props.MapboxMap.getCanvasContainer();
     canvasContainer.style.cursor = 'pointer';
   };
 
   onMouseOut = () => {
-    this.props.closePopup();
     const canvas = this.props.MapboxMap.getCanvasContainer();
     canvas.style.cursor = '';
   };
@@ -106,7 +112,8 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
             <Feature
               key={parking.id}
               coordinates={geometryLatLonToLonLat(parking.geometry)}
-              onMouseEnter={() => this.onMouseOver(parking)}
+              onClick={this.onParkingClick(parking)}
+              onMouseEnter={this.onMouseEnter}
               onMouseLeave={this.onMouseOut}
             />
           ))
@@ -148,7 +155,8 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
             <Feature
               key={parking.id}
               coordinates={geometryLatLonToLonLat(parking.geometry)}
-              onMouseEnter={() => this.onMouseOver(parking)}
+              onClick={this.onParkingClick(parking)}
+              onMouseEnter={this.onMouseEnter}
               onMouseLeave={this.onMouseOut}
             />
           ))

@@ -1,9 +1,10 @@
 .mapboxgl-popup-content {
     background-color: var(--colorGreyPopup);
     display: grid;
-    grid-gap: 4px 10px;
+    font-size: 20px;
+    grid-gap: 20px 40px;
     grid: repeat(4, auto) / auto auto;
-    padding: 10px 15px;
+    padding: 15px 40px 15px 25px;
 }
 
 .mapboxgl-popup-content > *:nth-child(even) {
