@@ -87,9 +87,11 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 
   componentDidMount(): void {
     this.props.synchronizeLatLon();
+
     setInterval(() => {
       this.props.checkParkopediaUpdates();
     }, 5000);
+
     setTimeout(() => {
       this.props.fetchParkings();
     }, 100);

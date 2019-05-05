@@ -4,14 +4,12 @@ import { all, call, put, select, takeEvery, takeLatest, throttle } from 'redux-s
 import {
   centerCoordinatesSelector,
   latLonSelector,
-  lastParkingsCheckTimestampSelector,
 } from './selectors';
 import { prepareParkingParametersFromClientToServer, prepareParkings } from './adapters';
 import { searchRadiusSelector, sessionUidSelector } from '../../containers/BaseConfigPage/BaseConfigSelectors';
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './actions';
 import {
-  checkParkopediaUpdatesSuccess,
   createParkingAttemptAction,
   createParkingError,
   createParkingSuccess,
@@ -21,16 +19,10 @@ import {
 import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../../containers/BaseConfigPage/BaseConfigConstants';
 import serialize from '../../utils/serialize';
-import { ResponseParkopediaAvailability } from '../../interfaces/ResponseParkopediaAvailability';
 import * as parkingsConstants from './constants';
 import { default as GeoLocationService } from '../../services/GeoLocation.service';
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
 
-
-async function fetchParkopediaParkingsAvailability(url: string) {
-  return fetch(url)
-    .then((response) => response.json());
-}
 
 export function* fetchParkingsSaga() {
   const { lat, lon } = yield select(centerCoordinatesSelector);
@@ -66,30 +58,7 @@ export function* synchronizeLatLonSaga() {
 }
 
 export function* checkForParkopediaUpdates() {
-  const { lat, lon } = yield select(centerCoordinatesSelector);
-  const radius = yield select(searchRadiusSelector);
-  const lastParkingsCheckTimestamp = yield select(lastParkingsCheckTimestampSelector);
-
-  let updatesCount: number = 0;
-  const queryOptions = serialize({ lat, lon, radius, timestamp: lastParkingsCheckTimestamp });
-  const url = `${backendEndpoint}/area/checkUpdates?${queryOptions}`;
-  try {
-    const {
-      updates,
-      timestamp,
-    }: ResponseParkopediaAvailability = yield call(fetchParkopediaParkingsAvailability, url);
-    updatesCount = updates;
-    yield put(checkParkopediaUpdatesSuccess({
-      timestamp,
-      updatesCount: updates,
-    }));
-  } catch (e) {
-    console.error('Failed to detect whether there are Parkopedia updates');
-  }
-
-  if (updatesCount > 0) {
-    yield put(fetchParkingsRequest());
-  }
+  yield put(fetchParkingsRequest());
 }
 
 export function* clearAllFreeSlotsSaga() {
