@@ -1,31 +1,27 @@
 import { push } from 'connected-react-router';
 import { all, call, put, select, takeEvery, takeLatest, throttle } from 'redux-saga/effects';
 
-import {
-  centerCoordinatesSelector,
-  latLonSelector,
-} from './selectors';
+import { centerCoordinatesSelector, latLonSelector } from './selectors';
 import { prepareParkingParametersFromClientToServer, prepareParkings } from './adapters';
 import { searchRadiusSelector, sessionUidSelector } from '../../containers/BaseConfigPage/BaseConfigSelectors';
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './actions';
 import {
+  deleteParkingAction,
+  fetchParkingsRequest,
   postParkingAttemptAction,
   postParkingError,
   postParkingSuccess,
-  fetchParkingsRequest,
   setParkingsPageCenter,
-  deleteParkingAction,
 } from './actions';
 import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../../containers/BaseConfigPage/BaseConfigConstants';
 import serialize from '../../utils/serialize';
 import * as parkingsConstants from './constants';
-import AudioService from '../../services/AudioService';
 import { default as GeoLocationService } from '../../services/GeoLocation.service';
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
 import { ParkopediaParkingServerExpects } from '../../interfaces/ParkopediaParking';
-import { areVoiceNotificationsEnabledSelector } from '../parkingSettings/selectors';
+import { parkingVoiceNotification } from '../parkingSettings/saga';
 
 
 export function* fetchParkingsSaga() {
@@ -155,13 +151,6 @@ function* deleteParkingSaga(action: deleteParkingAction) {
     })
   } catch (e) {
     console.error('cannot delete parking', e);
-  }
-}
-
-function* parkingVoiceNotification(preparedResponseParkings: PreparedParkings) {
-  const areVoiceNotificationsEnabled = yield select(areVoiceNotificationsEnabledSelector);
-  if (areVoiceNotificationsEnabled && preparedResponseParkings.length > 0) {
-    new Audio(AudioService.parkingIsFoundPath).play();
   }
 }
 

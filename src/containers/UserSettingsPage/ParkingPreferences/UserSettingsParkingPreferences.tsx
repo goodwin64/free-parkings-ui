@@ -6,13 +6,22 @@ import { createStructuredSelector } from 'reselect';
 import { RootReducer } from '../../../store/rootReducer';
 import * as settingsStyled from '../UserSettingsPage.styled';
 import ToggleSwitch from '../../../components/ToggleSwitch/ToggleSwitch';
-import { areVoiceNotificationsEnabledSelector } from '../../../store/parkingSettings/selectors';
+import {
+  areVoiceNotificationsEnabledSelector,
+  isParkingAutoSearchEnabledSelector,
+} from '../../../store/parkingSettings/selectors';
 import { UserSettingsParkingPreferencesOwnProps } from '../../../store/parkingSettings/reducer';
-import { setVoiceNotifications, setVoiceNotificationsActionCreator } from '../../../store/parkingSettings/actions';
+import {
+  setCheckingParkopediaUpdates,
+  setCheckingParkopediaUpdatesActionCreator,
+  setVoiceNotifications,
+  setVoiceNotificationsActionCreator,
+} from '../../../store/parkingSettings/actions';
 
 
 interface UserSettingsParkingPreferencesDispatchProps {
   setVoiceNotifications: setVoiceNotificationsActionCreator,
+  setCheckingParkopediaUpdates: setCheckingParkopediaUpdatesActionCreator,
 }
 
 interface UserSettingsParkingPreferencesProps extends
@@ -43,8 +52,8 @@ function UserSettingsParkingPreferences(props: UserSettingsParkingPreferencesPro
         <ToggleSwitch
           value1="OFF"
           value2="ON"
-          onChange={console.log}
-          disabled
+          onChange={props.setCheckingParkopediaUpdates}
+          isOnByDefault={props.isParkingAutoSearchEnabled}
         />
       </settingsStyled.SettingContainer>
 
@@ -54,10 +63,12 @@ function UserSettingsParkingPreferences(props: UserSettingsParkingPreferencesPro
 
 const mapStateToProps = createStructuredSelector<RootReducer, UserSettingsParkingPreferencesOwnProps>({
   areVoiceNotificationsEnabled: areVoiceNotificationsEnabledSelector,
+  isParkingAutoSearchEnabled: isParkingAutoSearchEnabledSelector,
 });
 
 const mapDispatchToProps: UserSettingsParkingPreferencesDispatchProps = {
   setVoiceNotifications,
+  setCheckingParkopediaUpdates,
 };
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

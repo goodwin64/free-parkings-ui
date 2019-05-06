@@ -4,10 +4,12 @@ import { ParkingSettingsAction } from './actions';
 
 export interface UserSettingsParkingPreferencesOwnProps {
   areVoiceNotificationsEnabled: boolean,
+  isParkingAutoSearchEnabled: boolean,
 }
 
 const parkingSettingsInitialState: UserSettingsParkingPreferencesOwnProps = {
   areVoiceNotificationsEnabled: false,
+  isParkingAutoSearchEnabled: true,
 };
 
 export default function parkingSettingsReducer(
@@ -20,6 +22,12 @@ export default function parkingSettingsReducer(
         ...state,
         areVoiceNotificationsEnabled: action.payload,
       };
+    }
+    case constants.SET_CHECKING_PARKOPEDIA_UPDATES: {
+      return {
+        ...state,
+        isParkingAutoSearchEnabled: action.payload,
+      }
     }
     default: {
       return state;

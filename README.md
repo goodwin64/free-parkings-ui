@@ -7,7 +7,7 @@
 - [X] Protected route (deny pages if no permissions)
 - [X] Driver: Account page (personal info)
 - [X] Driver: Account page (car parameters)
-- [ ] Driver: Account page (parkings preferences)
+- [X] Driver: Account page (parkings preferences)
 - [X] Driver: Change car manufacturer
 - [X] Driver: Change car model
 - [X] Driver: Change car number
@@ -18,7 +18,7 @@
 - [X] Driver: Change preferred country
 - [ ] Driver: Search location by POI
 - [X] Driver: Search location by current GPS
-- [ ] Driver: Enable/disable parkings auto-check
+- [X] Driver: Enable/disable parkings auto-check
 - [X] Driver: Enable/disable voice notifications
 - [ ] Driver: Delete account (GDPR compliant)
 - [X] Driver: Parkings page (search parkings)

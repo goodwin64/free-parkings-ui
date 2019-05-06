@@ -23,9 +23,15 @@ import * as BaseConfigSelectors from '../BaseConfigPage/BaseConfigSelectors';
 import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
 import ParkingsLayer, { openPopup, openPopupDetails } from '../../components/LayerParkings/LayerParkings';
 import SelectedParkingPopup from '../../components/SelectedParkingPopup/SelectedParkingPopup';
-import { MAX_SEARCH_RADIUS_TO_FETCH, DEFAULT_ZOOM_LEVEL } from '../BaseConfigPage/BaseConfigConstants';
+import { DEFAULT_ZOOM_LEVEL, MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPage/BaseConfigConstants';
 
 import * as styles from './styles.module.css';
+import {
+  startCheckingParkopediaUpdates,
+  startCheckingParkopediaUpdatesActionCreator,
+  stopCheckingParkopediaUpdates,
+  stopCheckingParkopediaUpdatesActionCreator,
+} from '../../store/parkingSettings/actions';
 
 
 const req = (url: string, body?: any, method = 'GET') =>
@@ -61,6 +67,8 @@ interface ParkingsPageDispatchProps {
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
   checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequestActionCreator,
   askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocationActionCreator,
+  startCheckingParkopediaUpdates: startCheckingParkopediaUpdatesActionCreator,
+  stopCheckingParkopediaUpdates: stopCheckingParkopediaUpdatesActionCreator,
 }
 
 interface ParkingsPageProps extends ParkingsPageOwnProps,
@@ -92,15 +100,16 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 
   componentDidMount(): void {
     this.props.synchronizeLatLon();
-
-    // setInterval(() => {
-    //   this.props.checkParkopediaUpdates();
-    // }, 5000);
+    this.props.startCheckingParkopediaUpdates();
 
     setTimeout(() => {
       this.props.fetchParkings();
     }, 100);
     // this.props.askPermissionForGeoLocation();
+  }
+
+  componentWillUnmount(): void {
+    this.props.stopCheckingParkopediaUpdates();
   }
 
   private fetchPlaces = (query: string) => {
@@ -239,7 +248,7 @@ const mapStateToProps = createStructuredSelector<RootReducer, ParkingsPageOwnPro
   isParkingFetchInProgress: ParkingsPageSelectors.isParkingFetchInProgressSelector,
 });
 
-const withConnect = connect(mapStateToProps, {
+const mapDispatchToProps: ParkingsPageDispatchProps = {
   setZoomLevel: ParkingsPageActions.setZoomLevel,
   setSearchRadius: BaseConfigActions.setSearchRadius,
   fetchParkings: ParkingsPageActions.fetchParkingsRequest,
@@ -247,7 +256,11 @@ const withConnect = connect(mapStateToProps, {
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,
   checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequest,
   askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocation,
-});
+  startCheckingParkopediaUpdates: startCheckingParkopediaUpdates,
+  stopCheckingParkopediaUpdates: stopCheckingParkopediaUpdates,
+};
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(
   withRouter,
