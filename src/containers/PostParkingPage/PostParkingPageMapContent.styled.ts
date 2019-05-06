@@ -43,7 +43,7 @@ export const CreateParkingParameterContainer = styled.section`
   grid-column: 1 / -1;
   justify-content: space-between;
   
-  & > * {
+  &&& > * {
     margin-right: 10px;
   
     &:last-child {

@@ -12,9 +12,9 @@ import {
   PARKINGS_FETCH_SUCCESS,
   PARKINGS_REQUEST_FOR_FETCH,
   SYNCHRONIZE_LAT_LON,
-  CREATE_PARKING_ATTEMPT,
-  CREATE_PARKING_SUCCESS,
-  CREATE_PARKING_ERROR,
+  POST_PARKING_ATTEMPT,
+  POST_PARKING_SUCCESS,
+  POST_PARKING_ERROR,
 } from './constants';
 import { PreparedParkings } from '../../interfaces/ResponseParkings';
 import { ParkopediaAvailability } from '../../interfaces/ParkopediaAvailability';
@@ -61,19 +61,19 @@ export type checkParkopediaUpdatesSuccessAction = ActionType<typeof checkParkope
 export type checkParkopediaUpdatesSuccessActionCreator = (parkopediaAvailability: ParkopediaAvailability) => checkParkopediaUpdatesSuccessAction;
 
 
-export const createParkingAttempt = (parkingParameters: ClientParkopediaParking) => action(CREATE_PARKING_ATTEMPT, parkingParameters);
-export type createParkingAttemptAction = ActionType<typeof createParkingAttempt>;
-export type createParkingAttemptActionCreator = (parkingParameters: ClientParkopediaParking) => createParkingAttemptAction;
+export const postParkingAttempt = (parkingCreated: ClientParkopediaParking) => action(POST_PARKING_ATTEMPT, parkingCreated);
+export type postParkingAttemptAction = ActionType<typeof postParkingAttempt>;
+export type postParkingAttemptActionCreator = (parkingCreated: ClientParkopediaParking) => postParkingAttemptAction;
 
 
-export const createParkingSuccess = (parkingParameters: ParkopediaParking) => action(CREATE_PARKING_SUCCESS, parkingParameters);
-export type createParkingSuccessAction = ActionType<typeof createParkingSuccess>;
-export type createParkingSuccessActionCreator = (parkingParameters: ParkopediaParking) => createParkingSuccessAction;
+export const postParkingSuccess = (parkingCreated: ParkopediaParking) => action(POST_PARKING_SUCCESS, parkingCreated);
+export type postParkingSuccessAction = ActionType<typeof postParkingSuccess>;
+export type postParkingSuccessActionCreator = (parkingCreated: ParkopediaParking) => postParkingSuccessAction;
 
 
-export const createParkingError = () => action(CREATE_PARKING_ERROR);
-export type createParkingErrorAction = ActionType<typeof createParkingError>;
-export type createParkingErrorActionCreator = () => createParkingErrorAction;
+export const postParkingError = () => action(POST_PARKING_ERROR);
+export type postParkingErrorAction = ActionType<typeof postParkingError>;
+export type postParkingErrorActionCreator = () => postParkingErrorAction;
 
 
 export const clearAllFreeSlots = () => action(CLEAR_ALL_FREE_SLOTS);
@@ -98,9 +98,9 @@ export type Actions = setParkingsPageCenterAction
   | fetchParkingsSuccessAction
   | checkParkopediaUpdatesRequestAction
   | checkParkopediaUpdatesSuccessAction
-  | createParkingAttemptAction
-  | createParkingSuccessAction
-  | createParkingErrorAction
+  | postParkingAttemptAction
+  | postParkingSuccessAction
+  | postParkingErrorAction
   | clearAllFreeSlotsAction
   | clearVisibleFreeSlotsAction
   | askPermissionForGeoLocationAction

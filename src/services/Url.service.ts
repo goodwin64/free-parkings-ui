@@ -43,9 +43,9 @@ export default class UrlService {
   ]);
 
   public static readonly createParkingPageUrl = path.join(UrlService.parkingsPageUrl, '/create-parking');
-  public static readonly createParkingPageRolesAllowed = new Set([
-    USER_ROLE_ADMIN,
-  ]);
+  public static readonly editParkingPageUrl = path.join(UrlService.parkingsPageUrl, '/edit-parking');
+  public static readonly editParkingPageUrlWithParams = (parkingId: string) => path.join(UrlService.editParkingPageUrl, parkingId);
+  public static readonly editParkingPageUrlRoute = `${UrlService.editParkingPageUrl}/:selectedParkingId`;
 
   public static readonly myDrivesPageUrl = path.join(UrlService.rootUrl, '/my-drives');
   public static readonly myDrivesPageRolesAllowed = new Set([

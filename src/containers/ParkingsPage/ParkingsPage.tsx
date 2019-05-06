@@ -4,10 +4,10 @@ import { Route, Switch } from 'react-router';
 import ParkingsMap from './ParkingsMap';
 import UrlService from '../../services/Url.service';
 import ParkingsPageMapContent from './ParkingsPageMapContent';
-import CreateParkingPage from '../CreateParkingPage/CreateParkingPageMapContent';
+import PostParkingPage from '../PostParkingPage/PostParkingPageMapContent';
 
 
-function ParkingsPage(props: any) {
+function ParkingsPage() {
   return (
     <ParkingsMap>
       <Switch>
@@ -19,7 +19,12 @@ function ParkingsPage(props: any) {
         <Route
           path={UrlService.createParkingPageUrl}
           // @ts-ignore
-          component={CreateParkingPage}
+          component={PostParkingPage}
+        />
+        <Route
+          path={UrlService.editParkingPageUrlRoute}
+          // @ts-ignore
+          component={PostParkingPage}
         />
       </Switch>
     </ParkingsMap>

@@ -16,6 +16,7 @@ interface ToggleSwitchProps {
   value2?: string,
   onChange: (value: boolean) => void,
   colorScheme?: ColorScheme1 | ColorScheme2 | ColorScheme3,
+  isOnByDefault?: boolean,
 }
 
 ToggleSwitch.propTypes = {
@@ -23,12 +24,14 @@ ToggleSwitch.propTypes = {
   value2: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   colorScheme: PropTypes.oneOf([ToggleSwitchColorScheme1, ToggleSwitchColorScheme2, ToggleSwitchColorScheme3]),
+  isOnByDefault: PropTypes.bool,
 };
 
 ToggleSwitch.defaultProps = {
   value1: '',
   value2: '',
   colorScheme: ToggleSwitchColorScheme1,
+  isOnByDefault: false,
 };
 
 export default function ToggleSwitch(props: ToggleSwitchProps) {
@@ -38,7 +41,12 @@ export default function ToggleSwitch(props: ToggleSwitchProps) {
 
   return (
     <label className="switch">
-      <input type="checkbox" id="togBtn" onChange={onInputChange}/>
+      <input
+        type="checkbox"
+        id="togBtn"
+        onChange={onInputChange}
+        defaultChecked={props.isOnByDefault}
+      />
       <div className={`slider round ${props.colorScheme ? props.colorScheme : ToggleSwitchColorScheme1}`}>
         <span className="off">{props.value1}</span>
         <span className="on">{props.value2}</span>

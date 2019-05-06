@@ -8,6 +8,7 @@ export interface ResponseParkopediaParking extends ParkopediaParkingServerExpect
 }
 
 export interface ParkopediaParkingServerExpects {
+  id?: string,
   geometry: PointGeometry[],
   length: number,
   width: number,
@@ -19,6 +20,7 @@ export interface ParkopediaParkingServerExpects {
 }
 
 export interface ClientParkopediaParking {
+  id?: string,
   parkingsGeoJsonSource: string,
   isLatLon: boolean,
   parkingLength: number,

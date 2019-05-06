@@ -10,9 +10,9 @@ import { searchRadiusSelector, sessionUidSelector } from '../../containers/BaseC
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 import * as ParkingsPageActions from './actions';
 import {
-  createParkingAttemptAction,
-  createParkingError,
-  createParkingSuccess,
+  postParkingAttemptAction,
+  postParkingError,
+  postParkingSuccess,
   fetchParkingsRequest,
   setParkingsPageCenter,
 } from './actions';
@@ -22,6 +22,7 @@ import serialize from '../../utils/serialize';
 import * as parkingsConstants from './constants';
 import { default as GeoLocationService } from '../../services/GeoLocation.service';
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
+import { ParkopediaParkingServerExpects } from '../../interfaces/ParkopediaParking';
 
 
 export function* fetchParkingsSaga() {
@@ -106,16 +107,38 @@ function* detectGeoLocationSaga() {
   }
 }
 
-function* createParkingSaga(action: createParkingAttemptAction) {
+function* createParkingSaga(preparedParkingParameters: ParkopediaParkingServerExpects) {
+  const url = `${backendEndpoint}/parkings`;
+  const createdParking = yield call(requestToFreeParkingsAPI, url, {
+    method: 'PUT',
+    body: JSON.stringify(preparedParkingParameters),
+  });
+  return createdParking;
+}
+
+function* updateParkingSaga(preparedParkingParameters: ParkopediaParkingServerExpects) {
+  const url = `${backendEndpoint}/parkings/${preparedParkingParameters.id}`;
+  yield call(requestToFreeParkingsAPI, url, {
+    method: 'PUT',
+    body: JSON.stringify(preparedParkingParameters),
+  });
+  return true;
+}
+
+function* postParkingSaga(action: postParkingAttemptAction) {
   const preparedParkingParameters = prepareParkingParametersFromClientToServer(action.payload);
   try {
-    const createdParking = yield call(requestToFreeParkingsAPI, `${backendEndpoint}/parkings`, {
-      method: 'PUT',
-      body: JSON.stringify(preparedParkingParameters),
-    });
-    yield put(createParkingSuccess(createdParking));
+    let parking = null;
+
+    if (preparedParkingParameters.id) {
+      yield call(updateParkingSaga, preparedParkingParameters);
+      parking = preparedParkingParameters;
+    } else {
+      parking = yield call(createParkingSaga, preparedParkingParameters);
+    }
+    yield put(postParkingSuccess(parking));
   } catch (e) {
-    yield put(createParkingError());
+    yield put(postParkingError());
   }
 }
 
@@ -128,6 +151,6 @@ export default function* defaultParkingsSaga() {
     takeEvery(parkingsConstants.CLEAR_ALL_FREE_SLOTS, clearAllFreeSlotsSaga),
     takeEvery(parkingsConstants.CLEAR_VISIBLE_FREE_SLOTS, clearVisibleFreeSlotsSaga),
     takeEvery(parkingsConstants.ASK_PERMISSION_FOR_GEO_LOCATION, detectGeoLocationSaga),
-    takeEvery(parkingsConstants.CREATE_PARKING_ATTEMPT, createParkingSaga),
+    takeEvery(parkingsConstants.POST_PARKING_ATTEMPT, postParkingSaga),
   ]);
 }

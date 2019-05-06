@@ -8,8 +8,8 @@ import {
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
   CLEAR_ALL_FREE_SLOTS,
   CHANGE_ZOOM_LEVEL,
-  CREATE_PARKING_SUCCESS,
-  CREATE_PARKING_ATTEMPT,
+  POST_PARKING_ATTEMPT,
+  POST_PARKING_SUCCESS,
 } from './constants';
 import { Actions } from './actions';
 import { BaseConfigInitialState } from '../../containers/BaseConfigPage/BaseConfigReducer';
@@ -83,19 +83,19 @@ export default function reducer(
         isFetchInProgress: false,
       };
     }
-    case CREATE_PARKING_ATTEMPT: {
+    case POST_PARKING_ATTEMPT: {
       return {
         ...state,
         isFetchInProgress: true,
       };
     }
-    case CREATE_PARKING_SUCCESS: {
+    case POST_PARKING_SUCCESS: {
       return {
         ...state,
-        allParkings: [
-          ...state.allParkings,
+        allParkings: uniqBy([
           action.payload,
-        ],
+          ...state.allParkings,
+        ], 'id'),
         isFetchInProgress: false,
       };
     }

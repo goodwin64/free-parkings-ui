@@ -1,13 +1,18 @@
 import React from 'react';
+import { compose } from 'redux';
+import { MapMouseEvent } from 'mapbox-gl';
 import { Feature, Layer } from 'react-mapbox-gl';
 
 import { COLORS } from '../../constants/colors';
 import withMap, { MapContextProps } from '../Map/context';
 import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
 import { geometryLatLonToLonLat } from '../../utils/geometry';
+import { LatLon } from '../../interfaces/LatLon';
 
 
-export type openPopup = (p: ParkopediaParking, lat: number, lon: number) => void;
+export type openPopup = (p: ParkopediaParking, popupCoordinates: LatLon) => void;
+export type openPopupDetails = (p: ParkopediaParking) => void;
+
 interface ParkingsLayerProps extends MapContextProps {
   parkings: ParkopediaParking[],
   freeParkings: ParkopediaParking[],
@@ -61,12 +66,9 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
     };
   }
 
-  onParkingClick = (parking: ParkopediaParking) => (e: React.MouseEvent) => {
-    // @ts-ignore
-    const {lat, lng} = e.lngLat;
-    this.props.openPopup(parking, lat, lng);
-    const canvasContainer = this.props.MapboxMap.getCanvasContainer();
-    canvasContainer.style.cursor = 'pointer';
+  onParkingClick = (parking: ParkopediaParking) => (e: MapMouseEvent) => {
+    const popupCoordinates = { lat: e.lngLat.lat, lon: e.lngLat.lng };
+    this.props.openPopup(parking, popupCoordinates);
   };
 
   onMouseEnter = () => {
@@ -112,6 +114,7 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
             <Feature
               key={parking.id}
               coordinates={geometryLatLonToLonLat(parking.geometry)}
+              // @ts-ignore
               onClick={this.onParkingClick(parking)}
               onMouseEnter={this.onMouseEnter}
               onMouseLeave={this.onMouseOut}
@@ -155,6 +158,7 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
             <Feature
               key={parking.id}
               coordinates={geometryLatLonToLonLat(parking.geometry)}
+              // @ts-ignore
               onClick={this.onParkingClick(parking)}
               onMouseEnter={this.onMouseEnter}
               onMouseLeave={this.onMouseOut}
@@ -168,13 +172,15 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
   render() {
     return (
       <React.Fragment>
-        { this.renderAllParkings() }
-        { this.renderAllParkingsClickableArea() }
-        { this.renderFreeParkings() }
-        { this.renderFreeParkingsClickableArea() }
+        {this.renderAllParkings()}
+        {this.renderAllParkingsClickableArea()}
+        {this.renderFreeParkings()}
+        {this.renderFreeParkingsClickableArea()}
       </React.Fragment>
     );
   }
 }
 
-export default withMap(ParkingsLayer);
+export default compose(
+  withMap,
+)(ParkingsLayer);

@@ -1,16 +1,19 @@
 import React from 'react';
 import { Popup } from 'react-mapbox-gl';
 
+import Button from '../Button/Button';
 import './SelectedParkingPopup.global.css';
 import { LatLon } from '../../interfaces/LatLon';
 import * as styles from './SelectedParkingPopup.module.css';
 import { geometryObjToLonLat } from '../../utils/geometry';
 import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { openPopupDetails } from '../LayerParkings/LayerParkings';
 
 
 interface SelectedParkingPopupProps {
   selectedParking: ParkopediaParking | null,
   popupCoordinates: LatLon | null,
+  openPopupDetails: openPopupDetails,
   closePopup: () => void,
 }
 
@@ -62,6 +65,12 @@ class SelectedParkingPopup extends React.PureComponent<SelectedParkingPopupProps
     );
   }
 
+  openPopupDetails = () => {
+    if (this.props.selectedParking) {
+      this.props.openPopupDetails(this.props.selectedParking);
+    }
+  };
+
   render() {
     if (!this.props.selectedParking || !this.props.popupCoordinates) {
       return null;
@@ -80,6 +89,7 @@ class SelectedParkingPopup extends React.PureComponent<SelectedParkingPopupProps
           ×
         </button>
         {SelectedParkingPopup.renderParkopediaParkingPopup(this.props.selectedParking)}
+        <Button onClick={this.openPopupDetails}>Details</Button>
       </Popup>
     );
   }

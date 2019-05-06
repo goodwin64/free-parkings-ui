@@ -3,8 +3,11 @@ import { Search } from 'history';
 
 import { RootReducer } from '../rootReducer';
 import { defaultLatLonSelector } from '../../containers/BaseConfigPage/BaseConfigSelectors';
+import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { RouterProps } from '../../interfaces/RouterProps';
 
 export const routeLocationSelector = (state: RootReducer) => state.router.location;
+export const routerPropsSelector = (_: RootReducer, routerProps: RouterProps) => routerProps;
 
 export const routeParamsSelector = createSelector(
   [routeLocationSelector],
@@ -87,4 +90,15 @@ export const centerCoordinatesLongitudeSelector = createSelector(
 export const lastParkingsCheckTimestampSelector = createSelector(
   [parkingsPageDomainSelector],
   (parkingsPageDomain) => parkingsPageDomain.lastParkingsCheckTimestamp,
+);
+
+type selectedParkingSelector = (rr: RootReducer) => ParkopediaParking | null;
+// @ts-ignore
+export const selectedParkingSelector: selectedParkingSelector = createSelector(
+  [routerPropsSelector, allParkingsSelector],
+  (routerProps, allParkings) => {
+    const selectedParkingId = routerProps.match.params.selectedParkingId;
+    const selectedParking = allParkings.find(({ id }) => id === selectedParkingId) || null;
+    return selectedParking;
+  },
 );

@@ -12,6 +12,7 @@ import Loader from '../../components/Loader/Loader';
 import Button from '../../components/Button/Button';
 import { RootReducer } from '../../store/rootReducer';
 import ParkingsSidebar from './ParkingsSidebar';
+import UrlService from '../../services/Url.service';
 import { MapboxPlace } from '../../interfaces/MapboxPlace';
 import { RouterProps } from '../../interfaces/RouterProps';
 import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
@@ -20,7 +21,7 @@ import * as ParkingsPageSelectors from '../../store/parkings/selectors';
 import * as BaseConfigActions from '../BaseConfigPage/BaseConfigActions';
 import * as BaseConfigSelectors from '../BaseConfigPage/BaseConfigSelectors';
 import CursorMapCenter from '../../components/CursorMapCenter/CursorMapCenter';
-import ParkingsLayer, { openPopup } from '../../components/LayerParkings/LayerParkings';
+import ParkingsLayer, { openPopup, openPopupDetails } from '../../components/LayerParkings/LayerParkings';
 import SelectedParkingPopup from '../../components/SelectedParkingPopup/SelectedParkingPopup';
 import { MAX_SEARCH_RADIUS_TO_FETCH, DEFAULT_ZOOM_LEVEL } from '../BaseConfigPage/BaseConfigConstants';
 
@@ -92,9 +93,9 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
   componentDidMount(): void {
     this.props.synchronizeLatLon();
 
-    setInterval(() => {
-      this.props.checkParkopediaUpdates();
-    }, 5000);
+    // setInterval(() => {
+    //   this.props.checkParkopediaUpdates();
+    // }, 5000);
 
     setTimeout(() => {
       this.props.fetchParkings();
@@ -139,8 +140,15 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     this.props.setZoomLevel(DEFAULT_ZOOM_LEVEL);
   };
 
-  openPopup: openPopup = (parking: ParkopediaParking, lat: number, lon: number) => {
-    this.setState({ selectedParking: parking, popupCoordinates: { lat, lon } });
+  openPopup: openPopup = (parking: ParkopediaParking, popupCoordinates: LatLon) => {
+    this.setState({ selectedParking: parking, popupCoordinates });
+  };
+
+  openPopupDetails: openPopupDetails = (parking: ParkopediaParking) => {
+    this.props.history.push({
+      pathname: UrlService.editParkingPageUrlWithParams(parking.id),
+      search: this.props.location.search,
+    });
   };
 
   closePopup = () => {
@@ -212,6 +220,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
         <SelectedParkingPopup
           selectedParking={this.state.selectedParking}
           popupCoordinates={this.state.popupCoordinates}
+          openPopupDetails={this.openPopupDetails}
           closePopup={this.closePopup}
         />
         {this.renderSidebar()}
