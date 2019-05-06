@@ -2,10 +2,23 @@ import styled from 'styled-components';
 import { COLORS } from '../../constants/colors';
 
 
+type typeToColor = {
+  regular: string,
+  warning: string,
+  error: string,
+};
+const typeToColor = {
+  regular: COLORS.colorAccent1,
+  warning: COLORS.colorAccent2,
+  error: COLORS.colorAccent3,
+};
+type ButtonColorType = keyof typeToColor;
+
 export const Button = styled.button<{
   withRoundedCorners?: boolean,
+  colorType?: ButtonColorType,
 }>`
-  background-color: ${COLORS.colorAccent1};
+  background-color: ${(props) => props.colorType ? typeToColor[props.colorType] : COLORS.colorAccent1};
   border: none;
   color: ${COLORS.colorMainText};
   padding: 15px 32px;

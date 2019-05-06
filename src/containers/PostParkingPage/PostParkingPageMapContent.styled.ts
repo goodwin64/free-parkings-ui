@@ -57,7 +57,7 @@ export const CreateParkingControlsContainer = styled.section`
   grid-column: 1 / -1;
   justify-content: space-between;
   
-  & > button {
+  & button {
     color: #000 !important;
   }
 `;

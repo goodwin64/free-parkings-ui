@@ -22,6 +22,7 @@ interface PostParkingPageOwnProps {
 
 export interface PostParkingPageDispatchProps {
   postParking: ParkingsPageActions.postParkingAttemptActionCreator,
+  deleteParking: ParkingsPageActions.deleteParkingActionCreator,
 }
 
 interface PostParkingPageProps extends PostParkingPageOwnProps,
@@ -118,6 +119,13 @@ function PostParkingPageMapContent(props: PostParkingPageProps) {
     navigateBackToFindParkings();
   };
 
+  const onParkingDelete = () => {
+    if (props.selectedParking) {
+      props.deleteParking(props.selectedParking.id);
+    }
+    navigateBackToFindParkings();
+  };
+
   const toggleIsLatLon = () => setIsLatLon(!isLatLon);
 
   const onFormSubmit = (e: React.FormEvent) => {
@@ -200,9 +208,19 @@ function PostParkingPageMapContent(props: PostParkingPageProps) {
           colorScheme={ToggleSwitchColorScheme3}
           isOnByDefault={isLatLon}
         />
-        <Button onClick={onParkingSubmit} withRoundedCorners disabled={!areAllParametersValid}>
-          {props.selectedParking ? 'SAVE' : 'ADD'}
-        </Button>
+        <div>
+          {
+            props.selectedParking && (
+              <Button onClick={onParkingDelete} withRoundedCorners colorType="warning">
+                DELETE
+              </Button>
+            )
+          }
+          {' '}
+          <Button onClick={onParkingSubmit} withRoundedCorners disabled={!areAllParametersValid}>
+            {props.selectedParking ? 'SAVE' : 'ADD'}
+          </Button>
+        </div>
       </styled.CreateParkingControlsContainer>
 
     </styled.CreateParkingForm>
@@ -215,6 +233,7 @@ const mapStateToProps = createStructuredSelector<RootReducer, PostParkingPageOwn
 
 const mapDispatchToProps: PostParkingPageDispatchProps = {
   postParking: ParkingsPageActions.postParkingAttempt,
+  deleteParking: ParkingsPageActions.deleteParking,
 };
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

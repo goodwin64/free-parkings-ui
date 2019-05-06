@@ -6,7 +6,8 @@ import {
   PARKINGS_FETCH_SUCCESS,
   PARKINGS_FETCH_START,
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
-  CLEAR_ALL_FREE_SLOTS,
+  DELETE_PARKING,
+  DELETE_ALL_FREE_SLOTS,
   CHANGE_ZOOM_LEVEL,
   POST_PARKING_ATTEMPT,
   POST_PARKING_SUCCESS,
@@ -107,7 +108,13 @@ export default function reducer(
         isFetchInProgress: false,
       };
     }
-    case CLEAR_ALL_FREE_SLOTS: {
+    case DELETE_PARKING: {
+      return {
+        ...state,
+        allParkings: state.allParkings.filter(({id}) => id !== action.payload),
+      }
+    }
+    case DELETE_ALL_FREE_SLOTS: {
       return {
         ...state,
         freeParkings: ParkingsPageInitialState.freeParkings,

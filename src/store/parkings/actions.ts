@@ -5,8 +5,9 @@ import {
   CHANGE_ZOOM_LEVEL,
   CHECK_PARKOPEDIA_UPDATES_REQUEST,
   CHECK_PARKOPEDIA_UPDATES_SUCCESS,
-  CLEAR_ALL_FREE_SLOTS,
-  CLEAR_VISIBLE_FREE_SLOTS,
+  DELETE_PARKING,
+  DELETE_ALL_FREE_SLOTS,
+  DELETE_VISIBLE_FREE_SLOTS,
   ASK_PERMISSION_FOR_GEO_LOCATION,
   PARKINGS_FETCH_START,
   PARKINGS_FETCH_SUCCESS,
@@ -76,14 +77,19 @@ export type postParkingErrorAction = ActionType<typeof postParkingError>;
 export type postParkingErrorActionCreator = () => postParkingErrorAction;
 
 
-export const clearAllFreeSlots = () => action(CLEAR_ALL_FREE_SLOTS);
-export type clearAllFreeSlotsAction = ActionType<typeof clearAllFreeSlots>;
-export type clearAllFreeSlotsActionCreator = () => clearAllFreeSlotsAction;
+export const deleteParking = (parkingId: string) => action(DELETE_PARKING, parkingId);
+export type deleteParkingAction = ActionType<typeof deleteParking>;
+export type deleteParkingActionCreator = (parkingId: string) => deleteParkingAction;
 
 
-export const clearVisibleFreeSlots = () => action(CLEAR_VISIBLE_FREE_SLOTS);
-export type clearVisibleFreeSlotsAction = ActionType<typeof clearVisibleFreeSlots>;
-export type clearVisibleFreeSlotsActionCreator = () => clearVisibleFreeSlotsAction;
+export const deleteAllFreeSlots = () => action(DELETE_ALL_FREE_SLOTS);
+export type deleteAllFreeSlotsAction = ActionType<typeof deleteAllFreeSlots>;
+export type deleteAllFreeSlotsActionCreator = () => deleteAllFreeSlotsAction;
+
+
+export const deleteVisibleFreeSlots = () => action(DELETE_VISIBLE_FREE_SLOTS);
+export type deleteVisibleFreeSlotsAction = ActionType<typeof deleteVisibleFreeSlots>;
+export type deleteVisibleFreeSlotsActionCreator = () => deleteVisibleFreeSlotsAction;
 
 
 export const askPermissionForGeoLocation = () => action(ASK_PERMISSION_FOR_GEO_LOCATION);
@@ -101,7 +107,8 @@ export type Actions = setParkingsPageCenterAction
   | postParkingAttemptAction
   | postParkingSuccessAction
   | postParkingErrorAction
-  | clearAllFreeSlotsAction
-  | clearVisibleFreeSlotsAction
+  | deleteParkingAction
+  | deleteAllFreeSlotsAction
+  | deleteVisibleFreeSlotsAction
   | askPermissionForGeoLocationAction
   ;

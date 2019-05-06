@@ -15,6 +15,7 @@ import {
   postParkingSuccess,
   fetchParkingsRequest,
   setParkingsPageCenter,
+  deleteParkingAction,
 } from './actions';
 import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../../containers/BaseConfigPage/BaseConfigConstants';
@@ -142,14 +143,27 @@ function* postParkingSaga(action: postParkingAttemptAction) {
   }
 }
 
+function* deleteParkingSaga(action: deleteParkingAction) {
+  const parkingId = action.payload;
+  const url = `${backendEndpoint}/parkings/${parkingId}`;
+  try {
+    yield call(requestToFreeParkingsAPI, url, {
+      method: 'DELETE',
+    })
+  } catch (e) {
+    console.error('cannot delete parking', e);
+  }
+}
+
 export default function* defaultParkingsSaga() {
   yield all([
     throttle(3000, parkingsConstants.PARKINGS_REQUEST_FOR_FETCH, fetchParkingsSaga),
     takeEvery(parkingsConstants.CHANGE_CENTER_LOCATION, updateUrlLatLonSaga),
     takeEvery(parkingsConstants.CHECK_PARKOPEDIA_UPDATES_REQUEST, checkForParkopediaUpdates),
     takeLatest(parkingsConstants.SYNCHRONIZE_LAT_LON, synchronizeLatLonSaga),
-    takeEvery(parkingsConstants.CLEAR_ALL_FREE_SLOTS, clearAllFreeSlotsSaga),
-    takeEvery(parkingsConstants.CLEAR_VISIBLE_FREE_SLOTS, clearVisibleFreeSlotsSaga),
+    takeEvery(parkingsConstants.DELETE_PARKING, deleteParkingSaga),
+    takeEvery(parkingsConstants.DELETE_ALL_FREE_SLOTS, clearAllFreeSlotsSaga),
+    takeEvery(parkingsConstants.DELETE_VISIBLE_FREE_SLOTS, clearVisibleFreeSlotsSaga),
     takeEvery(parkingsConstants.ASK_PERMISSION_FOR_GEO_LOCATION, detectGeoLocationSaga),
     takeEvery(parkingsConstants.POST_PARKING_ATTEMPT, postParkingSaga),
   ]);

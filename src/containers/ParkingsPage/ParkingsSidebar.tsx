@@ -22,8 +22,8 @@ interface ParkingsSidebarOwnProps {
 interface ParkingsSidebarDispatchProps {
   openSidebar: BaseConfigActions.openSidebarActionCreator,
   closeSidebar: BaseConfigActions.closeSidebarActionCreator,
-  clearAllFreeSlots: ParkingsPageActions.clearAllFreeSlotsActionCreator,
-  clearVisibleFreeSlots: ParkingsPageActions.clearVisibleFreeSlotsActionCreator,
+  clearAllFreeSlots: ParkingsPageActions.deleteAllFreeSlotsActionCreator,
+  clearVisibleFreeSlots: ParkingsPageActions.deleteVisibleFreeSlotsActionCreator,
 }
 
 interface ParkingsSidebarProps extends ParkingsSidebarOwnProps, ParkingsSidebarDispatchProps, RouterProps {}
@@ -67,8 +67,8 @@ const mapStateToProps = createStructuredSelector<RootReducer, ParkingsSidebarOwn
 const mapDispatchToProps: ParkingsSidebarDispatchProps = {
   openSidebar: BaseConfigActions.openSidebar,
   closeSidebar: BaseConfigActions.closeSidebar,
-  clearAllFreeSlots: ParkingsPageActions.clearAllFreeSlots,
-  clearVisibleFreeSlots: ParkingsPageActions.clearVisibleFreeSlots,
+  clearAllFreeSlots: ParkingsPageActions.deleteAllFreeSlots,
+  clearVisibleFreeSlots: ParkingsPageActions.deleteVisibleFreeSlots,
 };
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

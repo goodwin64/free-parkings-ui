@@ -26,7 +26,7 @@
 - [ ] Driver: Map 3D
 - [ ] Driver: Trips page
 - [ ] Driver: About page
-- [ ] Admin: CRUD operations with parking
+- [X] Admin: CRUD operations with parking
 - [ ] Admin: Users list page (change another user's role)
 
 ## Commands
