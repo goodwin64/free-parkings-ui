@@ -7,6 +7,7 @@ import parkingsPageReducer, { ParkingsPageState } from './parkings/reducer';
 import userReducer from './userState/reducer';
 import { UserInfo } from '../interfaces/UserInfo';
 import carPageReducer, { CarPageOwnProps } from './car/reducer';
+import parkingSettingsReducer, { UserSettingsParkingPreferencesOwnProps } from './parkingSettings/reducer';
 
 
 export interface RootReducer {
@@ -15,6 +16,7 @@ export interface RootReducer {
   parkingsPage: ParkingsPageState,
   user: UserInfo,
   car: CarPageOwnProps,
+  parkingSettings: UserSettingsParkingPreferencesOwnProps,
 }
 
 function createRootReducer(history: History<LocationState>) {
@@ -24,6 +26,7 @@ function createRootReducer(history: History<LocationState>) {
     parkingsPage: parkingsPageReducer,
     user: userReducer,
     car: carPageReducer,
+    parkingSettings: parkingSettingsReducer,
   });
 }
 

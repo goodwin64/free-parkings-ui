@@ -26,6 +26,7 @@ import * as styled from './UserSettingsPage.styled';
 import UserSettingsCarInfo from './CarInfo/UserSettingsCarInfo';
 import { CarInfo } from '../../interfaces/CarInfo';
 import { carInfoSelector } from '../../store/car/selectors';
+import UserSettingsParkingPreferences from './ParkingPreferences/UserSettingsParkingPreferences';
 
 
 interface UserAccountPageOwnProps {
@@ -111,6 +112,9 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
       case 1: {
         return <UserSettingsCarInfo/>;
       }
+      case 2: {
+        return <UserSettingsParkingPreferences/>;
+      }
       default: {
         return null;
       }
@@ -150,5 +154,5 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export default compose(
   withConnect,
-  // @ts-ignore
+  // @ts-ignore - fix nested PropTypes
 )(UserSettingsPage);

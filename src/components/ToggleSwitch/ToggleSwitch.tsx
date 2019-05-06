@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 import './ToggleSwitch.global.css';
 
-type ColorScheme1 = 'green-red';
+type ColorScheme1 = 'red-green';
 type ColorScheme2 = 'black-white';
 type ColorScheme3 = 'orange-blue';
 
-export const ToggleSwitchColorScheme1: ColorScheme1 = 'green-red';
+export const ToggleSwitchColorScheme1: ColorScheme1 = 'red-green';
 export const ToggleSwitchColorScheme2: ColorScheme2 = 'black-white';
 export const ToggleSwitchColorScheme3: ColorScheme3 = 'orange-blue';
 
@@ -17,6 +17,7 @@ interface ToggleSwitchProps {
   onChange: (value: boolean) => void,
   colorScheme?: ColorScheme1 | ColorScheme2 | ColorScheme3,
   isOnByDefault?: boolean,
+  disabled?: boolean,
 }
 
 ToggleSwitch.propTypes = {
@@ -25,6 +26,7 @@ ToggleSwitch.propTypes = {
   onChange: PropTypes.func.isRequired,
   colorScheme: PropTypes.oneOf([ToggleSwitchColorScheme1, ToggleSwitchColorScheme2, ToggleSwitchColorScheme3]),
   isOnByDefault: PropTypes.bool,
+  disabled: PropTypes.bool,
 };
 
 ToggleSwitch.defaultProps = {
@@ -32,6 +34,7 @@ ToggleSwitch.defaultProps = {
   value2: '',
   colorScheme: ToggleSwitchColorScheme1,
   isOnByDefault: false,
+  disabled: false,
 };
 
 export default function ToggleSwitch(props: ToggleSwitchProps) {
@@ -40,7 +43,7 @@ export default function ToggleSwitch(props: ToggleSwitchProps) {
   };
 
   return (
-    <label className="switch">
+    <label className={`switch ${props.disabled ? 'disabled' : ''}`}>
       <input
         type="checkbox"
         id="togBtn"

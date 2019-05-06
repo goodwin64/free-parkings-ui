@@ -19,7 +19,7 @@
 - [ ] Driver: Search location by POI
 - [X] Driver: Search location by current GPS
 - [ ] Driver: Enable/disable parkings auto-check
-- [ ] Driver: Enable/disable voice notifications
+- [X] Driver: Enable/disable voice notifications
 - [ ] Driver: Delete account (GDPR compliant)
 - [X] Driver: Parkings page (search parkings)
 - [ ] Driver: Map rotate

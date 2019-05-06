@@ -5,6 +5,12 @@
     height: 34px;
 }
 
+.switch.disabled {
+    filter: opacity(0.5);
+    pointer-events: none;
+    user-select: none;
+}
+
 .switch input {
     display: none;
 }
@@ -20,7 +26,7 @@
     transition: .4s;
 }
 
-.slider.green-red {
+.slider.red-green {
     background-color: #a01919;
     color: #ffffff;
 }
@@ -33,7 +39,7 @@
     color: #ffffff;
 }
 
-input:checked + .slider.green-red {
+input:checked + .slider.red-green {
     background-color: #26a12f;
 }
 input:checked + .slider.black-white {

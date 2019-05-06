@@ -21,9 +21,11 @@ import { backendEndpoint } from '../../constants/backend';
 import { MAX_SEARCH_RADIUS_TO_FETCH } from '../../containers/BaseConfigPage/BaseConfigConstants';
 import serialize from '../../utils/serialize';
 import * as parkingsConstants from './constants';
+import AudioService from '../../services/AudioService';
 import { default as GeoLocationService } from '../../services/GeoLocation.service';
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
 import { ParkopediaParkingServerExpects } from '../../interfaces/ParkopediaParking';
+import { areVoiceNotificationsEnabledSelector } from '../parkingSettings/selectors';
 
 
 export function* fetchParkingsSaga() {
@@ -37,6 +39,7 @@ export function* fetchParkingsSaga() {
       const searchQuery = serialize({ lat, lon, radius: searchRadius });
       const rawResponseParkings: ResponseParkings = yield call(requestToFreeParkingsAPI, `${backendEndpoint}/parkings?${searchQuery}`);
       const preparedResponseParkings: PreparedParkings = prepareParkings(rawResponseParkings);
+      yield call(parkingVoiceNotification, preparedResponseParkings);
       yield put(ParkingsPageActions.fetchParkingsSuccess(preparedResponseParkings));
     }
   } catch (e) {
@@ -152,6 +155,13 @@ function* deleteParkingSaga(action: deleteParkingAction) {
     })
   } catch (e) {
     console.error('cannot delete parking', e);
+  }
+}
+
+function* parkingVoiceNotification(preparedResponseParkings: PreparedParkings) {
+  const areVoiceNotificationsEnabled = yield select(areVoiceNotificationsEnabledSelector);
+  if (areVoiceNotificationsEnabled && preparedResponseParkings.length > 0) {
+    new Audio(AudioService.parkingIsFoundPath).play();
   }
 }
 
