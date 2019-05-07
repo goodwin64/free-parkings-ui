@@ -9,7 +9,7 @@ export interface UserSettingsParkingPreferencesOwnProps {
 
 const parkingSettingsInitialState: UserSettingsParkingPreferencesOwnProps = {
   areVoiceNotificationsEnabled: false,
-  isParkingAutoSearchEnabled: true,
+  isParkingAutoSearchEnabled: false,
 };
 
 export default function parkingSettingsReducer(

@@ -263,7 +263,6 @@ class UserSettingsCarInfo extends React.PureComponent<UserSettingsCarInfoProps, 
           </SettingButton>
         </settingsStyled.SettingContainer>
 
-        <pre>{JSON.stringify(this.props, null, 4)}</pre>
       </settingsStyled.AllSettingsContainer>
     );
   }
