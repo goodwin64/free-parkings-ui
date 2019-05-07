@@ -5,7 +5,7 @@ import { call, select } from 'redux-saga/effects';
 
 export default class LocalStorageService {
   public static getUserInfo(): UserInfo | null {
-    const userAuthInfoJSON: string | null = localStorage.getItem('userInfo');
+    const userAuthInfoJSON: string | null = localStorage.getItem('userInfoAuth');
     if (!userAuthInfoJSON) {
       return null;
     }
@@ -13,7 +13,7 @@ export default class LocalStorageService {
   }
 
   public static hasUserInfo() {
-    return Boolean(localStorage.getItem('userInfo'));
+    return Boolean(localStorage.getItem('userInfoAuth'));
   }
 
   public static getAccessToken() {
@@ -37,7 +37,7 @@ export default class LocalStorageService {
   }
 
   public static removeUserInfo() {
-    localStorage.removeItem('userInfo');
+    localStorage.removeItem('userInfoAuth');
   }
 }
 
