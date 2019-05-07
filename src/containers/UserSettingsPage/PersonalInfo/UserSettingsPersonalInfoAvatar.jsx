@@ -10,7 +10,7 @@ import InputText from '../../../components/TextFieldInput/InputText';
 const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
 
 function UserSettingsPersonalInfoAvatar(props) {
-  const [draftAvatarUrlImage, setDraftAvatarUrlImage] = React.useState(props.user.avatarUrl);
+  const [draftAvatarUrlImage, setDraftAvatarUrlImage] = React.useState(props.user.imageUrl);
   const [draftAvatarUrlInput, setDraftAvatarUrlInput] = React.useState('');
   const [errorWithAvatar, setErrorWithAvatar] = React.useState('');
 
@@ -78,7 +78,7 @@ function UserSettingsPersonalInfoAvatar(props) {
         <styled.InputContainer>
           <Button
             onClick={onAvatarSave}
-            disabled={props.user.avatarUrl === draftAvatarUrlImage}
+            disabled={props.user.imageUrl === draftAvatarUrlImage}
           >
             Save
           </Button>

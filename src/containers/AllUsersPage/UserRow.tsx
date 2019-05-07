@@ -16,7 +16,7 @@ export default function UserRow(props: UserRowProps) {
   return (
     <tr>
       <td>{props.id}</td>
-      <td><img width={50} src={props.avatarUrl} alt={`user ${props.id} avatar`}/></td>
+      <td><img width={50} src={props.imageUrl} alt={`user ${props.id} avatar`}/></td>
       <td>{props.username}</td>
       <td>{props.fullname}</td>
       <td>{props.gender}</td>

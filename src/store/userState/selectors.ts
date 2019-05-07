@@ -18,4 +18,4 @@ export const usernameSelector = (state: RootReducer) => state.user.username;
 
 export const userIdSelector = (state: RootReducer) => state.user.id;
 
-export const avatarUrlSelector = (state: RootReducer) => state.user.avatarUrl;
+export const avatarUrlSelector = (state: RootReducer) => state.user.imageUrl;

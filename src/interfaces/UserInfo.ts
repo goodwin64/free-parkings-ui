@@ -15,7 +15,7 @@ export interface UserInfo extends UserInfoRequiredForAuth {
   readonly signupError: string | null,
   readonly isAuthorized: boolean,
   readonly role: UserRole,
-  readonly avatarUrl: string,
+  readonly imageUrl: string,
   readonly username: string,
   readonly fullname: string,
   readonly gender?: UserGenderType,

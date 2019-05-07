@@ -42,7 +42,7 @@ export const userInitialState: UserInfo = {
   signupError: null,
   isAuthorized: false,
   role: USER_ROLE_GUEST,
-  avatarUrl: 'https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png',
+  imageUrl: 'https://i0.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png',
   username: 'default username',
   fullname: '',
   defaultCountry: '',
@@ -89,7 +89,7 @@ export default function userReducer(
         isLoginInProgress: false,
         isLoginError: true,
         isAuthorized: false,
-        avatarUrl: userInitialState.avatarUrl,
+        imageUrl: userInitialState.imageUrl,
         username: userInitialState.username,
         gender: userInitialState.gender,
       };
@@ -121,7 +121,7 @@ export default function userReducer(
     case USER_UPDATE_AVATAR: {
       return {
         ...state,
-        avatarUrl: action.payload,
+        imageUrl: action.payload,
       };
     }
     case USER_UPDATE_USERNAME: {

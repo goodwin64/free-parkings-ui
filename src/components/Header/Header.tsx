@@ -86,7 +86,7 @@ class Header extends React.PureComponent<HeaderProps, HeaderLocalState> {
     return (
       <section className={styles['HeaderUserPanel']}>
         <img
-          src={this.props.user.avatarUrl || ImagesService.commonImages.defaultUserIcon}
+          src={this.props.user.imageUrl || ImagesService.commonImages.defaultUserIcon}
           alt="Avatar"
           className={styles['HeaderUserPanelAvatar']}
         />
