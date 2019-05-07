@@ -10,6 +10,7 @@ import { createStructuredSelector } from 'reselect';
 import { isUserAuthorizedSelector, userInfoSelector } from '../../store/userState/selectors';
 import { RootReducer } from '../../store/rootReducer';
 import { UserInfo } from '../../interfaces/UserInfo';
+import { AllUsersPage } from '../AllUsersPage/AllUsersPage';
 
 const LoginPage = React.lazy(() => import('../LoginPage/LoginPage'));
 const SignupPage = React.lazy(() => import('../SignupPage/SignupPage'));
@@ -62,9 +63,9 @@ export class App extends React.Component<AppProps> {
               RedirectComponent={LoginPage}
             />
             <ProtectedRoute
-              path={UrlService.myDrivesPageUrl}
-              component={() => <div>my drives</div>}
-              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.myDrivesPageRolesAllowed)}
+              path={UrlService.allUsersPageUrl}
+              component={AllUsersPage}
+              allowed={UrlService.isRouteAllowed(this.props.userInfo, UrlService.allUsersPageRolesAllowed)}
               RedirectComponent={LoginPage}
             />
             <Redirect

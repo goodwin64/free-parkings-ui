@@ -4,7 +4,7 @@ export type UserGenderType = 'male' | 'female' | 'n/a';
 export type UserRole = USER_ROLE_GUEST | USER_ROLE_ADMIN | USER_ROLE_DRIVER;
 
 export interface UserInfoRequiredForAuth {
-  readonly id: number,
+  readonly id: string,
   readonly accessToken?: string,
 }
 

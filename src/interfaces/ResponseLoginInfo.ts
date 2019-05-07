@@ -4,7 +4,7 @@ import { UserGenderType, UserRole } from './UserInfo';
 export interface ResponseLoginInfo {
   accessToken: string,
   personalInfo: {
-    id: number,
+    id: string,
     role: UserRole,
     username: string,
     avatarUrl: string,

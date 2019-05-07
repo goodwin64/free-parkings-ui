@@ -35,7 +35,7 @@ export const POSSIBLE_GENDER_LIST = [
 ];
 
 export const userInitialState: UserInfo = {
-  id: -1,
+  id: '-1',
   isLoginInProgress: false,
   isSignupInProgress: false,
   isLoginError: false,

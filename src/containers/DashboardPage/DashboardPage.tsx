@@ -47,9 +47,9 @@ class DashboardPage extends React.PureComponent<DashboardPageProps> {
           </styled.NavLinkWrapper>
 
           <styled.NavLinkWrapper>
-            <Link to={UrlService.myDrivesPageUrl}>
-              <img src={ImagesService.driverImages.myDrives} alt="my drives"/>
-              <h2>Drives</h2>
+            <Link to={UrlService.allUsersPageUrl}>
+              <img src={ImagesService.driverImages.drivers} alt="drivers"/>
+              <h2>Drivers</h2>
             </Link>
           </styled.NavLinkWrapper>
         </styled.LinksContainer>
