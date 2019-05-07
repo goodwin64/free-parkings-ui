@@ -16,7 +16,7 @@
 - [X] Driver: Change profile pic
 - [X] Driver: Change username
 - [X] Driver: Change preferred country
-- [ ] Driver: Search location by POI
+- [X] Driver: Search location by POI
 - [X] Driver: Search location by current GPS
 - [X] Driver: Enable/disable parkings auto-check
 - [X] Driver: Enable/disable voice notifications
@@ -24,10 +24,9 @@
 - [X] Driver: Parkings page (search parkings)
 - [ ] Driver: Map rotate
 - [ ] Driver: Map 3D
-- [ ] Driver: Trips page
 - [ ] Driver: About page
 - [X] Admin: CRUD operations with parking
-- [ ] Admin: Users list page (change another user's role)
+- [X] Admin: Users list page (change another user's role)
 
 ## Commands
 `npm run start` - starts the project

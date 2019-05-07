@@ -31,7 +31,7 @@ function* setUserRoleSaga(action: actions.setUserRoleAttemptAction) {
   }
 }
 
-export default function* allUsersDefaultSaga() {
+export default function* defaultAllUsersSaga() {
   yield all([
     takeLatest(constants.LOAD_ALL_USERS_ATTEMPT, loadAllUsersSaga),
     takeLatest(constants.SET_USER_ROLE_ATTEMPT, setUserRoleSaga),

@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
-import { COLORS } from '../../constants/colors';
-
 
 export const PageWrapper = styled.section`
-  padding: 20px 40px 60px;
-  background-color: ${COLORS.pageBackground};
+  padding: 40px 40px 60px;
+  background: #cdcdff;
+  background: -webkit-linear-gradient(45deg, #cdcdff, #ffdcf3);
 `;

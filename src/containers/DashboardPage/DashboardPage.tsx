@@ -49,7 +49,7 @@ class DashboardPage extends React.PureComponent<DashboardPageProps> {
           <styled.NavLinkWrapper>
             <Link to={UrlService.allUsersPageUrl}>
               <img src={ImagesService.driverImages.drivers} alt="drivers"/>
-              <h2>Drivers</h2>
+              <h2>Users</h2>
             </Link>
           </styled.NavLinkWrapper>
         </styled.LinksContainer>

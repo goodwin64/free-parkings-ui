@@ -1,20 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Redirect, Switch } from 'react-router';
+import { createStructuredSelector } from 'reselect';
 
 import * as css from './App.module.css';
 import Header from '../../components/Header/Header';
+import Loader from '../../components/Loader/Loader';
 import UrlService from '../../services/Url.service';
 import ProtectedRoute from '../../HOCs/ProtectedRoute';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { isUserAuthorizedSelector, userInfoSelector } from '../../store/userState/selectors';
 import { RootReducer } from '../../store/rootReducer';
 import { UserInfo } from '../../interfaces/UserInfo';
-import { AllUsersPage } from '../AllUsersPage/AllUsersPage';
+import { PageWrapper } from '../../components/CommonStyled/commonStyled';
 
 const LoginPage = React.lazy(() => import('../LoginPage/LoginPage'));
 const SignupPage = React.lazy(() => import('../SignupPage/SignupPage'));
-// @ts-ignore
+const AllUsersPage = React.lazy(() => import('../AllUsersPage/AllUsersPage'));
 const ParkingsPage = React.lazy(() => import('../ParkingsPage/ParkingsPage'));
 const DashboardPage = React.lazy(() => import('../DashboardPage/DashboardPage'));
 const UserSettingsPage = React.lazy(() => import('../UserSettingsPage/UserSettingsPage'));
@@ -30,7 +31,7 @@ export class App extends React.Component<AppProps> {
     return (
       <main className={css['AppContainer']}>
         <Header/>
-        <React.Suspense fallback={<div>Loading...</div>}>
+        <React.Suspense fallback={<PageWrapper><Loader/></PageWrapper>}>
           <Switch>
             <ProtectedRoute
               path={UrlService.loginPageUrl}

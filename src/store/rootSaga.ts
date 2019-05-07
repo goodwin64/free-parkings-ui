@@ -4,6 +4,7 @@ import defaultParkingsSaga from './parkings/saga';
 import defaultLoginPageSaga from './userState/saga';
 import defaultCarPageSaga from './car/saga';
 import defaultParkingSettingsSaga from './parkingSettings/saga';
+import defaultAllUsersSaga from './allUsers/saga';
 
 
 function* initSaga() {
@@ -12,6 +13,7 @@ function* initSaga() {
     defaultLoginPageSaga(),
     defaultCarPageSaga(),
     defaultParkingSettingsSaga(),
+    defaultAllUsersSaga(),
   ]);
 }
 
