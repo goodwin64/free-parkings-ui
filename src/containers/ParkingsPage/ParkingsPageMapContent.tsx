@@ -60,6 +60,7 @@ interface ParkingsPageOwnProps {
 }
 
 interface ParkingsPageDispatchProps {
+  closeSidebar: BaseConfigActions.closeSidebarActionCreator,
   setZoomLevel: ParkingsPageActions.setZoomLevelActionCreator,
   fetchParkings: ParkingsPageActions.fetchParkingsRequestActionCreator,
   setSearchRadius: BaseConfigActions.setSearchRadiusActionCreator,
@@ -110,6 +111,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 
   componentWillUnmount(): void {
     this.props.stopCheckingParkopediaUpdates();
+    this.props.closeSidebar();
   }
 
   private fetchPlaces = (query: string) => {
@@ -249,6 +251,7 @@ const mapStateToProps = createStructuredSelector<RootReducer, ParkingsPageOwnPro
 });
 
 const mapDispatchToProps: ParkingsPageDispatchProps = {
+  closeSidebar: BaseConfigActions.closeSidebar,
   setZoomLevel: ParkingsPageActions.setZoomLevel,
   setSearchRadius: BaseConfigActions.setSearchRadius,
   fetchParkings: ParkingsPageActions.fetchParkingsRequest,
