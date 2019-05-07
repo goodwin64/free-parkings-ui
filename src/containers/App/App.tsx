@@ -70,7 +70,12 @@ export class App extends React.Component<AppProps> {
             <Redirect
               exact
               path="/"
-              to={UrlService.loginPageUrl}
+              to={UrlService.detectPageByUserInfo(this.props.userInfo)}
+            />
+            <Redirect
+              exact
+              path={UrlService.rootUrl}
+              to={UrlService.detectPageByUserInfo(this.props.userInfo)}
             />
           </Switch>
         </React.Suspense>

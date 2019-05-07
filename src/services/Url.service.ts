@@ -5,7 +5,7 @@ import { USER_ROLE_ADMIN, USER_ROLE_DRIVER, USER_ROLE_GUEST } from '../store/use
 
 
 export default class UrlService {
-  private static rootUrl = '/free-parkings-ui';
+  public static rootUrl = '/free-parkings-ui';
 
   public static readonly loginPageUrl = path.join(UrlService.rootUrl, '/login');
   public static readonly loginPageRolesAllowed = new Set([
