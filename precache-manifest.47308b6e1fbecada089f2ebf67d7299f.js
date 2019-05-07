@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "218a7902805b5769a854",
-    "url": "/free-parkings-ui/static/css/main.d22f9f34.chunk.css"
+    "revision": "3611ae7d7b8196faec81",
+    "url": "/free-parkings-ui/static/css/main.6e573be2.chunk.css"
   },
   {
-    "revision": "218a7902805b5769a854",
-    "url": "/free-parkings-ui/static/js/main.218a7902.chunk.js"
+    "revision": "3611ae7d7b8196faec81",
+    "url": "/free-parkings-ui/static/js/main.3611ae7d.chunk.js"
   },
   {
     "revision": "c010a711e94ee777b7ac",
@@ -16,12 +16,12 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/js/2.0055e1fc.chunk.js"
   },
   {
-    "revision": "dac82f114eb0ef23748b",
+    "revision": "164e60beaf79ff1c8765",
     "url": "/free-parkings-ui/static/css/3.29fe8c19.chunk.css"
   },
   {
-    "revision": "dac82f114eb0ef23748b",
-    "url": "/free-parkings-ui/static/js/3.dac82f11.chunk.js"
+    "revision": "164e60beaf79ff1c8765",
+    "url": "/free-parkings-ui/static/js/3.164e60be.chunk.js"
   },
   {
     "revision": "2cce1c5045d33864f361",
@@ -36,12 +36,12 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/js/5.c95279aa.chunk.js"
   },
   {
-    "revision": "53078ab01a203340d356",
+    "revision": "3db40defbb720c73c89b",
     "url": "/free-parkings-ui/static/css/6.2f645f93.chunk.css"
   },
   {
-    "revision": "53078ab01a203340d356",
-    "url": "/free-parkings-ui/static/js/6.53078ab0.chunk.js"
+    "revision": "3db40defbb720c73c89b",
+    "url": "/free-parkings-ui/static/js/6.3db40def.chunk.js"
   },
   {
     "revision": "0bdfd959123f3db6d0e2",
@@ -56,8 +56,8 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/js/8.8620a17a.chunk.js"
   },
   {
-    "revision": "86ab8bd22b6a4f1232f7",
-    "url": "/free-parkings-ui/static/js/runtime~main.86ab8bd2.js"
+    "revision": "80ecb47762aaeff6085c",
+    "url": "/free-parkings-ui/static/js/runtime~main.80ecb477.js"
   },
   {
     "revision": "00c2ce8e4189a1ad6dd1b34388708284",
@@ -84,7 +84,7 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/media/magnifier.2931e6af.svg"
   },
   {
-    "revision": "93b5c9a733264cdecd9f015db45ac5a4",
+    "revision": "ecfc2266d207e2a9fc87e56f1c497938",
     "url": "/free-parkings-ui/index.html"
   }
 ];
