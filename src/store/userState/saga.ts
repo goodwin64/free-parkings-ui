@@ -41,7 +41,7 @@ import {
   USER_UPDATE_GENDER,
   USER_UPDATE_USERNAME,
 } from './constants';
-import { loadCarParametersReset } from '../car/actions';
+import { loadCarParametersAttempt, loadCarParametersReset } from '../car/actions';
 import { UserInfo, UserInfoRequiredForAuth } from '../../interfaces/UserInfo';
 
 
@@ -69,6 +69,7 @@ function* signinUserAttemptSaga(action: signinUserAttemptAction) {
 function* signinUserSuccessSaga() {
   yield call(updateUserInfoLocallySaga);
   yield call(redirectToPageByRole);
+  yield put(loadCarParametersAttempt());
 }
 
 function* signoutUserSuccessSaga() {
@@ -114,6 +115,7 @@ function* initUserInfoOnLoadSaga() {
   if (userInfoRequiredForAuth && userInfoRequiredForAuth.accessToken) {
     yield put(initUserAuthInfoOnLoad(userInfoRequiredForAuth));
     yield call(loadUserInfoByAccessToken);
+    yield put(loadCarParametersAttempt());
   } else {
     yield call(signoutUserSuccessSaga);
   }
@@ -189,7 +191,7 @@ const defaultLoginPageSaga = function* () {
     takeLatest(USER_UPDATE_FULLNAME, updateFullnameSaga),
     takeLatest(USER_UPDATE_GENDER, updateGenderSaga),
     takeLatest(USER_UPDATE_DEFAULT_COUNTRY, updateDefaultCountrySaga),
-    initUserInfoOnLoadSaga(),
+    yield call(initUserInfoOnLoadSaga),
   ]);
 };
 

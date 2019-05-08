@@ -1,5 +1,7 @@
 import styled from 'styled-components';
+
 import { COLORS } from '../../constants/colors';
+import { disabledStyles } from '../../components/CommonStyled/disabledStyles';
 
 
 export const LinksContainer = styled.div`
@@ -8,9 +10,12 @@ export const LinksContainer = styled.div`
   align-items: center;
 `;
 
-export const NavLinkWrapper = styled.div`
+export const NavLinkWrapper = styled.div<{
+  disabled?: boolean,
+}>`
   width: 25%;
   height: 360px;
+  ${({ disabled }) => disabled && disabledStyles}
   
   & > a {
     align-items: center;
