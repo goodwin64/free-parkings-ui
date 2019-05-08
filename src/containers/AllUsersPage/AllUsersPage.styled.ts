@@ -17,6 +17,11 @@ export const Container = styled(PageWrapper)`
   & table td, & table th {
     padding-left: 8px;
     text-align: center;
+    height: 50px;
+    
+    & > img {
+      max-height: 100%;
+    }
   }
   
   & table tr th:first-child,
