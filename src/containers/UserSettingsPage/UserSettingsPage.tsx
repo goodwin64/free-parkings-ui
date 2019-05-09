@@ -90,16 +90,16 @@ class UserSettingsPage extends React.PureComponent<UserAccountPageProps, UserAcc
         >
           Parkings preferences
         </styled.TabHeader>
-        {
-          this.props.user.role === USER_ROLE_ADMIN && (
-            <styled.TabHeader
-              active={this.state.selectedTabIndex === 3}
-              onClick={() => this.setState({ selectedTabIndex: 3 })}
-            >
-              Admin settings
-            </styled.TabHeader>
-          )
-        }
+        {/*{*/}
+        {/*  this.props.user.role === USER_ROLE_ADMIN && (*/}
+        {/*    <styled.TabHeader*/}
+        {/*      active={this.state.selectedTabIndex === 3}*/}
+        {/*      onClick={() => this.setState({ selectedTabIndex: 3 })}*/}
+        {/*    >*/}
+        {/*      Admin settings*/}
+        {/*    </styled.TabHeader>*/}
+        {/*  )*/}
+        {/*}*/}
       </div>
     )
   }
