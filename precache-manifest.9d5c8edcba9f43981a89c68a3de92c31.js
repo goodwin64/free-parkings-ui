@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "0516c342eb7d0cb3388f",
+    "revision": "54949c6253ddf3b09283",
     "url": "/free-parkings-ui/static/css/main.6e573be2.chunk.css"
   },
   {
-    "revision": "0516c342eb7d0cb3388f",
-    "url": "/free-parkings-ui/static/js/main.0516c342.chunk.js"
+    "revision": "54949c6253ddf3b09283",
+    "url": "/free-parkings-ui/static/js/main.54949c62.chunk.js"
   },
   {
     "revision": "e589a08f2452438db9e5",
@@ -24,12 +24,12 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/js/3.a9888788.chunk.js"
   },
   {
-    "revision": "4651b9e2e6a4d1ec4046",
+    "revision": "86c77ff60ee31b7cb8ff",
     "url": "/free-parkings-ui/static/css/4.8e524716.chunk.css"
   },
   {
-    "revision": "4651b9e2e6a4d1ec4046",
-    "url": "/free-parkings-ui/static/js/4.4651b9e2.chunk.js"
+    "revision": "86c77ff60ee31b7cb8ff",
+    "url": "/free-parkings-ui/static/js/4.86c77ff6.chunk.js"
   },
   {
     "revision": "c41c48744f27bfdb4e76",
@@ -56,8 +56,8 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/js/8.b4760e53.chunk.js"
   },
   {
-    "revision": "15bfd8e27dfba9339856",
-    "url": "/free-parkings-ui/static/js/runtime~main.15bfd8e2.js"
+    "revision": "76438c91f27df6ed7134",
+    "url": "/free-parkings-ui/static/js/runtime~main.76438c91.js"
   },
   {
     "revision": "00c2ce8e4189a1ad6dd1b34388708284",
@@ -84,7 +84,7 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/media/magnifier.2931e6af.svg"
   },
   {
-    "revision": "9a648bb591554606b21ce3006df811bf",
+    "revision": "a45827a5d343e4b1c4462954f39b84fa",
     "url": "/free-parkings-ui/index.html"
   }
 ];
