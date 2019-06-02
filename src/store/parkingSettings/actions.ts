@@ -8,23 +8,23 @@ export type setVoiceNotificationsAction = ActionType<typeof setVoiceNotification
 export type setVoiceNotificationsActionCreator = (isEnabled: boolean) => setVoiceNotificationsAction;
 
 
-export const startCheckingParkopediaUpdates = () => action(constants.START_CHECKING_PARKOPEDIA_UPDATES);
-export type startCheckingParkopediaUpdatesAction = ActionType<typeof startCheckingParkopediaUpdates>;
-export type startCheckingParkopediaUpdatesActionCreator = () => startCheckingParkopediaUpdatesAction;
+export const startCheckingParkingUpdates = () => action(constants.START_CHECKING_PARKING_UPDATES);
+export type startCheckingParkingUpdatesAction = ActionType<typeof startCheckingParkingUpdates>;
+export type startCheckingParkingUpdatesActionCreator = () => startCheckingParkingUpdatesAction;
 
 
-export const stopCheckingParkopediaUpdates = () => action(constants.STOP_CHECKING_PARKOPEDIA_UPDATES);
-export type stopCheckingParkopediaUpdatesAction = ActionType<typeof stopCheckingParkopediaUpdates>;
-export type stopCheckingParkopediaUpdatesActionCreator = () => stopCheckingParkopediaUpdatesAction;
+export const stopCheckingParkingUpdates = () => action(constants.STOP_CHECKING_PARKING_UPDATES);
+export type stopCheckingParkingUpdatesAction = ActionType<typeof stopCheckingParkingUpdates>;
+export type stopCheckingParkingUpdatesActionCreator = () => stopCheckingParkingUpdatesAction;
 
 
-export const setCheckingParkopediaUpdates = (isEnabled: boolean) => action(constants.SET_CHECKING_PARKOPEDIA_UPDATES, isEnabled);
-export type setCheckingParkopediaUpdatesAction = ActionType<typeof setCheckingParkopediaUpdates>;
-export type setCheckingParkopediaUpdatesActionCreator = (isEnabled: boolean) => setCheckingParkopediaUpdatesAction;
+export const setCheckingParkingUpdates = (isEnabled: boolean) => action(constants.SET_CHECKING_PARKING_UPDATES, isEnabled);
+export type setCheckingParkingUpdatesAction = ActionType<typeof setCheckingParkingUpdates>;
+export type setCheckingParkingUpdatesActionCreator = (isEnabled: boolean) => setCheckingParkingUpdatesAction;
 
 
 export type ParkingSettingsAction = setVoiceNotificationsAction
-  | startCheckingParkopediaUpdatesAction
-  | stopCheckingParkopediaUpdatesAction
-  | setCheckingParkopediaUpdatesAction
+  | startCheckingParkingUpdatesAction
+  | stopCheckingParkingUpdatesAction
+  | setCheckingParkingUpdatesAction
   ;

@@ -15,7 +15,7 @@ import ParkingsSidebar from './ParkingsSidebar';
 import UrlService from '../../services/Url.service';
 import { MapboxPlace } from '../../interfaces/MapboxPlace';
 import { RouterProps } from '../../interfaces/RouterProps';
-import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { Parking } from '../../interfaces/Parking';
 import * as ParkingsPageActions from '../../store/parkings/actions';
 import * as ParkingsPageSelectors from '../../store/parkings/selectors';
 import * as BaseConfigActions from '../BaseConfigPage/BaseConfigActions';
@@ -27,10 +27,10 @@ import { DEFAULT_ZOOM_LEVEL, MAX_SEARCH_RADIUS_TO_FETCH } from '../BaseConfigPag
 
 import * as styles from './styles.module.css';
 import {
-  startCheckingParkopediaUpdates,
-  startCheckingParkopediaUpdatesActionCreator,
-  stopCheckingParkopediaUpdates,
-  stopCheckingParkopediaUpdatesActionCreator,
+  startCheckingParkingUpdates,
+  startCheckingParkingUpdatesActionCreator,
+  stopCheckingParkingUpdates,
+  stopCheckingParkingUpdatesActionCreator,
 } from '../../store/parkingSettings/actions';
 
 
@@ -51,8 +51,8 @@ const mapboxGeocoding = (query: string) =>
 
 interface ParkingsPageOwnProps {
   radius: number,
-  allParkingsList: ParkopediaParking[],
-  freeParkingsList: ParkopediaParking[],
+  allParkingsList: Parking[],
+  freeParkingsList: Parking[],
   isParkingFetchInProgress: boolean,
   isSearchRadiusTooBig: boolean,
   wasFetchPerformedOnce: boolean,
@@ -66,10 +66,10 @@ interface ParkingsPageDispatchProps {
   setSearchRadius: BaseConfigActions.setSearchRadiusActionCreator,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
-  checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequestActionCreator,
+  checkParkingUpdates: ParkingsPageActions.checkParkingUpdatesRequestActionCreator,
   askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocationActionCreator,
-  startCheckingParkopediaUpdates: startCheckingParkopediaUpdatesActionCreator,
-  stopCheckingParkopediaUpdates: stopCheckingParkopediaUpdatesActionCreator,
+  startCheckingParkingUpdates: startCheckingParkingUpdatesActionCreator,
+  stopCheckingParkingUpdates: stopCheckingParkingUpdatesActionCreator,
 }
 
 interface ParkingsPageProps extends ParkingsPageOwnProps,
@@ -81,7 +81,7 @@ interface ParkingsPageState {
   query: string;
   options: Place[];
   selected?: Place;
-  selectedParking: ParkopediaParking | null,
+  selectedParking: Parking | null,
   popupCoordinates: LatLon | null,
 }
 
@@ -101,7 +101,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
 
   componentDidMount(): void {
     this.props.synchronizeLatLon();
-    this.props.startCheckingParkopediaUpdates();
+    this.props.startCheckingParkingUpdates();
 
     setTimeout(() => {
       this.props.fetchParkings();
@@ -110,7 +110,7 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
   }
 
   componentWillUnmount(): void {
-    this.props.stopCheckingParkopediaUpdates();
+    this.props.stopCheckingParkingUpdates();
     this.props.closeSidebar();
   }
 
@@ -151,11 +151,11 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     this.props.setZoomLevel(DEFAULT_ZOOM_LEVEL);
   };
 
-  openPopup: openPopup = (parking: ParkopediaParking, popupCoordinates: LatLon) => {
+  openPopup: openPopup = (parking: Parking, popupCoordinates: LatLon) => {
     this.setState({ selectedParking: parking, popupCoordinates });
   };
 
-  openPopupDetails: openPopupDetails = (parking: ParkopediaParking) => {
+  openPopupDetails: openPopupDetails = (parking: Parking) => {
     this.props.history.push({
       pathname: UrlService.editParkingPageUrlWithParams(parking.id),
       search: this.props.location.search,
@@ -257,10 +257,10 @@ const mapDispatchToProps: ParkingsPageDispatchProps = {
   fetchParkings: ParkingsPageActions.fetchParkingsRequest,
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,
-  checkParkopediaUpdates: ParkingsPageActions.checkParkopediaUpdatesRequest,
+  checkParkingUpdates: ParkingsPageActions.checkParkingUpdatesRequest,
   askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocation,
-  startCheckingParkopediaUpdates: startCheckingParkopediaUpdates,
-  stopCheckingParkopediaUpdates: stopCheckingParkopediaUpdates,
+  startCheckingParkingUpdates: startCheckingParkingUpdates,
+  stopCheckingParkingUpdates: stopCheckingParkingUpdates,
 };
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

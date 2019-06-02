@@ -1,10 +1,10 @@
 import {
-  ClientParkopediaParking,
-  ParkopediaParking,
-  ParkopediaParkingServerExpects,
-} from '../../interfaces/ParkopediaParking';
+  ClientParking,
+  Parking,
+  ParkingServerExpects,
+} from '../../interfaces/Parking';
 import { PointGeometry } from '../../interfaces/PointGeometry';
-import { ResponseParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { ResponseParking } from '../../interfaces/Parking';
 import { PreparedParkings, ResponseParkings } from '../../interfaces/ResponseParkings';
 
 
@@ -17,21 +17,21 @@ export function prepareParkings(
     return preparedResponse;
   }
 
-  preparedResponse = prepareParkopediaParkings(rawResponseParkings);
+  preparedResponse = prepareParkingParkings(rawResponseParkings);
 
   return preparedResponse;
 }
 
-function prepareParkopediaParkings(allParkings: ResponseParkopediaParking[]): ParkopediaParking[] {
-  return allParkings.map(prepareParkopediaParkingSlot);
+function prepareParkingParkings(allParkings: ResponseParking[]): Parking[] {
+  return allParkings.map(prepareParkingSlot);
 }
 
-function prepareParkopediaParkingSlot(parkingSlot: ResponseParkopediaParking): ParkopediaParking {
+function prepareParkingSlot(parkingSlot: ResponseParking): Parking {
   return parkingSlot;
 }
 
 
-export function prepareParkingParametersFromClientToServer(rawParkingParameters: ClientParkopediaParking): ParkopediaParkingServerExpects {
+export function prepareParkingParametersFromClientToServer(rawParkingParameters: ClientParking): ParkingServerExpects {
   const {
     parkingsGeoJsonSource: rawGeometry,
     isLatLon,

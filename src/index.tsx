@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import { ConnectedRouter } from 'connected-react-router';
+import { ConnectedRouter } from "connected-react-router";
 
 import './index.global.css';
 import App from './containers/App/App';

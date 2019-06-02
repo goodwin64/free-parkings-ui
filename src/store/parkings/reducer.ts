@@ -5,7 +5,7 @@ import {
   PARKINGS_REQUEST_FOR_FETCH,
   PARKINGS_FETCH_SUCCESS,
   PARKINGS_FETCH_START,
-  CHECK_PARKOPEDIA_UPDATES_SUCCESS,
+  CHECK_PARKINGS_UPDATES_SUCCESS,
   DELETE_PARKING,
   DELETE_ALL_FREE_SLOTS,
   CHANGE_ZOOM_LEVEL,
@@ -14,7 +14,7 @@ import {
 } from './constants';
 import { Actions } from './actions';
 import { BaseConfigInitialState } from '../../containers/BaseConfigPage/BaseConfigReducer';
-import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { Parking } from '../../interfaces/Parking';
 
 
 export interface ParkingsPageState {
@@ -25,8 +25,8 @@ export interface ParkingsPageState {
   readonly lastParkingsCheckUpdatesCount: number,
   readonly isFetchInProgress: boolean,
   readonly wasFetchPerformed: boolean,
-  readonly allParkings: ParkopediaParking[],
-  readonly freeParkings: ParkopediaParking[],
+  readonly allParkings: Parking[],
+  readonly freeParkings: Parking[],
 }
 
 export const ParkingsPageInitialState: ParkingsPageState = {
@@ -100,7 +100,7 @@ export default function reducer(
         isFetchInProgress: false,
       };
     }
-    case CHECK_PARKOPEDIA_UPDATES_SUCCESS: {
+    case CHECK_PARKINGS_UPDATES_SUCCESS: {
       return {
         ...state,
         lastParkingsCheckTimestamp: action.payload.timestamp,

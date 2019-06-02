@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as MapboxGl from 'mapbox-gl';
-import ReactMapboxGl from 'react-mapbox-gl';
+import ReactMapboxGl, { Layer } from 'react-mapbox-gl';
 
 import Loader from '../Loader/Loader';
 import { MapContext } from './context';
@@ -40,6 +40,19 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
   static mapStyle = {
     width: '100%',
     height: '100%',
+  };
+
+  static paintLayer = {
+    'fill-extrusion-color': '#aaa',
+    'fill-extrusion-height': {
+      type: 'identity' as 'identity',
+      property: 'height'
+    },
+    'fill-extrusion-base': {
+      type: 'identity' as 'identity',
+      property: 'min_height'
+    },
+    'fill-extrusion-opacity': 0.6
   };
 
   constructor(props: Park4uMapProps) {
@@ -94,6 +107,15 @@ class Park4uMap extends React.PureComponent<Park4uMapProps, Park4uMapState> {
         >
           <MapContext.Provider value={this.state.MapboxMapRef}>
             {this.state.MapboxMapRef ? this.props.children : <Loader/>}
+            <Layer
+              id="3d-buildings"
+              sourceId="composite"
+              sourceLayer="building"
+              filter={['==', 'extrude', 'true']}
+              type="fill-extrusion"
+              minZoom={14}
+              paint={Park4uMap.paintLayer}
+            />
           </MapContext.Provider>
         </MapboxMap>
       </div>

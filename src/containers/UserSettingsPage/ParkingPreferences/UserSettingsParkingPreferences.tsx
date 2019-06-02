@@ -12,8 +12,8 @@ import {
 } from '../../../store/parkingSettings/selectors';
 import { UserSettingsParkingPreferencesOwnProps } from '../../../store/parkingSettings/reducer';
 import {
-  setCheckingParkopediaUpdates,
-  setCheckingParkopediaUpdatesActionCreator,
+  setCheckingParkingUpdates,
+  setCheckingParkingUpdatesActionCreator,
   setVoiceNotifications,
   setVoiceNotificationsActionCreator,
 } from '../../../store/parkingSettings/actions';
@@ -21,7 +21,7 @@ import {
 
 interface UserSettingsParkingPreferencesDispatchProps {
   setVoiceNotifications: setVoiceNotificationsActionCreator,
-  setCheckingParkopediaUpdates: setCheckingParkopediaUpdatesActionCreator,
+  setCheckingParkingUpdates: setCheckingParkingUpdatesActionCreator,
 }
 
 interface UserSettingsParkingPreferencesProps extends
@@ -52,7 +52,7 @@ function UserSettingsParkingPreferences(props: UserSettingsParkingPreferencesPro
         <ToggleSwitch
           value1="OFF"
           value2="ON"
-          onChange={props.setCheckingParkopediaUpdates}
+          onChange={props.setCheckingParkingUpdates}
           isOnByDefault={props.isParkingAutoSearchEnabled}
         />
       </settingsStyled.SettingContainer>
@@ -68,7 +68,7 @@ const mapStateToProps = createStructuredSelector<RootReducer, UserSettingsParkin
 
 const mapDispatchToProps: UserSettingsParkingPreferencesDispatchProps = {
   setVoiceNotifications,
-  setCheckingParkopediaUpdates,
+  setCheckingParkingUpdates: setCheckingParkingUpdates,
 };
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);

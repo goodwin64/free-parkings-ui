@@ -1,4 +1,4 @@
-export interface ParkopediaAvailability {
+export interface ParkingAvailability {
   timestamp: number,
   updatesCount: number,
 }

@@ -2,24 +2,24 @@ import { delay } from 'redux-saga';
 import { all, call, select, takeLatest } from 'redux-saga/effects';
 
 import * as parkingSettinsConstants from './constants';
-import { checkForParkopediaUpdates } from '../parkings/saga';
+import { checkForParkingsUpdates } from '../parkings/saga';
 import { PreparedParkings } from '../../interfaces/ResponseParkings';
 import { areVoiceNotificationsEnabledSelector, isParkingAutoSearchEnabledSelector } from './selectors';
 import AudioService from '../../services/AudioService';
 
 
-let checkParkopediaUpdatesTimer: boolean = false;
-function* startCheckingParkopediaUpdatesSaga() {
+let checkParkingUpdatesTimer: boolean = false;
+function* startCheckingParkingUpdatesSaga() {
   const isParkingAutoSearchEnabled = yield select(isParkingAutoSearchEnabledSelector);
-  checkParkopediaUpdatesTimer = true;
-  while (checkParkopediaUpdatesTimer && isParkingAutoSearchEnabled) {
-    yield call(checkForParkopediaUpdates);
+  checkParkingUpdatesTimer = true;
+  while (checkParkingUpdatesTimer && isParkingAutoSearchEnabled) {
+    yield call(checkForParkingsUpdates);
     yield delay(5000);
   }
 }
 
-function stopCheckingParkopediaUpdatesSaga() {
-  checkParkopediaUpdatesTimer = false;
+function stopCheckingParkingUpdatesSaga() {
+  checkParkingUpdatesTimer = false;
 }
 
 export function* parkingVoiceNotification(preparedResponseParkings: PreparedParkings) {
@@ -31,7 +31,7 @@ export function* parkingVoiceNotification(preparedResponseParkings: PreparedPark
 
 export default function* defaultParkingSettingsSaga() {
   yield all([
-    takeLatest(parkingSettinsConstants.START_CHECKING_PARKOPEDIA_UPDATES, startCheckingParkopediaUpdatesSaga),
-    takeLatest(parkingSettinsConstants.STOP_CHECKING_PARKOPEDIA_UPDATES, stopCheckingParkopediaUpdatesSaga),
+    takeLatest(parkingSettinsConstants.START_CHECKING_PARKING_UPDATES, startCheckingParkingUpdatesSaga),
+    takeLatest(parkingSettinsConstants.STOP_CHECKING_PARKING_UPDATES, stopCheckingParkingUpdatesSaga),
   ]);
 }

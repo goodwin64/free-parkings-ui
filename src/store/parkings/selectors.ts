@@ -3,7 +3,7 @@ import { Search } from 'history';
 
 import { RootReducer } from '../rootReducer';
 import { defaultLatLonSelector } from '../../containers/BaseConfigPage/BaseConfigSelectors';
-import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { Parking } from '../../interfaces/Parking';
 import { RouterProps } from '../../interfaces/RouterProps';
 
 export const routeLocationSelector = (state: RootReducer) => state.router.location;
@@ -92,7 +92,7 @@ export const lastParkingsCheckTimestampSelector = createSelector(
   (parkingsPageDomain) => parkingsPageDomain.lastParkingsCheckTimestamp,
 );
 
-type selectedParkingSelector = (rr: RootReducer) => ParkopediaParking | null;
+type selectedParkingSelector = (rr: RootReducer) => Parking | null;
 // @ts-ignore
 export const selectedParkingSelector: selectedParkingSelector = createSelector(
   [routerPropsSelector, allParkingsSelector],

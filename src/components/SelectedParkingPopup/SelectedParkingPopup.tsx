@@ -6,12 +6,12 @@ import './SelectedParkingPopup.global.css';
 import { LatLon } from '../../interfaces/LatLon';
 import * as styles from './SelectedParkingPopup.module.css';
 import { geometryObjToLonLat } from '../../utils/geometry';
-import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { Parking } from '../../interfaces/Parking';
 import { openPopupDetails } from '../LayerParkings/LayerParkings';
 
 
 interface SelectedParkingPopupProps {
-  selectedParking: ParkopediaParking | null,
+  selectedParking: Parking | null,
   popupCoordinates: LatLon | null,
   openPopupDetails: openPopupDetails,
   closePopup: () => void,
@@ -32,7 +32,7 @@ class SelectedParkingPopup extends React.PureComponent<SelectedParkingPopupProps
     }
   };
 
-  static renderParkopediaParkingPopup(parking: ParkopediaParking): React.ReactNode {
+  static renderParkingPopup(parking: Parking): React.ReactNode {
     return (
       <React.Fragment>
         <p>Cost:</p>
@@ -88,7 +88,7 @@ class SelectedParkingPopup extends React.PureComponent<SelectedParkingPopupProps
         >
           ×
         </button>
-        {SelectedParkingPopup.renderParkopediaParkingPopup(this.props.selectedParking)}
+        {SelectedParkingPopup.renderParkingPopup(this.props.selectedParking)}
         <Button onClick={this.openPopupDetails}>Details</Button>
       </Popup>
     );

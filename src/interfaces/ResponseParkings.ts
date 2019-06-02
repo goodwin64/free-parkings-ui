@@ -1,7 +1,7 @@
-import { ParkopediaParking} from './ParkopediaParking';
-import { ResponseParkopediaParking } from './ParkopediaParking';
+import { Parking} from './Parking';
+import { ResponseParking } from './Parking';
 
 
-export type ResponseParkings = ResponseParkopediaParking[];
+export type ResponseParkings = ResponseParking[];
 
-export type PreparedParkings = ParkopediaParking[];
+export type PreparedParkings = Parking[];

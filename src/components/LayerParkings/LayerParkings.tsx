@@ -5,17 +5,17 @@ import { Feature, Layer } from 'react-mapbox-gl';
 
 import { COLORS } from '../../constants/colors';
 import withMap, { MapContextProps } from '../Map/context';
-import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { Parking } from '../../interfaces/Parking';
 import { geometryLatLonToLonLat } from '../../utils/geometry';
 import { LatLon } from '../../interfaces/LatLon';
 
 
-export type openPopup = (p: ParkopediaParking, popupCoordinates: LatLon) => void;
-export type openPopupDetails = (p: ParkopediaParking) => void;
+export type openPopup = (p: Parking, popupCoordinates: LatLon) => void;
+export type openPopupDetails = (p: Parking) => void;
 
 interface ParkingsLayerProps extends MapContextProps {
-  parkings: ParkopediaParking[],
-  freeParkings: ParkopediaParking[],
+  parkings: Parking[],
+  freeParkings: Parking[],
   zoomLevel: number,
   openPopup: openPopup,
   closePopup: () => void,
@@ -66,7 +66,7 @@ class ParkingsLayer extends React.PureComponent<ParkingsLayerProps> {
     };
   }
 
-  onParkingClick = (parking: ParkopediaParking) => (e: MapMouseEvent) => {
+  onParkingClick = (parking: Parking) => (e: MapMouseEvent) => {
     const popupCoordinates = { lat: e.lngLat.lat, lon: e.lngLat.lng };
     this.props.openPopup(parking, popupCoordinates);
   };

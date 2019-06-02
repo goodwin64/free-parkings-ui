@@ -20,7 +20,7 @@ import serialize from '../../utils/serialize';
 import * as parkingsConstants from './constants';
 import { default as GeoLocationService } from '../../services/GeoLocation.service';
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
-import { ParkopediaParkingServerExpects } from '../../interfaces/ParkopediaParking';
+import { ParkingServerExpects } from '../../interfaces/Parking';
 import { parkingVoiceNotification } from '../parkingSettings/saga';
 
 
@@ -58,7 +58,7 @@ export function* synchronizeLatLonSaga() {
   yield put(setParkingsPageCenter(latFromUrl, lonFromUrl));
 }
 
-export function* checkForParkopediaUpdates() {
+export function* checkForParkingsUpdates() {
   yield put(fetchParkingsRequest());
 }
 
@@ -107,7 +107,7 @@ function* detectGeoLocationSaga() {
   }
 }
 
-function* createParkingSaga(preparedParkingParameters: ParkopediaParkingServerExpects) {
+function* createParkingSaga(preparedParkingParameters: ParkingServerExpects) {
   const url = `${backendEndpoint}/parkings`;
   const createdParking = yield call(requestToFreeParkingsAPI, url, {
     method: 'PUT',
@@ -116,7 +116,7 @@ function* createParkingSaga(preparedParkingParameters: ParkopediaParkingServerEx
   return createdParking;
 }
 
-function* updateParkingSaga(preparedParkingParameters: ParkopediaParkingServerExpects) {
+function* updateParkingSaga(preparedParkingParameters: ParkingServerExpects) {
   const url = `${backendEndpoint}/parkings/${preparedParkingParameters.id}`;
   yield call(requestToFreeParkingsAPI, url, {
     method: 'PUT',
@@ -158,7 +158,7 @@ export default function* defaultParkingsSaga() {
   yield all([
     throttle(3000, parkingsConstants.PARKINGS_REQUEST_FOR_FETCH, fetchParkingsSaga),
     takeEvery(parkingsConstants.CHANGE_CENTER_LOCATION, updateUrlLatLonSaga),
-    takeEvery(parkingsConstants.CHECK_PARKOPEDIA_UPDATES_REQUEST, checkForParkopediaUpdates),
+    takeEvery(parkingsConstants.CHECK_PARKINGS_UPDATES_REQUEST, checkForParkingsUpdates),
     takeLatest(parkingsConstants.SYNCHRONIZE_LAT_LON, synchronizeLatLonSaga),
     takeEvery(parkingsConstants.DELETE_PARKING, deleteParkingSaga),
     takeEvery(parkingsConstants.DELETE_ALL_FREE_SLOTS, clearAllFreeSlotsSaga),

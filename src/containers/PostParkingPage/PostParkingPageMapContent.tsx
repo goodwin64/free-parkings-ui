@@ -10,14 +10,14 @@ import { RouterProps } from '../../interfaces/RouterProps';
 import * as styled from './PostParkingPageMapContent.styled';
 import * as ParkingsPageActions from '../../store/parkings/actions';
 import InputNumber from '../../components/TextFieldInput/InputNumber';
-import { ParkopediaParking } from '../../interfaces/ParkopediaParking';
+import { Parking } from '../../interfaces/Parking';
 import * as ParkingsPageSelectors from '../../store/parkings/selectors';
 import ToggleSwitch, { ToggleSwitchColorScheme3 } from '../../components/ToggleSwitch/ToggleSwitch';
 import UrlService from '../../services/Url.service';
 
 
 interface PostParkingPageOwnProps {
-  selectedParking: ParkopediaParking | null;
+  selectedParking: Parking | null;
 }
 
 export interface PostParkingPageDispatchProps {

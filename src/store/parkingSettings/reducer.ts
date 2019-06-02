@@ -23,7 +23,7 @@ export default function parkingSettingsReducer(
         areVoiceNotificationsEnabled: action.payload,
       };
     }
-    case constants.SET_CHECKING_PARKOPEDIA_UPDATES: {
+    case constants.SET_CHECKING_PARKING_UPDATES: {
       return {
         ...state,
         isParkingAutoSearchEnabled: action.payload,
