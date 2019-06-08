@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "54949c6253ddf3b09283",
+    "revision": "cf2feb4db0521fdb5768",
     "url": "/free-parkings-ui/static/css/main.6e573be2.chunk.css"
   },
   {
-    "revision": "54949c6253ddf3b09283",
-    "url": "/free-parkings-ui/static/js/main.54949c62.chunk.js"
+    "revision": "cf2feb4db0521fdb5768",
+    "url": "/free-parkings-ui/static/js/main.cf2feb4d.chunk.js"
   },
   {
     "revision": "e589a08f2452438db9e5",
@@ -24,24 +24,24 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/js/3.a9888788.chunk.js"
   },
   {
-    "revision": "86c77ff60ee31b7cb8ff",
+    "revision": "b04a8636bb0358cf3be0",
     "url": "/free-parkings-ui/static/css/4.8e524716.chunk.css"
   },
   {
-    "revision": "86c77ff60ee31b7cb8ff",
-    "url": "/free-parkings-ui/static/js/4.86c77ff6.chunk.js"
+    "revision": "b04a8636bb0358cf3be0",
+    "url": "/free-parkings-ui/static/js/4.b04a8636.chunk.js"
   },
   {
     "revision": "c41c48744f27bfdb4e76",
     "url": "/free-parkings-ui/static/js/5.c41c4874.chunk.js"
   },
   {
-    "revision": "30e975963765ed9335ae",
+    "revision": "05f46e556570dfcc2357",
     "url": "/free-parkings-ui/static/css/6.2f645f93.chunk.css"
   },
   {
-    "revision": "30e975963765ed9335ae",
-    "url": "/free-parkings-ui/static/js/6.30e97596.chunk.js"
+    "revision": "05f46e556570dfcc2357",
+    "url": "/free-parkings-ui/static/js/6.05f46e55.chunk.js"
   },
   {
     "revision": "7ca92863fea1d1f5728f",
@@ -56,8 +56,8 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/js/8.b4760e53.chunk.js"
   },
   {
-    "revision": "76438c91f27df6ed7134",
-    "url": "/free-parkings-ui/static/js/runtime~main.76438c91.js"
+    "revision": "6d6e1379d73ce05152c8",
+    "url": "/free-parkings-ui/static/js/runtime~main.6d6e1379.js"
   },
   {
     "revision": "00c2ce8e4189a1ad6dd1b34388708284",
@@ -84,7 +84,7 @@ self.__precacheManifest = [
     "url": "/free-parkings-ui/static/media/magnifier.2931e6af.svg"
   },
   {
-    "revision": "a45827a5d343e4b1c4462954f39b84fa",
+    "revision": "19b5d493bfe342c604cd0cf34beeb81b",
     "url": "/free-parkings-ui/index.html"
   }
 ];
