@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/free-parkings-ui/precache-manifest.3dbd9e22be44974da172f3eea0c80c5e.js"
+  "/free-parkings-ui/precache-manifest.9faa92c0084bc8ea7972a69f3ddd676f.js"
 );
 
 workbox.clientsClaim();
