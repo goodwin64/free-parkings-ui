@@ -1,9 +1,12 @@
+import some from 'lodash/some';
 import { delay } from 'redux-saga';
 import { all, call, select, takeLatest } from 'redux-saga/effects';
 
 import * as parkingSettinsConstants from './constants';
 import { checkForParkingsUpdates } from '../parkings/saga';
 import { PreparedParkings } from '../../interfaces/ResponseParkings';
+import { Parking } from '../../interfaces/Parking';
+import * as parkingsSelectors from '../parkings/selectors';
 import { areVoiceNotificationsEnabledSelector, isParkingAutoSearchEnabledSelector } from './selectors';
 import AudioService from '../../services/AudioService';
 
@@ -24,7 +27,9 @@ function stopCheckingParkingUpdatesSaga() {
 
 export function* parkingVoiceNotification(preparedResponseParkings: PreparedParkings) {
   const areVoiceNotificationsEnabled = yield select(areVoiceNotificationsEnabledSelector);
-  if (areVoiceNotificationsEnabled && preparedResponseParkings.length > 0) {
+  const existingParkings: Parking[] = yield select(parkingsSelectors.allParkingsSelector);
+  const areThereNewParkings = some(preparedResponseParkings, ({ id }) => existingParkings.every(p => p.id !== id));
+  if (areVoiceNotificationsEnabled && areThereNewParkings) {
     new Audio(AudioService.parkingIsFoundPath).play();
   }
 }
