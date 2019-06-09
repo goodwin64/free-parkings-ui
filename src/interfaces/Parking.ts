@@ -17,6 +17,7 @@ export interface ParkingServerExpects {
   maxStayDuration: number,
   restrictions: string[],
   features: string[],
+  isFree: boolean,
 }
 
 export interface ClientParking {
@@ -30,4 +31,5 @@ export interface ClientParking {
   maxStayDuration: number,
   features: string[],
   restrictions: string[],
+  isFree: boolean,
 }

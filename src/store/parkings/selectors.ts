@@ -49,14 +49,22 @@ export const zoomLevelSelector = (state: RootReducer) => state.parkingsPage.zoom
 
 const parkingsPageDomainSelector = (state: RootReducer) => state.parkingsPage;
 
-export const allParkingsSelector = createSelector(
+export const busyParkingsSelector = createSelector(
   [parkingsPageDomainSelector],
-  (parkingsPageDomain) => parkingsPageDomain.allParkings,
+  (parkingsPageDomain) => parkingsPageDomain.busyParkings,
 );
 
 export const freeParkingsSelector = createSelector(
   [parkingsPageDomainSelector],
   (parkingsPageDomain) => parkingsPageDomain.freeParkings,
+);
+
+export const allParkingsSelector = createSelector(
+  [busyParkingsSelector, freeParkingsSelector],
+  (busyParkings, freeParkings) => [
+    ...busyParkings,
+    ...freeParkings,
+  ],
 );
 
 export const isParkingFetchInProgressSelector = createSelector(

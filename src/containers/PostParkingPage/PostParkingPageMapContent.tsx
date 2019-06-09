@@ -12,7 +12,10 @@ import * as ParkingsPageActions from '../../store/parkings/actions';
 import InputNumber from '../../components/TextFieldInput/InputNumber';
 import { Parking } from '../../interfaces/Parking';
 import * as ParkingsPageSelectors from '../../store/parkings/selectors';
-import ToggleSwitch, { ToggleSwitchColorScheme3 } from '../../components/ToggleSwitch/ToggleSwitch';
+import ToggleSwitch, {
+  ToggleSwitchColorScheme1,
+  ToggleSwitchColorScheme3,
+} from '../../components/ToggleSwitch/ToggleSwitch';
 import UrlService from '../../services/Url.service';
 
 
@@ -74,6 +77,10 @@ function PostParkingPageMapContent(props: PostParkingPageProps) {
     ? React.useState(props.selectedParking.maxStayDuration)
     : React.useState(0);
 
+  const [isFree, setIsFree] = props.selectedParking
+    ? React.useState(props.selectedParking.isFree)
+    : React.useState(true);
+
   const areAllParametersValid = Boolean(
     parkingsGeoJsonSource
     && parkingLength
@@ -114,7 +121,8 @@ function PostParkingPageMapContent(props: PostParkingPageProps) {
         maxStayDuration,
         features: [],
         restrictions: [],
-      });
+        isFree,
+      }, isFree);
     }
     navigateBackToFindParkings();
   };
@@ -126,8 +134,6 @@ function PostParkingPageMapContent(props: PostParkingPageProps) {
     navigateBackToFindParkings();
   };
 
-  const toggleIsLatLon = () => setIsLatLon(!isLatLon);
-
   const onFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
   };
@@ -137,6 +143,8 @@ function PostParkingPageMapContent(props: PostParkingPageProps) {
   const onParkingHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => setParkingHeight(e.target.valueAsNumber);
   const onCostPerHourChange = (e: React.ChangeEvent<HTMLInputElement>) => setCostPerHour(e.target.valueAsNumber);
   const onMaxStayDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => setMaxStayDuration(e.target.valueAsNumber);
+  const toggleIsLatLon = () => setIsLatLon(!isLatLon);
+  const toggleIsFree = () => setIsFree(!isFree);
 
   return (
     <styled.CreateParkingForm onSubmit={onFormSubmit}>
@@ -201,13 +209,23 @@ function PostParkingPageMapContent(props: PostParkingPageProps) {
       />
 
       <styled.CreateParkingControlsContainer>
-        <ToggleSwitch
-          value1="lon, lat"
-          value2="lat, lon"
-          onChange={toggleIsLatLon}
-          colorScheme={ToggleSwitchColorScheme3}
-          isOnByDefault={isLatLon}
-        />
+        <div>
+          <ToggleSwitch
+            value1="lon, lat"
+            value2="lat, lon"
+            onChange={toggleIsLatLon}
+            colorScheme={ToggleSwitchColorScheme3}
+            isOnByDefault={isLatLon}
+          />
+          {' '}
+          <ToggleSwitch
+            value1="busy"
+            value2="free"
+            onChange={toggleIsFree}
+            colorScheme={ToggleSwitchColorScheme1}
+            isOnByDefault={isFree}
+          />
+        </div>
         <div>
           {
             props.selectedParking && (

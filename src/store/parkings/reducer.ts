@@ -25,7 +25,7 @@ export interface ParkingsPageState {
   readonly lastParkingsCheckUpdatesCount: number,
   readonly isFetchInProgress: boolean,
   readonly wasFetchPerformed: boolean,
-  readonly allParkings: Parking[],
+  readonly busyParkings: Parking[],
   readonly freeParkings: Parking[],
 }
 
@@ -37,7 +37,7 @@ export const ParkingsPageInitialState: ParkingsPageState = {
   lastParkingsCheckUpdatesCount: 0,
   isFetchInProgress: false,
   wasFetchPerformed: false,
-  allParkings: [],
+  busyParkings: [],
   freeParkings: [],
 };
 
@@ -77,9 +77,13 @@ export default function reducer(
     case PARKINGS_FETCH_SUCCESS: {
       return {
         ...state,
-        allParkings: uniqBy([
-          ...state.allParkings,
-          ...action.payload,
+        busyParkings: uniqBy([
+          ...state.busyParkings,
+          ...action.payload.filter(p => !p.isFree),
+        ], 'id'),
+        freeParkings: uniqBy([
+          ...state.freeParkings,
+          ...action.payload.filter(p => p.isFree),
         ], 'id'),
         isFetchInProgress: false,
       };
@@ -88,15 +92,23 @@ export default function reducer(
       return {
         ...state,
         isFetchInProgress: true,
+        busyParkings: [...state.busyParkings.filter(p => p.id !== action.payload.parkingCreated.id)],
+        freeParkings: [...state.freeParkings.filter(p => p.id !== action.payload.parkingCreated.id)],
       };
     }
     case POST_PARKING_SUCCESS: {
+      const isFreeNow = action.payload.isFree;
+      const busyParkings = isFreeNow
+        ? state.busyParkings
+        : uniqBy([...state.busyParkings, action.payload.parkingCreated], 'id');
+      const freeParkings = isFreeNow
+        ? uniqBy([...state.freeParkings, action.payload.parkingCreated], 'id')
+        : state.freeParkings;
+
       return {
         ...state,
-        allParkings: uniqBy([
-          action.payload,
-          ...state.allParkings,
-        ], 'id'),
+        busyParkings,
+        freeParkings,
         isFetchInProgress: false,
       };
     }
@@ -111,7 +123,8 @@ export default function reducer(
     case DELETE_PARKING: {
       return {
         ...state,
-        allParkings: state.allParkings.filter(({id}) => id !== action.payload),
+        busyParkings: state.busyParkings.filter(({id}) => id !== action.payload),
+        freeParkings: state.freeParkings.filter(({id}) => id !== action.payload),
       }
     }
     case DELETE_ALL_FREE_SLOTS: {

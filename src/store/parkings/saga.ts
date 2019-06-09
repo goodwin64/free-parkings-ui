@@ -22,6 +22,8 @@ import { default as GeoLocationService } from '../../services/GeoLocation.servic
 import { requestToFreeParkingsAPI } from '../../services/Authentication.service';
 import { ParkingServerExpects } from '../../interfaces/Parking';
 import { parkingVoiceNotification } from '../parkingSettings/saga';
+import { userInfoSelector } from '../userState/selectors';
+import { USER_ROLE_DRIVER } from '../userState/reducer';
 
 
 export function* fetchParkingsSaga() {
@@ -32,7 +34,9 @@ export function* fetchParkingsSaga() {
   try {
     if (canFetchParkings) {
       yield put(ParkingsPageActions.fetchParkingsStart());
-      const searchQuery = serialize({ lat, lon, radius: searchRadius });
+      const isDriver = (yield select(userInfoSelector)) === USER_ROLE_DRIVER;
+      const parkingType = isDriver ? 'free' : 'all';
+      const searchQuery = serialize({ lat, lon, radius: searchRadius, type: parkingType });
       const rawResponseParkings: ResponseParkings = yield call(requestToFreeParkingsAPI, `${backendEndpoint}/parkings?${searchQuery}`);
       const preparedResponseParkings: PreparedParkings = prepareParkings(rawResponseParkings);
       yield call(parkingVoiceNotification, preparedResponseParkings);
@@ -126,7 +130,7 @@ function* updateParkingSaga(preparedParkingParameters: ParkingServerExpects) {
 }
 
 function* postParkingSaga(action: postParkingAttemptAction) {
-  const preparedParkingParameters = prepareParkingParametersFromClientToServer(action.payload);
+  const preparedParkingParameters = prepareParkingParametersFromClientToServer(action.payload.parkingCreated);
   try {
     let parking = null;
 
@@ -136,7 +140,7 @@ function* postParkingSaga(action: postParkingAttemptAction) {
     } else {
       parking = yield call(createParkingSaga, preparedParkingParameters);
     }
-    yield put(postParkingSuccess(parking));
+    yield put(postParkingSuccess(parking, action.payload.isFree));
   } catch (e) {
     yield put(postParkingError());
   }

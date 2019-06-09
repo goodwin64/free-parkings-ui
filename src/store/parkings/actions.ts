@@ -62,14 +62,14 @@ export type checkParkingUpdatesSuccessAction = ActionType<typeof checkParkingUpd
 export type checkParkingUpdatesSuccessActionCreator = (parkingAvailability: ParkingAvailability) => checkParkingUpdatesSuccessAction;
 
 
-export const postParkingAttempt = (parkingCreated: ClientParking) => action(POST_PARKING_ATTEMPT, parkingCreated);
+export const postParkingAttempt = (parkingCreated: ClientParking, isFree: boolean) => action(POST_PARKING_ATTEMPT, { parkingCreated, isFree });
 export type postParkingAttemptAction = ActionType<typeof postParkingAttempt>;
-export type postParkingAttemptActionCreator = (parkingCreated: ClientParking) => postParkingAttemptAction;
+export type postParkingAttemptActionCreator = (parkingCreated: ClientParking, isFree: boolean) => postParkingAttemptAction;
 
 
-export const postParkingSuccess = (parkingCreated: Parking) => action(POST_PARKING_SUCCESS, parkingCreated);
+export const postParkingSuccess = (parkingCreated: Parking, isFree: boolean) => action(POST_PARKING_SUCCESS, { parkingCreated, isFree });
 export type postParkingSuccessAction = ActionType<typeof postParkingSuccess>;
-export type postParkingSuccessActionCreator = (parkingCreated: Parking) => postParkingSuccessAction;
+export type postParkingSuccessActionCreator = (parkingCreated: Parking, isFree: boolean) => postParkingSuccessAction;
 
 
 export const postParkingError = () => action(POST_PARKING_ERROR);
