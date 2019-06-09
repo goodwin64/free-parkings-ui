@@ -67,7 +67,6 @@ interface ParkingsPageDispatchProps {
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLonActionCreator,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenterActionCreator,
   checkParkingUpdates: ParkingsPageActions.checkParkingUpdatesRequestActionCreator,
-  askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocationActionCreator,
   startCheckingParkingUpdates: startCheckingParkingUpdatesActionCreator,
   stopCheckingParkingUpdates: stopCheckingParkingUpdatesActionCreator,
 }
@@ -106,7 +105,6 @@ class ParkingsPage extends React.Component<ParkingsPageProps, ParkingsPageState>
     setTimeout(() => {
       this.props.fetchParkings();
     }, 100);
-    // this.props.askPermissionForGeoLocation();
   }
 
   componentWillUnmount(): void {
@@ -258,7 +256,6 @@ const mapDispatchToProps: ParkingsPageDispatchProps = {
   synchronizeLatLon: ParkingsPageActions.synchronizeLatLon,
   setParkingsPageCenter: ParkingsPageActions.setParkingsPageCenter,
   checkParkingUpdates: ParkingsPageActions.checkParkingUpdatesRequest,
-  askPermissionForGeoLocation: ParkingsPageActions.askPermissionForGeoLocation,
   startCheckingParkingUpdates: startCheckingParkingUpdates,
   stopCheckingParkingUpdates: stopCheckingParkingUpdates,
 };

@@ -11,6 +11,7 @@ import { RootReducer } from '../../store/rootReducer';
 import * as ParkingsPageActions from '../../store/parkings/actions';
 import * as ParkingsPageSelectors from '../../store/parkings/selectors';
 import * as BaseConfigActions from '../BaseConfigPage/BaseConfigActions';
+import GeoLocationControl from '../../widgets/GeoLocationControl/GeoLocationControl';
 
 
 interface ParkingsMapOwnProps {
@@ -61,6 +62,7 @@ class ParkingsMap extends React.PureComponent<ParkingsMapProps> {
         zoomLevel={this.props.zoomLevel}
       >
         {this.props.children}
+        <GeoLocationControl/>
         <ZoomControl
           position="bottom-right"
         />
