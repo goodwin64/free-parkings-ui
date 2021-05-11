@@ -9,7 +9,7 @@
     "connected-react-router": "^6.3.2",
     "gh-pages": "^2.0.1",
     "history": "^4.7.2",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "mapbox-gl": "^0.52.0",
     "path": "^0.12.7",
     "react": "^16.8.6",
